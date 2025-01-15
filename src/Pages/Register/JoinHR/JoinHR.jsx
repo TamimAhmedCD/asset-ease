@@ -5,11 +5,20 @@ import animation from "./Register.json";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 
 const JoinHR = () => {
-  const [passwordVisible, setPasswordVisible] = useState(false);
+  // Host image
+  const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
+  const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
+  //   password toggle
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
+
+//   submit form
+const onSubmit = async (data) => {
+    
+}
 
   return (
     <div className="flex min-h-screen">
@@ -20,15 +29,22 @@ const JoinHR = () => {
 
       {/* Right Form Section */}
       <div className="flex flex-col w-full lg:w-1/2 items-center justify-center px-8 lg:px-16 bg-white my-12">
-        <h1 className="text-4xl font-bold text-gray-800 mb-4 text-center">Join as HR Manager</h1>
+        <h1 className="text-4xl font-bold text-gray-800 mb-4 text-center">
+          Join as HR Manager
+        </h1>
         <p className="text-gray-600 mb-8 text-center">
-          Welcome to <span className="text-[#1753c2] font-semibold">AssetEase</span>. Manage your company assets with ease!
+          Welcome to{" "}
+          <span className="text-[#1753c2] font-semibold">AssetEase</span>.
+          Manage your company assets with ease!
         </p>
 
         <form className="w-full max-w-md">
           {/* Full Name */}
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="name">
+            <label
+              className="block text-sm font-medium text-gray-700 mb-2"
+              htmlFor="name"
+            >
               Full Name
             </label>
             <input
@@ -41,7 +57,10 @@ const JoinHR = () => {
 
           {/* Company Name */}
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="company">
+            <label
+              className="block text-sm font-medium text-gray-700 mb-2"
+              htmlFor="company"
+            >
               Company Name
             </label>
             <input
@@ -54,7 +73,10 @@ const JoinHR = () => {
 
           {/* Company Logo */}
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="logo">
+            <label
+              className="block text-sm font-medium text-gray-700 mb-2"
+              htmlFor="logo"
+            >
               Company Logo
             </label>
             <input
@@ -66,7 +88,10 @@ const JoinHR = () => {
 
           {/* Email */}
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="email">
+            <label
+              className="block text-sm font-medium text-gray-700 mb-2"
+              htmlFor="email"
+            >
               Email
             </label>
             <input
@@ -79,7 +104,10 @@ const JoinHR = () => {
 
           {/* Password */}
           <div className="mb-4 relative">
-            <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="password">
+            <label
+              className="block text-sm font-medium text-gray-700 mb-2"
+              htmlFor="password"
+            >
               Password
             </label>
             <input
@@ -99,7 +127,10 @@ const JoinHR = () => {
 
           {/* Date of Birth */}
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="dob">
+            <label
+              className="block text-sm font-medium text-gray-700 mb-2"
+              htmlFor="dob"
+            >
               Date of Birth
             </label>
             <input
@@ -111,7 +142,10 @@ const JoinHR = () => {
 
           {/* Package Selection */}
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="package">
+            <label
+              className="block text-sm font-medium text-gray-700 mb-2"
+              htmlFor="package"
+            >
               Select a Package
             </label>
             <select
@@ -135,7 +169,10 @@ const JoinHR = () => {
 
         <p className="text-sm text-gray-600 mt-4">
           Already have an account?{" "}
-          <Link to="/login" className="text-[#1753c2] font-medium hover:underline">
+          <Link
+            to="/login"
+            className="text-[#1753c2] font-medium hover:underline"
+          >
             Log in
           </Link>
         </p>
