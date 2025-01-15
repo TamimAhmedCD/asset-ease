@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import Navbar from "../../Components/Navbar/Navbar";
+import Hero from "../../Components/Hero/Hero";
 
 const Home = () => {
   return (
@@ -8,6 +9,7 @@ const Home = () => {
         <title>AssetEase | Home</title>
       </Helmet>
       <Navbar />
+      <Hero />
     </div>
   );
 };

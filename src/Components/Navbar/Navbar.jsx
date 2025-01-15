@@ -40,7 +40,7 @@ const Navbar = () => {
             </NavLink>
           </div>
           <div className="text-gray-700 md:flex items-center hidden">
-            <NavLink to="/employee-register" className="font-semibold">
+            <NavLink to="/hr-register" className="font-semibold">
               Join as HR Manager
             </NavLink>
           </div>
