@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import logo from "/Logo.svg";
 import { Button, Menu, MenuItem } from "@mui/material";
 import "./navbar.css";
@@ -50,7 +50,7 @@ const Navbar = () => {
         </div>
         {/* nav button */}
         <div className="flex items-center">
-          <Button className="text-[#1753c2]">Login</Button>
+          <Link to='/login'><Button variant="contained" className="bg-[#1753c2]">Login</Button></Link>
           {/* mobile menu */}
           <div className="block md:hidden">
             <Button
