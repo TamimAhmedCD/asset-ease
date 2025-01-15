@@ -19,16 +19,19 @@ const Navbar = () => {
 
   return (
     // nav bar
-    <nav className="py-2 shadow-md static z-10 top-0">
+    <nav className="py-2 shadow-md sticky z-10 top-0 bg-white">
       {/* nav content */}
       <div className="w-11/12 md:w-10/12 mx-auto flex items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center">
-          <img src={logo} alt="" width="70px" />
-          <h1 className="text-2xl font-bold text-[#1753c2] sm:block hidden">
-            AssetEase
-          </h1>
-        </div>
+        <a href="#">
+          {" "}
+          <div className="flex items-center">
+            <img src={logo} alt="" width="70px" />
+            <h1 className="text-2xl font-bold text-[#1753c2] sm:block hidden">
+              AssetEase
+            </h1>
+          </div>
+        </a>
         {/* nav list */}
         <div className="gap-3 md:flex items-center hidden ">
           <NavLink to="/" className="font-semibold">

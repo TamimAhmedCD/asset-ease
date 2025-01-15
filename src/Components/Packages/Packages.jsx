@@ -5,9 +5,13 @@ const Packages = () => {
     <div className="w-11/12 md:w-10/12 mx-auto mt-10">
       <div>
         <div className="">
-          <h2 className="text-3xl font-bold text-[#1753c2] text-center mb-8">
+          <h2 className="text-3xl font-bold text-[#1753c2] text-center mb-2">
             Our Packages
           </h2>
+          <p className="text-gray-400 mb-8 text-center lg:w-2/4 md:w-3/4 mx-auto">
+            Streamline your asset management with AssetEase – a simple and
+            efficient way to track and manage your company assets.
+          </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Card 1 */}
             <div className="bg-white shadow-lg rounded-lg p-6 text-center">
