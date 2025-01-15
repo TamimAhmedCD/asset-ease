@@ -1,5 +1,4 @@
 import { createContext, useEffect, useState } from "react";
-import useAxiosPublic from "./../hooks/useAxiosPublic";
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -11,6 +10,7 @@ import {
   GoogleAuthProvider,
 } from "firebase/auth";
 import app from "../firebase/config";
+import useAxiosPublic from "./useAxiosPublic";
 
 export const AuthContext = createContext(null);
 const auth = getAuth(app);
