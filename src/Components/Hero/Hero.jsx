@@ -1,6 +1,7 @@
 import { useKeenSlider } from "keen-slider/react";
 import Lottie from "lottie-react";
 import hero1 from "./hero1.json";
+import hero2 from "./hero2.json";
 import { Button } from "@mui/material";
 import "keen-slider/keen-slider.min.css";
 import { Link } from "react-router-dom";
@@ -49,7 +50,7 @@ const Hero = () => {
         {/* slider 1 */}
         <div className="keen-slider__slide number-slide1">
           {/* slider 1 content */}
-          <div className="flex justify-between items-center gap-5 mt-10">
+          <div className="flex flex-col-reverse lg:flex-row justify-between items-center gap-5 mt-10">
             <div className="space-y-3">
               <h1 className="text-4xl font-bold text-[#1753c2]">
                 Empowering Employees with Seamless Asset Access
@@ -59,22 +60,25 @@ const Hero = () => {
                 track, and manage company-provided assets, ensuring a
                 hassle-free experience for every employee.
               </p>
-              <Link to="/employee-register">
-                <Button
-                  variant="contained"
-                  className="normal-case bg-[#1753c2]"
-                >
-                  Join as Employee
-                </Button>
-              </Link>
+              <div>
+                {" "}
+                <Link to="/employee-register">
+                  <Button
+                    variant="contained"
+                    className="normal-case bg-[#1753c2]"
+                  >
+                    Join as Employee
+                  </Button>
+                </Link>
+              </div>
             </div>
-            <Lottie animationData={hero1} className="w-4/6" />
+            <Lottie animationData={hero2} className="hidden lg:block w-5/6" />
           </div>
         </div>
         {/* slider 2 */}
         <div className="keen-slider__slide number-slide2">
           {/* slider 2 content */}
-          <div className="flex justify-between items-center gap-5 mt-10">
+          <div className="flex flex-col-reverse lg:flex-row justify-between items-center gap-5 mt-10">
             <div className="space-y-3">
               <h1 className="text-4xl font-bold text-[#1753c2]">
                 Smart Asset Management for HR Excellence
@@ -85,16 +89,18 @@ const Hero = () => {
                 items, streamline processes, and keep your workforce organized
                 with ease.
               </p>
-              <Link to="/hr-register">
-                <Button
-                  variant="contained"
-                  className="normal-case bg-[#1753c2]"
-                >
-                  Join as HR Manager
-                </Button>
-              </Link>
+              <div>
+                <Link to="/hr-register">
+                  <Button
+                    variant="contained"
+                    className="normal-case bg-[#1753c2]"
+                  >
+                    Join as HR Manager
+                  </Button>
+                </Link>
+              </div>
             </div>
-            <Lottie animationData={hero1} className="w-4/6" />
+            <Lottie animationData={hero1} className="hidden lg:block w-5/6" />
           </div>
         </div>
       </div>
