@@ -9,13 +9,16 @@ import { IoIosMenu } from "react-icons/io";
 const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   return (
+    // nav bar
     <nav className="py-2 shadow-md static z-10 top-0">
       {/* nav content */}
       <div className="w-11/12 md:w-10/12 mx-auto flex items-center justify-between">
@@ -42,7 +45,7 @@ const Navbar = () => {
             </NavLink>
           </div>
         </div>
-        {/* button */}
+        {/* nav button */}
         <div className="flex items-center">
           <Button className="text-[#1753c2]">Login</Button>
           {/* mobile menu */}
@@ -56,6 +59,7 @@ const Navbar = () => {
             >
               <IoIosMenu className="text-3xl text-[#1753c2]" />
             </Button>
+            {/* nav list */}
             <Menu
               id="fade-menu"
               MenuListProps={{
