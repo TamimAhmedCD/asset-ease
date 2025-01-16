@@ -10,18 +10,18 @@ import {
   GoogleAuthProvider,
 } from "firebase/auth";
 import app from "../firebase/config";
-import useAxiosPublic from "./useAxiosPublic";
+// import useAxiosPublic from "../Hooks/useAxiosPublic";
 
 // eslint-disable-next-line react-refresh/only-export-components
-export const AuthContext = createContext(null);
+export const AuthProvider = createContext(null);
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
 // eslint-disable-next-line react/prop-types
-const AuthProvider = ({ children }) => {
+const AuthContext = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const axiosPublic = useAxiosPublic();
+  // const axiosPublic = useAxiosPublic();
 
   const createUser = (email, password) => {
     setLoading(true);
@@ -55,21 +55,21 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      if (currentUser) {
-        // get token and store client
-        const userInfo = { email: currentUser.email };
-        axiosPublic.post("/jwt", userInfo).then((res) => {
-          if (res.data.token) {
-            localStorage.setItem("access-token", res.data.token);
-          }
-        });
-      } else {
-        localStorage.removeItem("access-token");
-      }
+      // if (currentUser) {
+      //   // get token and store client
+      //   const userInfo = { email: currentUser.email };
+      //   axiosPublic.post("/jwt", userInfo).then((res) => {
+      //     if (res.data.token) {
+      //       localStorage.setItem("access-token", res.data.token);
+      //     }
+      //   });
+      // } else {
+      //   localStorage.removeItem("access-token");
+      // }
       setLoading(false);
     });
     return () => unsubscribe();
-  }, [axiosPublic]);
+  }, []);
 
   const authInfo = {
     user,
@@ -82,8 +82,8 @@ const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
+    <AuthProvider.Provider value={authInfo}>{children}</AuthProvider.Provider>
   );
 };
 
-export default AuthProvider;
+export default AuthContext;
