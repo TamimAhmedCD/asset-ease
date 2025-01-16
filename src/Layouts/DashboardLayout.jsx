@@ -1,48 +1,82 @@
-import * as React from 'react';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { AppProvider } from '@toolpad/core/AppProvider';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import { PageContainer } from '@toolpad/core/PageContainer';
-
-const NAVIGATION = [
-  {
-    kind: 'header',
-    title: 'Main items',
-  },
-  {
-    segment: 'dashboard',
-    title: 'Dashboard',
-    icon: <DashboardIcon />,
-  },
-  {
-    segment: 'orders',
-    title: 'Orders',
-    icon: <ShoppingCartIcon />,
-  },
-  {
-    kind: 'divider',
-  },
-];
-
-function useDemoRouter(initialPath) {
-  const [pathname, setPathname] = React.useState(initialPath);
-
-  const router = React.useMemo(() => {
-    return {
-      pathname,
-      searchParams: new URLSearchParams(),
-      navigate: (path) => setPathname(String(path)),
-    };
-  }, [pathname]);
-
-  return router;
-}
+import useAxiosPublic from './../Hooks/useAxiosPublic';
+import useAuth from './../Hooks/useAuth';
+import { useMemo, useState } from 'react';
 
 export default function DashboardLayoutBasic() {
+  const [role, setRole] = useState('')
+
+  const {user} = useAuth()
+
+  const axiosPublic = useAxiosPublic()
+  axiosPublic.get(`/user/${user.email}`)
+  .then(res => {
+    const role = res.data.role
+    setRole(role)
+  })
+
+  const NAVIGATION = role === 'HR' ? [
+    {
+      kind: 'header',
+      title: 'Main items',
+    },
+    {
+      segment: 'dashboard',
+      title: 'Dashboard',
+      icon: <DashboardIcon />,
+    },
+    {
+      segment: 'asset-list',
+      title: 'Asset List',
+      icon: <ShoppingCartIcon />,
+    },
+    {
+      segment: 'asset-list',
+      title: 'Asset List',
+      icon: <ShoppingCartIcon />,
+    },
+    {
+      kind: 'divider',
+    },
+  ] : [
+    {
+      kind: 'header',
+      title: 'Main items',
+    },
+    {
+      segment: 'dashboard',
+      title: 'Dashboard',
+      icon: <DashboardIcon />,
+    },
+    {
+      segment: 'asset-list',
+      title: 'Asset List',
+      icon: <ShoppingCartIcon />,
+    },
+    {
+      kind: 'divider',
+    },
+  ]
+  
+  function useDemoRouter(initialPath) {
+    const [pathname, setPathname] = useState(initialPath);
+  
+    const router = useMemo(() => {
+      return {
+        pathname,
+        searchParams: new URLSearchParams(),
+        navigate: (path) => setPathname(String(path)),
+      };
+    }, [pathname]);
+  
+    return router;
+  }
 
   const router = useDemoRouter('/dashboard');
-
 
   return (
     <AppProvider

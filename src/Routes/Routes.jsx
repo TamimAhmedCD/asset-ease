@@ -5,6 +5,8 @@ import JoinHR from "../Pages/Register/JoinHR/JoinHR";
 import Login from "../Pages/Login/Login";
 // import DashboardLayoutB from "../Layouts/DashboardLayout";
 import DashboardLayoutBasic from "../Layouts/DashboardLayout";
+import JoinEmployee from "../Pages/Register/JoinEmployee/JoinEmployee";
+import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -21,7 +23,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/employee-register",
-        element: <JoinHR />,
+        element: <JoinEmployee />,
       },
       {
         path: "/login",
@@ -30,7 +32,11 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: 'dashboard',
-    element: <DashboardLayoutBasic></DashboardLayoutBasic>
-  }
+    path: "dashboard",
+    element: (
+      <PrivateRoute>
+        <DashboardLayoutBasic></DashboardLayoutBasic>
+      </PrivateRoute>
+    ),
+  },
 ]);
