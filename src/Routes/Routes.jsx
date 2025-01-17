@@ -9,6 +9,7 @@ import PrivateRoute from "./PrivateRoute";
 import AssetList from "../Pages/HRDashboard/AssetList/AssetList";
 import Dashboard from "../Pages/Dashboard/Dashboard";
 import AddAsset from "../Pages/HRDashboard/AddAsset/AddAsset";
+import AllRequest from './../Pages/HRDashboard/AllRequest/AllRequest';
 
 export const router = createBrowserRouter([
   {
@@ -53,6 +54,10 @@ export const router = createBrowserRouter([
       {
         path: "add-an-asset",
         element: <AddAsset></AddAsset>,
+      },
+      {
+        path: "all-request",
+        element: <AllRequest></AllRequest>,
       },
     ],
   },
