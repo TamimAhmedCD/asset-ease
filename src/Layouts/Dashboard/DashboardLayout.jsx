@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Drawer,
   Button,
@@ -18,30 +18,49 @@ import { IoMenu } from "react-icons/io5";
 import logo from "/Logo.svg";
 import useAuth from "../../Hooks/useAuth";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
-import { FaCircleUser } from "react-icons/fa6";
+import { FaCircleUser, FaClipboardList } from "react-icons/fa6";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import { IoIosHelpBuoy, IoMdSettings } from "react-icons/io";
 import { HiInboxArrowDown } from "react-icons/hi2";
 import { IoIosPower } from "react-icons/io";
 import { MdSpaceDashboard } from "react-icons/md";
 import "./style.css";
-import DashboardHR from "../../Pages/HRDashboard/DashboardHR/DashboardHR";
-import EmployeeDashboard from "../../Pages/EmployeeDashboard/EmployeeDashboard/EmployeeDashboard";
 
 const DashboardLayout = () => {
   const [open, setOpen] = React.useState(false);
   const openDrawer = () => setOpen(true);
   const closeDrawer = () => setOpen(false);
   const [role, setRole] = useState("");
+  const [hrData, setHrData] = useState([]);
+  const [employeeData, setEmployeeData] = useState([]);
+
+  const { company_name: hrCompanyName, company_logo: hrCompanyLogo } = hrData;
 
   const { user, logOut } = useAuth();
 
   const axiosPublic = useAxiosPublic();
-  axiosPublic.get(`/user/${user.email}`).then((res) => {
-    const role = res.data.role;
-    console.log(role);
-    setRole(role);
-  });
+  useEffect(() => {
+    if (user?.email) {
+      // Fetch user role
+      axiosPublic.get(`/user/${user.email}`).then((res) => {
+        const role = res.data.role;
+        console.log(role);
+        setRole(role);
+
+        // Fetch additional data based on role
+        if (role === "HR") {
+          axiosPublic.get(`/hr-account/${user.email}`).then((res) => {
+            setHrData(res.data);
+          });
+        } else {
+          axiosPublic.get(`/employee-account/${user.email}`).then((res) => {
+            const data = ("Employee data:", res.data);
+            setEmployeeData(data);
+          });
+        }
+      });
+    }
+  }, [user?.email, axiosPublic]);
 
   // Nav List
   const profile = (
@@ -71,10 +90,12 @@ const DashboardLayout = () => {
   );
 
   return (
-    <div className="px-10">
+    <div className="px-10 py-6">
       {/* Sidebar and Navbar */}
       <React.Fragment>
+        {/* Navbar */}
         <div className="flex justify-between items-center">
+          {/* logo */}
           <div className="flex items-center gap-3">
             <Button
               onClick={openDrawer}
@@ -83,13 +104,22 @@ const DashboardLayout = () => {
             >
               <IoMenu className="text-2xl" />
             </Button>
-            <div className="flex gap-2 items-center">
-              <img src={logo} alt="" className="w-[55px] lg:w-[70px]" />
-              <h1 className="text-2xl font-bold text-[#1753c2] sm:block hidden">
-                AssetEase
-              </h1>
-            </div>
+            {role === "HR" ? (
+              <img
+                src={hrCompanyLogo}
+                alt={hrCompanyName}
+                className="w-[150px] lg:w-[180px]"
+              />
+            ) : (
+              <div className="flex gap-2 items-center">
+                <img src={logo} alt="" className="w-[55px] lg:w-[70px]" />
+                <h1 className="text-2xl font-bold text-[#1753c2] sm:block hidden">
+                  AssetEase
+                </h1>
+              </div>
+            )}
           </div>
+          {/* Profile Icon */}
           <div>
             <Menu placement="bottom-start">
               <MenuHandler>
@@ -149,10 +179,11 @@ const DashboardLayout = () => {
             </Menu>
           </div>
         </div>
+        {/* Sidebar */}
         <Drawer open={open} onClose={closeDrawer}>
           <div className="mb-2 flex items-center justify-between p-4">
             <Typography variant="h5" color="blue-gray">
-              Material Tailwind
+              {hrCompanyName}
             </Typography>
             <IconButton variant="text" color="blue-gray" onClick={closeDrawer}>
               <svg
@@ -173,39 +204,31 @@ const DashboardLayout = () => {
           </div>
           {role === "HR" ? (
             <List>
-              <NavLink to="">
+              <NavLink to="hr-dashboard">
                 <ListItem className="hover:bg-blue-gray-50">
                   <ListItemPrefix>
-                    <MdSpaceDashboard />
+                    <MdSpaceDashboard className="text-xl" />
                   </ListItemPrefix>
                   Dashboard
                 </ListItem>
               </NavLink>
-              <ListItem>
-                <ListItemPrefix>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="h-5 w-5"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M7.5 6v.75H5.513c-.96 0-1.764.724-1.865 1.679l-1.263 12A1.875 1.875 0 004.25 22.5h15.5a1.875 1.875 0 001.865-2.071l-1.263-12a1.875 1.875 0 00-1.865-1.679H16.5V6a4.5 4.5 0 10-9 0zM12 3a3 3 0 00-3 3v.75h6V6a3 3 0 00-3-3zm-3 8.25a3 3 0 106 0v-.75a.75.75 0 011.5 0v.75a4.5 4.5 0 11-9 0v-.75a.75.75 0 011.5 0v.75z"
-                      clipRule="evenodd"
+              <NavLink to="asset-list">
+                {" "}
+                <ListItem>
+                  <ListItemPrefix>
+                    <FaClipboardList className="text-xl" />
+                  </ListItemPrefix>
+                  Asset List
+                  <ListItemSuffix>
+                    <Chip
+                      value="5"
+                      size="sm"
+                      color="green"
+                      className="rounded-full"
                     />
-                  </svg>
-                </ListItemPrefix>
-                Analytics
-                <ListItemSuffix>
-                  <Chip
-                    value="5"
-                    size="sm"
-                    color="green"
-                    className="rounded-full"
-                  />
-                </ListItemSuffix>
-              </ListItem>
+                  </ListItemSuffix>
+                </ListItem>
+              </NavLink>
               <ListItem>
                 <ListItemPrefix>
                   <svg
@@ -292,7 +315,7 @@ const DashboardLayout = () => {
                     />
                   </svg>
                 </ListItemPrefix>
-                Analytics
+                Asset List
                 <ListItemSuffix>
                   <Chip
                     value="5"
@@ -361,7 +384,6 @@ const DashboardLayout = () => {
         </Drawer>
       </React.Fragment>
       <Outlet></Outlet>
-      {role === "HR" ? <DashboardHR /> : <EmployeeDashboard />}
     </div>
   );
 };

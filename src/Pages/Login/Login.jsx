@@ -1,11 +1,11 @@
-import { useState } from "react";
+import {useState } from "react";
 import Lottie from "lottie-react";
 import { Link, useNavigate } from "react-router-dom";
 import animation from "./Register.json";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
-import useAuth from './../../Hooks/useAuth';
+import useAuth from "./../../Hooks/useAuth";
 
 const Login = () => {
   // navigate user
@@ -46,7 +46,8 @@ const Login = () => {
     reset();
 
     // navigate the user
-    navigate("/dashboard");
+      navigate("/dashboard/dashboard");
+
   };
 
   return (
@@ -68,7 +69,6 @@ const Login = () => {
         </p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md">
-
           {/* Email */}
           <div className="mb-4">
             <label
@@ -131,7 +131,7 @@ const Login = () => {
         </form>
 
         <p className="text-sm text-gray-600 mt-4">
-           Have already account?
+          Have already account?
           <Link
             to="/employee-login"
             className="text-[#1753c2] font-medium hover:underline"

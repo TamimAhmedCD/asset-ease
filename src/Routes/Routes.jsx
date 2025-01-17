@@ -3,10 +3,11 @@ import MainLayout from "../Layouts/MainLayout";
 import Home from "../Pages/Home/Home";
 import JoinHR from "../Pages/Register/JoinHR/JoinHR";
 import Login from "../Pages/Login/Login";
-// import DashboardLayoutB from "../Layouts/DashboardLayout";
 import DashboardLayoutBasic from "../Layouts/Dashboard/DashboardLayout";
 import JoinEmployee from "../Pages/Register/JoinEmployee/JoinEmployee";
 import PrivateRoute from "./PrivateRoute";
+import AssetList from "../Pages/HRDashboard/AssetList/AssetList";
+import Dashboard from "../Pages/Dashboard/Dashboard";
 
 export const router = createBrowserRouter([
   {
@@ -38,6 +39,16 @@ export const router = createBrowserRouter([
         <DashboardLayoutBasic></DashboardLayoutBasic>
       </PrivateRoute>
     ),
-    children: [],
+    children: [
+      // HR routes
+      {
+        path: "dashboard",
+        element: <Dashboard></Dashboard>
+      },
+      {
+        path: "asset-list",
+        element: <AssetList></AssetList>,
+      },
+    ],
   },
 ]);
