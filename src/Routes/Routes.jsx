@@ -10,6 +10,8 @@ import AssetList from "../Pages/HRDashboard/AssetList/AssetList";
 import Dashboard from "../Pages/Dashboard/Dashboard";
 import AddAsset from "../Pages/HRDashboard/AddAsset/AddAsset";
 import AllRequest from './../Pages/HRDashboard/AllRequest/AllRequest';
+import MyEmployeeList from "../Pages/HRDashboard/MyEmployeeList/MyEmployeeList";
+import AddEmployee from "../Pages/HRDashboard/AddEmployee/AddEmployee";
 
 export const router = createBrowserRouter([
   {
@@ -58,6 +60,14 @@ export const router = createBrowserRouter([
       {
         path: "all-request",
         element: <AllRequest></AllRequest>,
+      },
+      {
+        path: "my-employee-list",
+        element: <MyEmployeeList></MyEmployeeList>,
+      },
+      {
+        path: "add-an-employee",
+        element: <AddEmployee></AddEmployee>,
       },
     ],
   },
