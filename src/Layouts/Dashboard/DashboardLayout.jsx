@@ -25,6 +25,8 @@ import { HiInboxArrowDown } from "react-icons/hi2";
 import { IoIosPower } from "react-icons/io";
 import { MdSpaceDashboard } from "react-icons/md";
 import "./style.css";
+import DashboardHR from "../../Pages/HRDashboard/DashboardHR/DashboardHR";
+import EmployeeDashboard from "../../Pages/EmployeeDashboard/EmployeeDashboard/EmployeeDashboard";
 
 const DashboardLayout = () => {
   const [open, setOpen] = React.useState(false);
@@ -359,6 +361,7 @@ const DashboardLayout = () => {
         </Drawer>
       </React.Fragment>
       <Outlet></Outlet>
+      {role === "HR" ? <DashboardHR /> : <EmployeeDashboard />}
     </div>
   );
 };

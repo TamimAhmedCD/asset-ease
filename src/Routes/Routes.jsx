@@ -7,7 +7,6 @@ import Login from "../Pages/Login/Login";
 import DashboardLayoutBasic from "../Layouts/Dashboard/DashboardLayout";
 import JoinEmployee from "../Pages/Register/JoinEmployee/JoinEmployee";
 import PrivateRoute from "./PrivateRoute";
-import HomeHR from "../Pages/HRDashboard/Home/HomeHR";
 
 export const router = createBrowserRouter([
   {
@@ -39,11 +38,6 @@ export const router = createBrowserRouter([
         <DashboardLayoutBasic></DashboardLayoutBasic>
       </PrivateRoute>
     ),
-    children: [
-      {
-        path: 'home',
-        element: <HomeHR></HomeHR>
-      }
-    ]
+    children: [],
   },
 ]);
