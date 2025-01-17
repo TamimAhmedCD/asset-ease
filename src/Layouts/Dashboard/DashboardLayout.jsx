@@ -269,7 +269,7 @@ const DashboardLayout = () => {
                   <ListItemPrefix>
                     <FaUserPlus className="text-xl" />
                   </ListItemPrefix>
-                  My Employee List
+                  Add Employee
                 </ListItem>
               </NavLink>
             </List>
