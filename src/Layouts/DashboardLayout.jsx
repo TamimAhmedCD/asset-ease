@@ -1,5 +1,4 @@
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { AppProvider } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
 import { PageContainer } from "@toolpad/core/PageContainer";
@@ -8,6 +7,9 @@ import useAuth from "./../Hooks/useAuth";
 import { useMemo, useState } from "react";
 import { IoListSharp } from "react-icons/io5";
 import AssetList from "../Pages/HRDashboard/AssetList/AssetList";
+import { FaAddressCard, FaThList } from "react-icons/fa";
+import { MdFormatListBulletedAdd, MdOutlinePendingActions } from "react-icons/md";
+import { BiSolidUserAccount } from "react-icons/bi";
 
 export default function DashboardLayoutBasic() {
   const [role, setRole] = useState("");
@@ -36,12 +38,29 @@ export default function DashboardLayoutBasic() {
           {
             segment: "asset-list",
             title: "Asset List",
-            icon: <ShoppingCartIcon />,
+            icon: <FaThList className="text-center text-lg"/>            ,
           },
           {
-            segment: "asset-list",
-            title: "Asset List",
-            icon: <ShoppingCartIcon />,
+            segment: "add-an-asset",
+            title: "Add an Asset",
+            icon: <MdFormatListBulletedAdd className="text-xl text-center"/>,
+          },
+          {
+            segment: "all-request",
+            title: "All Requests",
+            icon: <MdOutlinePendingActions className="text-xl text-center"/>,
+          },
+          {
+            segment: "my-employee-list",
+            title: "My Employee List",
+            icon: <BiSolidUserAccount className="text-xl text-center"/>
+            ,
+          },
+          {
+            segment: "add-an-employee",
+            title: "Add an Employee",
+            icon: <FaAddressCard className="text-center text-xl" />
+            ,
           },
           {
             kind: "divider",
