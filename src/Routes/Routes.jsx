@@ -8,6 +8,7 @@ import JoinEmployee from "../Pages/Register/JoinEmployee/JoinEmployee";
 import PrivateRoute from "./PrivateRoute";
 import AssetList from "../Pages/HRDashboard/AssetList/AssetList";
 import Dashboard from "../Pages/Dashboard/Dashboard";
+import AddAsset from "../Pages/HRDashboard/AddAsset/AddAsset";
 
 export const router = createBrowserRouter([
   {
@@ -48,6 +49,10 @@ export const router = createBrowserRouter([
       {
         path: "asset-list",
         element: <AssetList></AssetList>,
+      },
+      {
+        path: "add-an-asset",
+        element: <AddAsset></AddAsset>,
       },
     ],
   },
