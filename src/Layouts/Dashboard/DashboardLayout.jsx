@@ -18,7 +18,12 @@ import { IoMenu } from "react-icons/io5";
 import logo from "/Logo.svg";
 import useAuth from "../../Hooks/useAuth";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
-import { FaCircleUser, FaClipboardList, FaUserPlus, FaUserTie } from "react-icons/fa6";
+import {
+  FaCircleUser,
+  FaClipboardList,
+  FaUserPlus,
+  FaUserTie,
+} from "react-icons/fa6";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import { IoIosHelpBuoy, IoMdSettings } from "react-icons/io";
 import { HiInboxArrowDown } from "react-icons/hi2";
@@ -27,6 +32,7 @@ import { MdSpaceDashboard } from "react-icons/md";
 import "./style.css";
 import { MdAssignmentAdd } from "react-icons/md";
 import { VscGitPullRequestNewChanges } from "react-icons/vsc";
+import { HiMiniUserGroup } from "react-icons/hi2";
 
 const DashboardLayout = () => {
   const [open, setOpen] = React.useState(false);
@@ -205,6 +211,7 @@ const DashboardLayout = () => {
             </IconButton>
           </div>
           {role === "HR" ? (
+            // HR Nav
             <List>
               <NavLink to="dashboard">
                 <ListItem className="hover:bg-blue-gray-50">
@@ -251,56 +258,37 @@ const DashboardLayout = () => {
                 {" "}
                 <ListItem>
                   <ListItemPrefix>
-                    <FaUserTie className="text-xl"/>
+                    <FaUserTie className="text-xl" />
                   </ListItemPrefix>
                   My Employee List
                 </ListItem>
               </NavLink>
               <NavLink to="add-an-employee">
-                {" "}
                 <ListItem>
                   <ListItemPrefix>
-                  <FaUserPlus className="text-xl"/>
+                    <FaUserPlus className="text-xl" />
                   </ListItemPrefix>
                   My Employee List
                 </ListItem>
               </NavLink>
             </List>
           ) : (
+            // Employee Nav
             <List>
-              <ListItem>
+              <NavLink to="dashboard">
+                {" "}
+                <ListItem>
+                  <ListItemPrefix>
+                    <MdSpaceDashboard className="text-xl" />
+                  </ListItemPrefix>
+                  Dashboard
+                </ListItem>
+              </NavLink>
+            <NavLink to="my-team">              <ListItem>
                 <ListItemPrefix>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="h-5 w-5"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M2.25 2.25a.75.75 0 000 1.5H3v10.5a3 3 0 003 3h1.21l-1.172 3.513a.75.75 0 001.424.474l.329-.987h8.418l.33.987a.75.75 0 001.422-.474l-1.17-3.513H18a3 3 0 003-3V3.75h.75a.75.75 0 000-1.5H2.25zm6.04 16.5l.5-1.5h6.42l.5 1.5H8.29zm7.46-12a.75.75 0 00-1.5 0v6a.75.75 0 001.5 0v-6zm-3 2.25a.75.75 0 00-1.5 0v3.75a.75.75 0 001.5 0V9zm-3 2.25a.75.75 0 00-1.5 0v1.5a.75.75 0 001.5 0v-1.5z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                <HiMiniUserGroup className="text-xl"/>
                 </ListItemPrefix>
-                Dashboard
-              </ListItem>
-              <ListItem>
-                <ListItemPrefix>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="h-5 w-5"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M7.5 6v.75H5.513c-.96 0-1.764.724-1.865 1.679l-1.263 12A1.875 1.875 0 004.25 22.5h15.5a1.875 1.875 0 001.865-2.071l-1.263-12a1.875 1.875 0 00-1.865-1.679H16.5V6a4.5 4.5 0 10-9 0zM12 3a3 3 0 00-3 3v.75h6V6a3 3 0 00-3-3zm-3 8.25a3 3 0 106 0v-.75a.75.75 0 011.5 0v.75a4.5 4.5 0 11-9 0v-.75a.75.75 0 011.5 0v.75z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </ListItemPrefix>
-                Asset List
+                My Team
                 <ListItemSuffix>
                   <Chip
                     value="5"
@@ -309,7 +297,7 @@ const DashboardLayout = () => {
                     className="rounded-full"
                   />
                 </ListItemSuffix>
-              </ListItem>
+              </ListItem></NavLink>
               <ListItem>
                 <ListItemPrefix>
                   <svg

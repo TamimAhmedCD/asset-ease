@@ -12,6 +12,7 @@ import AddAsset from "../Pages/HRDashboard/AddAsset/AddAsset";
 import AllRequest from './../Pages/HRDashboard/AllRequest/AllRequest';
 import MyEmployeeList from "../Pages/HRDashboard/MyEmployeeList/MyEmployeeList";
 import AddEmployee from "../Pages/HRDashboard/AddEmployee/AddEmployee";
+import MyTeam from "../Pages/EmployeeDashboard/MyTeam/MyTeam";
 
 export const router = createBrowserRouter([
   {
@@ -69,6 +70,12 @@ export const router = createBrowserRouter([
         path: "add-an-employee",
         element: <AddEmployee></AddEmployee>,
       },
+
+      // Employee Routes
+      {
+        path: 'my-team',
+        element: <MyTeam></MyTeam>
+      }
     ],
   },
 ]);
