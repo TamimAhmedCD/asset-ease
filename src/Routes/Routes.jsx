@@ -9,10 +9,11 @@ import PrivateRoute from "./PrivateRoute";
 import AssetList from "../Pages/HRDashboard/AssetList/AssetList";
 import Dashboard from "../Pages/Dashboard/Dashboard";
 import AddAsset from "../Pages/HRDashboard/AddAsset/AddAsset";
-import AllRequest from './../Pages/HRDashboard/AllRequest/AllRequest';
+import AllRequest from "./../Pages/HRDashboard/AllRequest/AllRequest";
 import MyEmployeeList from "../Pages/HRDashboard/MyEmployeeList/MyEmployeeList";
 import AddEmployee from "../Pages/HRDashboard/AddEmployee/AddEmployee";
 import MyTeam from "../Pages/EmployeeDashboard/MyTeam/MyTeam";
+import RequestAsset from "../Pages/EmployeeDashboard/RequestAsset/RequestAsset";
 
 export const router = createBrowserRouter([
   {
@@ -48,7 +49,7 @@ export const router = createBrowserRouter([
       // HR routes
       {
         path: "dashboard",
-        element: <Dashboard></Dashboard>
+        element: <Dashboard></Dashboard>,
       },
       {
         path: "asset-list",
@@ -73,9 +74,13 @@ export const router = createBrowserRouter([
 
       // Employee Routes
       {
-        path: 'my-team',
-        element: <MyTeam></MyTeam>
-      }
+        path: "my-team",
+        element: <MyTeam></MyTeam>,
+      },
+      {
+        path: "request-for-an-asset",
+        element: <RequestAsset></RequestAsset>,
+      },
     ],
   },
 ]);
