@@ -33,6 +33,7 @@ import "./style.css";
 import { MdAssignmentAdd } from "react-icons/md";
 import { VscGitPullRequestNewChanges } from "react-icons/vsc";
 import { HiMiniUserGroup } from "react-icons/hi2";
+import { RiFileList3Fill } from "react-icons/ri";
 
 const DashboardLayout = () => {
   const [open, setOpen] = React.useState(false);
@@ -282,6 +283,22 @@ const DashboardLayout = () => {
                     <MdSpaceDashboard className="text-xl" />
                   </ListItemPrefix>
                   Dashboard
+                </ListItem>
+              </NavLink>
+              <NavLink to="my-asset">
+                <ListItem>
+                  <ListItemPrefix>
+                    <RiFileList3Fill className="text-xl" />
+                  </ListItemPrefix>
+                  My Asset
+                  <ListItemSuffix>
+                    <Chip
+                      value="5"
+                      size="sm"
+                      color="green"
+                      className="rounded-full"
+                    />
+                  </ListItemSuffix>
                 </ListItem>
               </NavLink>
               <NavLink to="my-team">
