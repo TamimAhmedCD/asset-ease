@@ -88,8 +88,8 @@ const AddAsset = () => {
             <option value="" disabled>
               Select product type
             </option>
-            <option value="returnable">Returnable</option>
-            <option value="non-returnable">Non-Returnable</option>
+            <option value="Returnable">Returnable</option>
+            <option value="Non-Returnable">Non-Returnable</option>
           </select>
           {errors.product_type && (
             <p className="text-red-600">This field is required</p>

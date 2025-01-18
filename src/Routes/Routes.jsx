@@ -14,7 +14,7 @@ import MyEmployeeList from "../Pages/HRDashboard/MyEmployeeList/MyEmployeeList";
 import AddEmployee from "../Pages/HRDashboard/AddEmployee/AddEmployee";
 import MyTeam from "../Pages/EmployeeDashboard/MyTeam/MyTeam";
 import RequestAsset from "../Pages/EmployeeDashboard/RequestAsset/RequestAsset";
-import MyRequestedAssets from "../Pages/EmployeeDashboard/MyAsset/MyAsset";
+import MyRequestedAssets from "../Pages/EmployeeDashboard/MyRequestedAssets/MyRequestedAssets";
 
 export const router = createBrowserRouter([
   {
