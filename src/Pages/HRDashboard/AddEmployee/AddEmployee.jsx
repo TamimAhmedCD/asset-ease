@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
 import useAxiosPublic from "./../../../Hooks/useAxiosPublic";
 import useAuth from "../../../Hooks/useAuth";
+import useEmployee from "../../../Hooks/useEmployee";
 
 const AddEmployee = () => {
+  const [employee, refetch] = useEmployee()
   const [selectedMembers, setSelectedMembers] = useState([]);
-  const [members, setMembers] = useState([]);
+  // const [members, setMembers] = useState([]);
   const { user } = useAuth();
 
   const axiosPublic = useAxiosPublic();
 
-  useEffect(() => {
-    axiosPublic.get("/employee-account").then((res) => {
-      setMembers(res.data);
-    });
-  }, [axiosPublic]);
+  // useEffect(() => {
+  //   axiosPublic.get("/employee-account").then((res) => {
+  //     setMembers(res.data);
+  //   });
+  // }, [axiosPublic]);
 
   const [employeeCount, setEmployeeCount] = useState(8); // Current employee count
   const [packageLimit, setPackageLimit] = useState(10); // Current package limit
@@ -34,6 +36,7 @@ const AddEmployee = () => {
     };
     axiosPublic.patch(`/employee-account/${data._id}`, updateData).then((res) => {
       console.log(res.data);
+      refetch()
     });
     console.log("Adding members:", data._id);
   };
@@ -71,7 +74,7 @@ const AddEmployee = () => {
         <div className="bg-white shadow-lg rounded-lg p-6">
           <h2 className="text-xl font-semibold mb-4">Available Members</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {members.map((member) => (
+            {employee.map((member) => (
               <div
                 key={member._id}
                 className="flex items-center space-x-4 p-4 bg-gray-100 rounded-lg shadow hover:bg-gray-200 transition"
