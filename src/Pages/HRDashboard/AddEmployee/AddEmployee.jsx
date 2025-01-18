@@ -1,12 +1,20 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import useAxiosPublic from './../../../Hooks/useAxiosPublic';
 
 const AddEmployee = () => {
   const [selectedMembers, setSelectedMembers] = useState([]);
-  const [members] = useState([
-    { id: 1, name: 'John Doe', image: 'https://randomuser.me/api/portraits/men/1.jpg' },
-    { id: 2, name: 'Jane Smith', image: 'https://randomuser.me/api/portraits/women/2.jpg' },
-    // Add more members here
-  ]);
+  const [members, setMembers] = useState([]);
+
+  const axiosPublic = useAxiosPublic()
+
+  useEffect(() => {
+    axiosPublic.get('/employee-account')
+    .then(res => {
+    console.log(res.data);
+    setMembers(res.data)
+    })
+  }, [axiosPublic])
+
   const [employeeCount, setEmployeeCount] = useState(8); // Current employee count
   const [packageLimit, setPackageLimit] = useState(10); // Current package limit
 
@@ -62,7 +70,7 @@ const AddEmployee = () => {
                   className="form-checkbox text-indigo-600"
                 />
                 <img
-                  src={member.image}
+                  src={member.profile}
                   alt={member.name}
                   className="w-12 h-12 rounded-full object-cover"
                 />
