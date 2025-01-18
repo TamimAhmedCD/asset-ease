@@ -1,30 +1,9 @@
-import { useState } from "react";
+// import { useState } from "react";
+import useEmployeeList from "../../../Hooks/useEmployeeList";
 
 const MyEmployeeList = () => {
-  const [employees, setEmployees] = useState([
-    {
-      id: 1,
-      name: "John Doe",
-      image: "https://via.placeholder.com/150",
-      type: "admin",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      image: "https://via.placeholder.com/150",
-      type: "normal",
-    },
-    {
-      id: 3,
-      name: "Sam Wilson",
-      image: "https://via.placeholder.com/150",
-      type: "normal",
-    },
-  ]);
 
-  const removeFromTeam = (id) => {
-    setEmployees(employees.filter((employee) => employee.id !== id));
-  };
+  const [employeeList, refetch] = useEmployeeList()
 
   return (
     <div className="p-8">
@@ -40,13 +19,13 @@ const MyEmployeeList = () => {
             </tr>
           </thead>
           <tbody>
-            {employees.map((employee) => (
+            {employeeList.map((employee) => (
               <tr key={employee.id} className="border-b hover:bg-gray-50">
                 <td className="py-3 px-4">
                   <img
-                    src={employee.image}
+                    src={employee.profile}
                     alt={employee.name}
-                    className="w-12 h-12 rounded-full"
+                    className="w-12 h-12 rounded-full object-cover"
                   />
                 </td>
                 <td className="py-3 px-4">{employee.name}</td>
@@ -59,7 +38,7 @@ const MyEmployeeList = () => {
                 </td>
                 <td className="py-3 px-4">
                   <button
-                    onClick={() => removeFromTeam(employee.id)}
+    
                     className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
                   >
                     Remove From Team
@@ -71,7 +50,7 @@ const MyEmployeeList = () => {
         </table>
       </div>
       <div className="mt-4 text-gray-600">
-        Total Team Members: <span className="font-medium">{employees.length}</span>
+        Total Team Members: <span className="font-medium">{employeeList.length}</span>
       </div>
     </div>
   );
