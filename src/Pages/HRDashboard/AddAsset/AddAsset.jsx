@@ -1,6 +1,7 @@
 import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
 
 const AddAsset = () => {
   // post data using axios
@@ -21,13 +22,26 @@ const AddAsset = () => {
   const onSubmit = async (data) => {
       const createdAt = new Date().toISOString();
     console.log(data, createdAt);
-    // post user info
-    // axiosPublic.post("/employee-account").then((res) => {
-    //   if (res.data.insertedId) {
-    //     console.log("a");
-    //   }
-    // });
+    // asset info
+    const assetInfo = {
+      product_name: data.product_name,
+      product_type: data.product_type,
+      product_quantity: data.product_quantity,
+      createdAt
+    }
+    axiosPublic.post("/assets", assetInfo).then((res) => {
+      if (res.data.insertedId) {
+        Swal.fire({
+          title: "Good job!",
+          text: "Asset Added",
+          icon: "success"
+        });
+      }
+    } ) .catch(error => {
+      console.log(error);
+    })
     reset()
+    navigate('/dashboard/asset-list')
   };
 
   return (
