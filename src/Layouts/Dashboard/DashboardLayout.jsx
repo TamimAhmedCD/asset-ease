@@ -285,12 +285,12 @@ const DashboardLayout = () => {
                   Dashboard
                 </ListItem>
               </NavLink>
-              <NavLink to="my-asset">
+              <NavLink to="my-requested-assets">
                 <ListItem>
                   <ListItemPrefix>
                     <RiFileList3Fill className="text-xl" />
                   </ListItemPrefix>
-                  My Asset
+                  My Requested Assets
                   <ListItemSuffix>
                     <Chip
                       value="5"
