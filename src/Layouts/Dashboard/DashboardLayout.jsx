@@ -108,7 +108,7 @@ const DashboardLayout = () => {
           <div className="flex items-center gap-3">
             <Button
               onClick={openDrawer}
-              size="small"
+              size="sm"
               className="bg-white text-black shadow-none hover:shadow-none p-0"
             >
               <IoMenu className="text-2xl" />
