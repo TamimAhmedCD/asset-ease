@@ -133,7 +133,7 @@ const Login = () => {
         <p className="text-sm text-gray-600 mt-4">
           Have already account?
           <Link
-            to="/employee-login"
+            to="/employee-register"
             className="text-[#1753c2] font-medium hover:underline"
           >
             Register

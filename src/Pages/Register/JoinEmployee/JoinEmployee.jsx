@@ -85,7 +85,7 @@ const JoinEmployee = () => {
         });
 
         // navigate the user
-        navigate("/");
+        navigate("/dashboard/dashboard");
       }
       else {
         Swal.fire({
