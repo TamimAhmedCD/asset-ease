@@ -1,4 +1,18 @@
+import { useLoaderData } from "react-router-dom";
+
 const AllRequest = () => {
+  const requests = useLoaderData();
+
+  // Helper function to format the date
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Ensure 2-digit month
+    const day = String(date.getDate()).padStart(2, "0"); // Ensure 2-digit day
+    return `${year}-${month}-${day}`;
+  };
+
+  
   return (
     <div className="max-w-7xl mx-auto bg-white shadow-lg rounded-lg p-6 mt-8">
       {/* <!-- Search Section --> */}
@@ -33,52 +47,31 @@ const AllRequest = () => {
           </thead>
           <tbody className="divide-y divide-gray-200">
             {/* <!-- Example Row 1 --> */}
-            <tr className="hover:bg-gray-100">
-              <td className="px-4 py-2">Laptop</td>
-              <td className="px-4 py-2">Returnable</td>
-              <td className="px-4 py-2">john.doe@example.com</td>
-              <td className="px-4 py-2">John Doe</td>
-              <td className="px-4 py-2">2025-01-15</td>
-              <td className="px-4 py-2">Urgently required for project work.</td>
-              <td className="px-4 py-2 text-center">
-                <span className="px-3 py-1 bg-yellow-500 text-white rounded-lg">
-                  Pending
-                </span>
-              </td>
-              <td className="px-4 py-2 text-center">
-                <button className="px-3 py-1 bg-green-500 text-white rounded-lg hover:bg-green-600">
-                  Approve
-                </button>
-                <button className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600">
-                  Reject
-                </button>
-              </td>
-            </tr>
-            {/* <!-- Example Row 2 --> */}
-            <tr className="hover:bg-gray-100">
-              <td className="px-4 py-2">Office Chair</td>
-              <td className="px-4 py-2">Non-Returnable</td>
-              <td className="px-4 py-2">jane.smith@example.com</td>
-              <td className="px-4 py-2">Jane Smith</td>
-              <td className="px-4 py-2">2025-01-16</td>
-              <td className="px-4 py-2">Needed for a new hire.</td>
-              <td className="px-4 py-2 text-center">
-                <span className="px-3 py-1 bg-green-500 text-white rounded-lg">
-                  Approved
-                </span>
-              </td>
-              <td className="px-4 py-2 text-center">
-                <button
-                  className="px-3 py-1 bg-green-500 text-white rounded-lg hover:bg-green-600"
-                  disabled
-                >
-                  Approve
-                </button>
-                <button className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600">
-                  Reject
-                </button>
-              </td>
-            </tr>
+            {requests.map((request) => (
+              <tr key={request._id} className="hover:bg-gray-100">
+                <td className="px-4 py-2">{request.asset_name}</td>
+                <td className="px-4 py-2">{request.asset_type}</td>
+                <td className="px-4 py-2">{request.requester_email}</td>
+                <td className="px-4 py-2">{request.requester_name}</td>
+                <td className="px-4 py-2">{formatDate(request.request_date)}</td>
+                <td className="px-4 py-2">
+                  {`${request.additional_notes === "" && 'N/A'}`}
+                </td>
+                <td className="px-4 py-2 text-center">
+                  <span className="px-3 py-1 bg-yellow-500 text-white rounded-lg">
+                    {request.status}
+                  </span>
+                </td>
+                <td className="px-4 py-2 text-center">
+                  <button className="px-3 py-1 bg-green-500 text-white rounded-lg hover:bg-green-600">
+                    Approve
+                  </button>
+                  <button className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600">
+                    Reject
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
