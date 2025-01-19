@@ -47,7 +47,7 @@ const MyRequestedAssets = () => {
   const cancelRequest = async (id) => {
     try {
       // Example API call to cancel the request (You can adjust this)
-      await axiosPublic.post(`/cancel-asset-request`, { id });
+      await axiosPublic.delete(`/requested-asset/${id}`, { id });
       console.log(`Cancelled request for asset ID: ${id}`);
       refetch(); // Refetch data after canceling
     } catch (error) {
@@ -173,7 +173,7 @@ const MyRequestedAssets = () => {
                   {asset.status === "Pending" && (
                     <button
                       className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 mr-2 flex items-center"
-                      onClick={() => cancelRequest(asset.id)}
+                      onClick={() => cancelRequest(asset._id)}
                     >
                       <FaTrash className="mr-1" /> Cancel
                     </button>
