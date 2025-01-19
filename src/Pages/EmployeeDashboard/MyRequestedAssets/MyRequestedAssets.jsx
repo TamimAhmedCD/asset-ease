@@ -46,8 +46,7 @@ const MyRequestedAssets = () => {
   // Handle canceling a request
   const cancelRequest = async (id) => {
     try {
-      // Example API call to cancel the request (You can adjust this)
-      await axiosPublic.delete(`/requested-asset/${id}`, { id });
+      await axiosPublic.delete(`/requested-asset/${id}`);
       console.log(`Cancelled request for asset ID: ${id}`);
       refetch(); // Refetch data after canceling
     } catch (error) {
