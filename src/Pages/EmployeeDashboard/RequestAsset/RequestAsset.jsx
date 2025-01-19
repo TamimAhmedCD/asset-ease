@@ -3,6 +3,7 @@ import { useLoaderData } from "react-router-dom";
 import useAxiosPublic from "./../../../Hooks/useAxiosPublic";
 import useAuth from './../../../Hooks/useAuth';
 
+
 const RequestAsset = () => {
   const {user} = useAuth()
   const [searchQuery, setSearchQuery] = useState("");
@@ -10,10 +11,17 @@ const RequestAsset = () => {
   const [assetTypeFilter, setAssetTypeFilter] = useState("all");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAsset, setSelectedAsset] = useState(null); // State for selected asset
+  const [status, setStatus] = useState(false)
+  console.log(status);
 
   const axiosPublic = useAxiosPublic();
-  const assets = useLoaderData();
-  console.log(assets);
+  const assets = useLoaderData()
+  
+  axiosPublic.get(`/employee-account/${user.email}`)
+  .then(res => {
+    const employeeStatus = (res.data.employee_status);
+    setStatus(employeeStatus)
+  })
 
   // Handle opening the modal with the selected asset
   const handleRequest = (asset) => {
@@ -62,7 +70,7 @@ const RequestAsset = () => {
     }
   };
 
-  return (
+  if(status === true) {  return (
     <div className="max-w-6xl mx-auto p-6">
       {/* Filters Section */}
       <div className="flex flex-wrap items-center gap-4 mb-6">
@@ -167,7 +175,12 @@ const RequestAsset = () => {
         </form>
       )}
     </div>
-  );
+  );} else {
+    return       <div id="affiliation-message" className="bg-yellow-100 text-yellow-800 p-4 rounded-lg mb-6">
+    <p className="text-lg">⚠ You are not affiliated with any company. Please contact your HR to complete the affiliation process.</p>
+  </div>
+  }
+  
 };
 
 export default RequestAsset;
