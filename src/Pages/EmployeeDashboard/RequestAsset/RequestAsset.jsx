@@ -38,13 +38,9 @@ const RequestAsset = () => {
     const requester_email = user.email
     const request_date = new Date().toISOString(); // Current date as default
     const asset_id = selectedAsset._id;
-    const asset_name = selectedAsset.product_name;
-    const asset_type = selectedAsset.product_type
 
     const requestedAsset = {
       asset_id,
-      asset_name,
-      asset_type,
       requester_name,
       requester_email,
       status: "Pending",
