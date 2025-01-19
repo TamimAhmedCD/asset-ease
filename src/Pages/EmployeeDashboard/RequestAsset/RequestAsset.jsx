@@ -3,7 +3,6 @@ import { useLoaderData } from "react-router-dom";
 import useAxiosPublic from "./../../../Hooks/useAxiosPublic";
 import useAuth from './../../../Hooks/useAuth';
 
-
 const RequestAsset = () => {
   const {user} = useAuth()
   const [searchQuery, setSearchQuery] = useState("");
@@ -12,11 +11,10 @@ const RequestAsset = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAsset, setSelectedAsset] = useState(null); // State for selected asset
   const [status, setStatus] = useState(false)
-  console.log(status);
 
   const axiosPublic = useAxiosPublic();
   const assets = useLoaderData()
-  
+
   axiosPublic.get(`/employee-account/${user.email}`)
   .then(res => {
     const employeeStatus = (res.data.employee_status);
@@ -55,7 +53,6 @@ const RequestAsset = () => {
       request_date,
       additional_notes,
     };
-    console.log(requestedAsset);
 
     try {
       const response = await axiosPublic.post("/requested-asset", requestedAsset);
