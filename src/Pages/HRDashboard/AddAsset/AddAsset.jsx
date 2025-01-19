@@ -26,7 +26,7 @@ const AddAsset = () => {
     const assetInfo = {
       product_name: data.product_name,
       product_type: data.product_type,
-      product_quantity: data.product_quantity,
+      product_quantity: Number(data.product_quantity),
       createdAt
     }
     axiosPublic.post("/assets", assetInfo).then((res) => {
