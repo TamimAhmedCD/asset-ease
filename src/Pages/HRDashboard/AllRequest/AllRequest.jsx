@@ -6,6 +6,8 @@ const AllRequest = () => {
 
   const axiosPublic = useAxiosPublic();
 
+  const approved_date = new Date().toISOString(); // Current date as default
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -16,33 +18,32 @@ const AllRequest = () => {
 
   const approveRequest = (data) => {
     const updateStatus = {
-      status: (data.status = "Approved"),
+      status: "Approved",
+      approved_date,
     };
     axiosPublic
       .patch(`/requested-asset/${data._id}`, updateStatus)
       .then((res) => {
         console.log(res.data);
-        console.log(data._id);
         refetch();
       });
   };
 
   const rejectRequest = (data) => {
     const updateStatus = {
-      status: (data.status = "Rejected"),
+      status: "Rejected",
     };
     axiosPublic
       .patch(`/requested-asset/${data._id}`, updateStatus)
       .then((res) => {
         console.log(res.data);
-        console.log(data._id);
         refetch();
       });
   };
 
   return (
     <div className="max-w-7xl mx-auto bg-white shadow-lg rounded-lg p-6 mt-8">
-      {/* <!-- Search Section --> */}
+      {/* Search Section */}
       <div className="mb-6">
         <h2 className="text-2xl font-semibold text-gray-800 mb-4">
           Search Requests
@@ -54,7 +55,7 @@ const AllRequest = () => {
         />
       </div>
 
-      {/* <!-- Request List Section --> */}
+      {/* Request List Section */}
       <h2 className="text-2xl font-semibold text-gray-800 mb-4">
         Request List
       </h2>
@@ -73,7 +74,6 @@ const AllRequest = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {/* <!-- Example Row 1 --> */}
             {requests.map((request) => (
               <tr key={request._id} className="hover:bg-gray-100">
                 <td className="px-4 py-2">{request.asset_name}</td>
@@ -94,26 +94,34 @@ const AllRequest = () => {
                       request.status === "Pending"
                         ? "bg-yellow-500"
                         : request.status === "Approved"
-                          ? "bg-green-600"
-                          : "bg-red-500"
+                        ? "bg-green-600"
+                        : "bg-red-500"
                     } text-white rounded-lg`}
                   >
                     {request.status}
                   </span>
                 </td>
                 <td className="px-4 py-2 text-center">
-                  <button
-                    onClick={() => approveRequest(request)}
-                    className="px-3 py-1 bg-green-500 text-white rounded-lg hover:bg-green-600"
-                  >
-                    Approve
-                  </button>
-                  <button
-                    onClick={() => rejectRequest(request)}
-                    className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600"
-                  >
-                    Reject
-                  </button>
+                  {/* Approve Button */}
+                  {request.status !== "Approved" && (
+                    <button
+                      onClick={() => approveRequest(request)}
+                      className="px-3 py-1 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                      disabled={request.status === "Rejected"}
+                    >
+                      Approve
+                    </button>
+                  )}
+                  {/* Reject Button */}
+                  {request.status !== "Rejected" && (
+                    <button
+                      onClick={() => rejectRequest(request)}
+                      className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                      disabled={request.status === "Approved"}
+                    >
+                      Reject
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}

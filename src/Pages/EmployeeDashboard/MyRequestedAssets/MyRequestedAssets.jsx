@@ -152,7 +152,7 @@ const MyRequestedAssets = () => {
                 <td className="p-3 border text-sm">{asset.asset_name}</td>
                 <td className="p-3 border text-sm">{asset.asset_type}</td>
                 <td className="p-3 border text-sm">{formatDate(asset.request_date)}</td>
-                <td className="p-3 border text-sm">{formatDate(asset.approval_date)}</td>
+                <td className="p-3 border text-sm">{formatDate(asset.approved_date)}</td>
                 <td className="p-3 border text-sm">
                   <span
                     className={`px-3 py-1 rounded text-white text-xs font-medium ${
@@ -185,7 +185,7 @@ const MyRequestedAssets = () => {
                       >
                         <FaPrint className="mr-1" /> Print
                       </button>
-                      {asset.type === "Returnable" && (
+                      {asset.asset_type === "Returnable" && (
                         <button
                           className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 flex items-center"
                           onClick={() => returnAsset(asset.id)}
