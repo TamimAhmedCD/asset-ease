@@ -5,7 +5,6 @@ import useAuth from "../../Hooks/useAuth";
 const Dashboard = () => {
   const [role, setRole] = useState("");
   const [status, setStatus] = useState(false);
-  console.log(status);
 
   const { user } = useAuth();
 
@@ -21,6 +20,7 @@ const Dashboard = () => {
     }
   }, [user?.email, axiosPublic]);
 
+  // Find the employee status and then render the data
   axiosPublic.get(`/employee-account/${user.email}`).then((res) => {
     const employeeStatus = res.data.employee_status;
     setStatus(employeeStatus);
