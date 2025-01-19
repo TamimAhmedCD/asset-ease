@@ -1,7 +1,7 @@
-import { useLoaderData } from "react-router-dom";
+import useAllRequest from "../../../Hooks/useAllRequest";
 
 const AllRequest = () => {
-  const requests = useLoaderData();
+  const [requests, refetch] = useAllRequest()
 
   // Helper function to format the date
   const formatDate = (dateString) => {
@@ -12,7 +12,7 @@ const AllRequest = () => {
     return `${year}-${month}-${day}`;
   };
 
-  
+
   return (
     <div className="max-w-7xl mx-auto bg-white shadow-lg rounded-lg p-6 mt-8">
       {/* <!-- Search Section --> */}

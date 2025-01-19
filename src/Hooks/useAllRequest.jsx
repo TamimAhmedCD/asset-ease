@@ -5,15 +5,15 @@ import { useQuery } from '@tanstack/react-query';
 const useAllRequest = () => {
     const axiosPublic = useAxiosPublic()
 
-    const {data: request = [], refetch} = useQuery({
-        queryKey: ['request'],
+    const {data: requests = [], refetch} = useQuery({
+        queryKey: ['requests'],
         queryFn: async() => {
             const res = await axiosPublic.get('/requested-assets')
             return res.data
         }
     })
 
-    return [request, refetch]
+    return [requests, refetch]
 };
 
 export default useAllRequest;
