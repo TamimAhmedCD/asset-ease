@@ -1,42 +1,69 @@
 import { useState } from "react";
+import { useLoaderData } from "react-router-dom";
+import useAxiosPublic from "./../../../Hooks/useAxiosPublic";
+import useAuth from './../../../Hooks/useAuth';
 
 const RequestAsset = () => {
+  const {user} = useAuth()
   const [searchQuery, setSearchQuery] = useState("");
   const [availabilityFilter, setAvailabilityFilter] = useState("all");
   const [assetTypeFilter, setAssetTypeFilter] = useState("all");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedAsset, setSelectedAsset] = useState(null);
-  const [additionalNotes, setAdditionalNotes] = useState("");
+  const [selectedAsset, setSelectedAsset] = useState(null); // State for selected asset
 
-  // Sample assets data
-  const sampleAssets = [
-    { id: 1, name: "Laptop", type: "Returnable", availability: "Available" },
-    { id: 2, name: "Headphones", type: "Non-returnable", availability: "Out of stock" },
-    { id: 3, name: "Projector", type: "Returnable", availability: "Available" },
-    { id: 4, name: "Whiteboard", type: "Non-returnable", availability: "Available" },
-    { id: 5, name: "Tablet", type: "Returnable", availability: "Out of stock" },
-  ];
+  const axiosPublic = useAxiosPublic();
+  const assets = useLoaderData();
+  console.log(assets);
 
-  const filteredAssets = sampleAssets.filter((asset) => {
-    const matchesSearch = asset.name.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesAvailability = availabilityFilter === "all" || asset.availability === availabilityFilter;
-    const matchesAssetType = assetTypeFilter === "all" || asset.type === assetTypeFilter;
-    return matchesSearch && matchesAvailability && matchesAssetType;
-  });
-
+  // Handle opening the modal with the selected asset
   const handleRequest = (asset) => {
-    setSelectedAsset(asset);
-    setIsModalOpen(true);
+    setSelectedAsset(asset); // Store the clicked asset in state
+    setIsModalOpen(true); // Open modal
   };
 
+  // Handle closing the modal
   const handleModalClose = () => {
     setIsModalOpen(false);
-    setAdditionalNotes("");
+    setSelectedAsset(null); // Reset selected asset when modal closes
   };
 
-  const handleRequestSubmit = () => {
-    console.log("Request submitted for:", selectedAsset, "with notes:", additionalNotes);
-    handleModalClose();
+  // Handle submitting the request
+  const handleRequestSubmit = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const additional_notes = form.additional_notes.value;
+
+    // Add default data for the request
+    const requester_name = user.displayName; // Replace with actual user info if available
+    const requester_email = user.email
+    const request_date = new Date().toISOString(); // Current date as default
+    const asset_id = selectedAsset._id;
+    const asset_name = selectedAsset.product_name;
+    const asset_type = selectedAsset.product_type
+
+    const requestedAsset = {
+      asset_id,
+      asset_name,
+      asset_type,
+      requester_name,
+      requester_email,
+      status: "Pending",
+      request_date,
+      additional_notes,
+    };
+    console.log(requestedAsset);
+
+    try {
+      const response = await axiosPublic.post("/requested-asset", requestedAsset);
+      console.log("Request submitted:", response.data);
+
+      // Success feedback
+      alert("Asset request submitted successfully!");
+      handleModalClose();
+    } catch (error) {
+      console.error("Error submitting asset request:", error);
+      alert("Failed to submit asset request. Please try again.");
+    }
   };
 
   return (
@@ -82,30 +109,30 @@ const RequestAsset = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredAssets.map((asset) => (
+            {assets.map((asset) => (
               <tr key={asset.id} className="border-b hover:bg-gray-50">
-                <td className="px-4 py-2">{asset.name}</td>
-                <td className="px-4 py-2">{asset.type}</td>
+                <td className="px-4 py-2">{asset.product_name}</td>
+                <td className="px-4 py-2">{asset.product_type}</td>
                 <td className="px-4 py-2">
                   <span
                     className={`px-2 py-1 rounded ${
-                      asset.availability === "Available"
+                      asset.product_quantity > 0
                         ? "bg-green-100 text-green-700"
                         : "bg-red-100 text-red-700"
                     }`}
                   >
-                    {asset.availability}
+                    {`${asset.product_quantity > 0 ? "Available" : "Out of stock"}`}
                   </span>
                 </td>
                 <td className="px-4 py-2">
                   <button
                     className={`px-4 py-2 text-white rounded ${
-                      asset.availability === "Out of stock"
+                      asset.product_quantity === "0"
                         ? "bg-gray-400 cursor-not-allowed"
                         : "bg-blue-500 hover:bg-blue-600"
                     }`}
-                    disabled={asset.availability === "Out of stock"}
-                    onClick={() => handleRequest(asset)}
+                    disabled={asset.product_quantity === "0"}
+                    onClick={() => handleRequest(asset)} // Pass the asset to the handler
                   >
                     Request
                   </button>
@@ -117,32 +144,31 @@ const RequestAsset = () => {
       </div>
 
       {/* Modal Section */}
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded shadow-lg w-1/3">
-            <h2 className="text-2xl font-semibold mb-4">Request {selectedAsset.name}</h2>
-            <textarea
-              className="border p-2 w-full rounded mb-4"
-              placeholder="Add any additional notes..."
-              value={additionalNotes}
-              onChange={(e) => setAdditionalNotes(e.target.value)}
-            />
-            <div className="flex justify-between">
-              <button
-                className="bg-gray-500 text-white px-4 py-2 rounded"
-                onClick={handleModalClose}
-              >
-                Close
-              </button>
-              <button
-                className="bg-blue-500 text-white px-4 py-2 rounded"
-                onClick={handleRequestSubmit}
-              >
-                Submit Request
-              </button>
+      {isModalOpen && selectedAsset && (
+        <form onSubmit={handleRequestSubmit}>
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+            <div className="bg-white p-6 rounded shadow-lg w-1/3">
+              <h2 className="text-2xl font-semibold mb-4">Request Asset</h2>
+              <textarea
+                className="border p-2 w-full rounded mb-4"
+                placeholder="Add any additional notes..."
+                name="additional_notes"
+              />
+              <div className="flex justify-between">
+                <button
+                  type="button"
+                  className="bg-gray-500 text-white px-4 py-2 rounded"
+                  onClick={handleModalClose}
+                >
+                  Close
+                </button>
+                <button className="bg-blue-500 text-white px-4 py-2 rounded">
+                  Submit Request
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        </form>
       )}
     </div>
   );
