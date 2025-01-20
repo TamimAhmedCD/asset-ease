@@ -25,7 +25,6 @@ const MyRequestedAssets = () => {
 
   const [search, setSearch] = useState(""); // Search state for asset name
   const [filterStatus, setFilterStatus] = useState(""); // Filter by status
-  const [filterType, setFilterType] = useState(""); // Filter by asset type
   const [status, setStatus] = useState(false);
 
   // Fetch employee status
@@ -36,18 +35,16 @@ const MyRequestedAssets = () => {
     });
   }, [user.email, axiosPublic]);
 
-  // Fetching requested assets using React Query with search functionality
+  // Fetching requested assets using React Query with filters
   const { data: requestedAssets = [], refetch } = useQuery({
-    queryKey: ["requestedAssets", user.email, search], // Adding search to the queryKey
+    queryKey: ["requestedAssets", user.email, search, filterStatus], // Adding filterStatus to the queryKey
     queryFn: async () => {
-      const res = await axiosPublic.get(`/requested-asset?email=${user.email}&search=${search}`);
+      const res = await axiosPublic.get(
+        `/requested-asset?email=${user.email}&search=${search}&status=${filterStatus}`
+      );
       return res.data;
     },
   });
-
-  const handleFilter = () => {
-    console.log(`Filtering by status: ${filterStatus}, type: ${filterType}`);
-  };
 
   // Handle canceling a request
   const cancelRequest = (id) => {
@@ -80,16 +77,6 @@ const MyRequestedAssets = () => {
         refetch();
       });
   };
-  // const returnAsset = async (id) => {
-  //   try {
-  //     await axiosPublic.patch(`/return-asset`, { id });
-  //     console.log(`Returned asset ID: ${id}`);
-  //     refetch(); // Refetch data after returning the asset
-  //   } catch (error) {
-  //     console.error("Error returning asset:", error);
-  //     alert("Failed to return asset.");
-  //   }
-  // };
 
   if (status === true) {
     return (
@@ -110,38 +97,25 @@ const MyRequestedAssets = () => {
           <select
             className="border p-2 rounded-lg shadow-sm focus:ring-indigo-500"
             value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
+            onChange={(e) => {
+              setFilterStatus(e.target.value);
+              refetch(); // Refetch data when status filter changes
+            }}
           >
             <option value="">Filter by Status</option>
             <option value="Pending">Pending</option>
             <option value="Approved">Approved</option>
+            <option value="Rejected">Rejected</option>
             <option value="Returned">Returned</option>
-            <option value="Cancelled">Cancelled</option>
+            <option value="Canceled">Canceled</option>
           </select>
-
-          <select
-            className="border p-2 rounded-lg shadow-sm focus:ring-indigo-500"
-            value={filterType}
-            onChange={(e) => setFilterType(e.target.value)}
-          >
-            <option value="">Filter by Type</option>
-            <option value="Returnable">Returnable</option>
-            <option value="Non-Returnable">Non-Returnable</option>
-          </select>
-
-          <button
-            className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 shadow-sm"
-            onClick={handleFilter}
-          >
-            Apply Filters
-          </button>
 
           <button
             className="bg-gray-300 px-4 py-2 rounded-lg hover:bg-gray-400 shadow-sm flex items-center"
             onClick={() => {
               setSearch("");
               setFilterStatus("");
-              setFilterType("");
+              refetch(); // Reset filters and refetch data
             }}
           >
             <AiOutlineReload className="mr-2" /> Reset Filters
@@ -165,13 +139,19 @@ const MyRequestedAssets = () => {
               {requestedAssets.length > 0 ? (
                 requestedAssets.map((asset, index) => (
                   <tr
-                    key={asset.id}
-                    className={`${index % 2 === 0 ? "bg-gray-100" : "bg-white"} hover:bg-indigo-50`}
+                    key={asset._id}
+                    className={`${
+                      index % 2 === 0 ? "bg-gray-100" : "bg-white"
+                    } hover:bg-indigo-50`}
                   >
                     <td className="p-3 border text-sm">{asset.asset_name}</td>
                     <td className="p-3 border text-sm">{asset.asset_type}</td>
-                    <td className="p-3 border text-sm">{formatDate(asset.request_date)}</td>
-                    <td className="p-3 border text-sm">{formatDate(asset.approved_date)}</td>
+                    <td className="p-3 border text-sm">
+                      {formatDate(asset.request_date)}
+                    </td>
+                    <td className="p-3 border text-sm">
+                      {formatDate(asset.approved_date)}
+                    </td>
                     <td className="p-3 border text-sm">
                       <span
                         className={`px-3 py-1 rounded text-white text-xs font-medium ${
