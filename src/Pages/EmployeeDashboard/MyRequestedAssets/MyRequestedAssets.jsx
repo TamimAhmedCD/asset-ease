@@ -1,10 +1,5 @@
-import { useState } from "react";
-import {
-  FaSearch,
-  FaTrash,
-  FaPrint,
-  FaArrowAltCircleLeft,
-} from "react-icons/fa";
+import { useState, useEffect } from "react";
+import { FaSearch, FaTrash, FaPrint, FaArrowAltCircleLeft } from "react-icons/fa";
 import { AiOutlineReload } from "react-icons/ai";
 import useAuth from "./../../../Hooks/useAuth";
 import useAxiosPublic from "./../../../Hooks/useAxiosPublic";
@@ -26,25 +21,26 @@ const MyRequestedAssets = () => {
 
   // Get logged user
   const { user } = useAuth();
-  // For fetch data
   const axiosPublic = useAxiosPublic();
-  const [search, setSearch] = useState("");
-  const [filterStatus, setFilterStatus] = useState("");
-  const [filterType, setFilterType] = useState("");
-  // For find Employee status
+
+  const [search, setSearch] = useState(""); // Search state for asset name
+  const [filterStatus, setFilterStatus] = useState(""); // Filter by status
+  const [filterType, setFilterType] = useState(""); // Filter by asset type
   const [status, setStatus] = useState(false);
 
-  // Find the employee status and then render the data
-  axiosPublic.get(`/employee-account/${user.email}`).then((res) => {
-    const employeeStatus = res.data.employee_status;
-    setStatus(employeeStatus);
-  });
+  // Fetch employee status
+  useEffect(() => {
+    axiosPublic.get(`/employee-account/${user.email}`).then((res) => {
+      const employeeStatus = res.data.employee_status;
+      setStatus(employeeStatus);
+    });
+  }, [user.email, axiosPublic]);
 
-  // Fetching requested assets using React Query
+  // Fetching requested assets using React Query with search functionality
   const { data: requestedAssets = [], refetch } = useQuery({
-    queryKey: ["requestedAssets", user.email],
+    queryKey: ["requestedAssets", user.email, search], // Adding search to the queryKey
     queryFn: async () => {
-      const res = await axiosPublic.get(`/requested-asset?email=${user.email}`);
+      const res = await axiosPublic.get(`/requested-asset?email=${user.email}&search=${search}`);
       return res.data;
     },
   });
@@ -75,7 +71,6 @@ const MyRequestedAssets = () => {
   // Handle returning an asset
   const returnAsset = async (id) => {
     try {
-      // Example API call to return the asset (You can adjust this)
       await axiosPublic.post(`/return-asset`, { id });
       console.log(`Returned asset ID: ${id}`);
       refetch(); // Refetch data after returning the asset
@@ -97,7 +92,7 @@ const MyRequestedAssets = () => {
               placeholder="Search by Asset Name..."
               className="flex-grow p-2 border-0 focus:ring-0 focus:outline-none"
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => setSearch(e.target.value)} // Update search query
             />
           </div>
 
@@ -147,21 +142,11 @@ const MyRequestedAssets = () => {
           <table className="w-full border-collapse">
             <thead>
               <tr className="bg-indigo-600 text-white">
-                <th className="p-3 text-left text-sm font-semibold">
-                  Asset Name
-                </th>
-                <th className="p-3 text-left text-sm font-semibold">
-                  Asset Type
-                </th>
-                <th className="p-3 text-left text-sm font-semibold">
-                  Request Date
-                </th>
-                <th className="p-3 text-left text-sm font-semibold">
-                  Approval Date
-                </th>
-                <th className="p-3 text-left text-sm font-semibold">
-                  Request Status
-                </th>
+                <th className="p-3 text-left text-sm font-semibold">Asset Name</th>
+                <th className="p-3 text-left text-sm font-semibold">Asset Type</th>
+                <th className="p-3 text-left text-sm font-semibold">Request Date</th>
+                <th className="p-3 text-left text-sm font-semibold">Approval Date</th>
+                <th className="p-3 text-left text-sm font-semibold">Request Status</th>
                 <th className="p-3 text-left text-sm font-semibold">Actions</th>
               </tr>
             </thead>
@@ -174,22 +159,18 @@ const MyRequestedAssets = () => {
                   >
                     <td className="p-3 border text-sm">{asset.asset_name}</td>
                     <td className="p-3 border text-sm">{asset.asset_type}</td>
-                    <td className="p-3 border text-sm">
-                      {formatDate(asset.request_date)}
-                    </td>
-                    <td className="p-3 border text-sm">
-                      {formatDate(asset.approved_date)}
-                    </td>
+                    <td className="p-3 border text-sm">{formatDate(asset.request_date)}</td>
+                    <td className="p-3 border text-sm">{formatDate(asset.approved_date)}</td>
                     <td className="p-3 border text-sm">
                       <span
                         className={`px-3 py-1 rounded text-white text-xs font-medium ${
                           asset.status === "Pending"
                             ? "bg-yellow-500"
                             : asset.status === "Approved"
-                              ? "bg-green-500"
-                              : asset.status === "Returned"
-                                ? "bg-blue-500"
-                                : "bg-gray-500"
+                            ? "bg-green-500"
+                            : asset.status === "Returned"
+                            ? "bg-blue-500"
+                            : "bg-gray-500"
                         }`}
                       >
                         {asset.status}
