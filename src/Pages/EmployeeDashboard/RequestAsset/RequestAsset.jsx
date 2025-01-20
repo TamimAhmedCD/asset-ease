@@ -8,39 +8,55 @@ const RequestAsset = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAsset, setSelectedAsset] = useState(null);
   const [status, setStatus] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(""); // New state for search query
-  const [filteredAssets, setFilteredAssets] = useState([]); // New state for filtered assets
+  const [searchQuery, setSearchQuery] = useState("");
+  const [availabilityFilter, setAvailabilityFilter] = useState("all"); // Default to "all"
+  const [sortOption, setSortOption] = useState("asc"); // Default sort to ascending
+  const [filteredAssets, setFilteredAssets] = useState([]);
 
   const axiosPublic = useAxiosPublic();
-  const assets = useLoaderData();
+  const assets = useLoaderData(); // Assumed that the assets are loaded here
 
   useEffect(() => {
+    // Fetch employee status
     axiosPublic.get(`/employee-account/${user.email}`).then((res) => {
       const employeeStatus = res.data.employee_status;
       setStatus(employeeStatus);
     });
+  }, [user.email, axiosPublic]);
 
-    // Filter assets based on the search query
-    setFilteredAssets(
-      assets.filter((asset) =>
-        asset.product_name.toLowerCase().includes(searchQuery.toLowerCase())
-      )
+  useEffect(() => {
+    // Filter assets based on searchQuery and availabilityFilter
+    let filtered = assets.filter((asset) =>
+      asset.product_name.toLowerCase().includes(searchQuery.toLowerCase())
     );
-  }, [assets, user.email, searchQuery]); // Re-run whenever assets or searchQuery changes
 
-  // Handle opening the modal with the selected asset
+    if (availabilityFilter !== "all") {
+      filtered = filtered.filter((asset) => {
+        const isAvailable = asset.product_quantity > 0;
+        return availabilityFilter === "Available" ? isAvailable : !isAvailable;
+      });
+    }
+
+    // Apply sorting by product_quantity (ascending or descending)
+    if (sortOption === "asc") {
+      filtered = filtered.sort((a, b) => a.product_quantity - b.product_quantity);
+    } else if (sortOption === "desc") {
+      filtered = filtered.sort((a, b) => b.product_quantity - a.product_quantity);
+    }
+
+    setFilteredAssets(filtered);
+  }, [assets, searchQuery, availabilityFilter, sortOption]);
+
   const handleRequest = (asset) => {
     setSelectedAsset(asset);
     setIsModalOpen(true);
   };
 
-  // Handle closing the modal
   const handleModalClose = () => {
     setIsModalOpen(false);
-    setSelectedAsset(null); // Reset selected asset when modal closes
+    setSelectedAsset(null);
   };
 
-  // Handle submitting the request
   const handleRequestSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -61,13 +77,8 @@ const RequestAsset = () => {
     };
 
     try {
-      const response = await axiosPublic.post(
-        "/requested-asset",
-        requestedAsset
-      );
+      const response = await axiosPublic.post("/requested-asset", requestedAsset);
       console.log("Request submitted:", response.data);
-
-      // Success feedback
       alert("Asset request submitted successfully!");
       handleModalClose();
     } catch (error) {
@@ -85,22 +96,28 @@ const RequestAsset = () => {
             type="text"
             placeholder="Search assets..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)} // Update search query
+            onChange={(e) => setSearchQuery(e.target.value)}
             className="border border-[#1753c2] p-2 rounded w-full md:w-1/3 focus:outline-none focus:ring-2 focus:ring-[#1753c2]"
           />
           <select
             className="border border-[#1753c2] p-2 rounded focus:outline-none focus:ring-2 focus:ring-[#1753c2]"
+            onChange={(e) => {
+              const value = e.target.value;
+              setAvailabilityFilter(value);
+
+              // Automatically set sort option based on availability filter
+              if (value === "Available") {
+                setSortOption("desc");
+              } else if (value === "Out of stock") {
+                setSortOption("asc");
+              } else {
+                setSortOption("asc"); // Default to ascending for "All"
+              }
+            }}
           >
             <option value="all">All Availability</option>
             <option value="Available">Available</option>
             <option value="Out of stock">Out of stock</option>
-          </select>
-          <select
-            className="border border-[#1753c2] p-2 rounded focus:outline-none focus:ring-2 focus:ring-[#1753c2]"
-          >
-            <option value="all">All Asset Types</option>
-            <option value="Returnable">Returnable</option>
-            <option value="Non-returnable">Non-returnable</option>
           </select>
         </div>
 
@@ -124,7 +141,7 @@ const RequestAsset = () => {
                 </tr>
               ) : (
                 filteredAssets.map((asset) => (
-                  <tr key={asset.id} className="border-b hover:bg-gray-50">
+                  <tr key={asset._id} className="border-b hover:bg-gray-50">
                     <td className="px-4 py-2">{asset.product_name}</td>
                     <td className="px-4 py-2">{asset.product_type}</td>
                     <td className="px-4 py-2">
@@ -135,17 +152,19 @@ const RequestAsset = () => {
                             : "bg-red-100 text-red-700"
                         }`}
                       >
-                        {`${asset.product_quantity > 0 ? "Available" : "Out of stock"}`}
+                        {asset.product_quantity > 0
+                          ? "Available"
+                          : "Out of stock"}
                       </span>
                     </td>
                     <td className="px-4 py-2">
                       <button
                         className={`px-4 py-2 text-white rounded ${
-                          asset.product_quantity === "0"
+                          asset.product_quantity === 0
                             ? "bg-gray-400 cursor-not-allowed"
                             : "bg-[#1753c2] hover:bg-[#144b9c]"
                         }`}
-                        disabled={asset.product_quantity === "0"}
+                        disabled={asset.product_quantity === 0}
                         onClick={() => handleRequest(asset)}
                       >
                         Request
