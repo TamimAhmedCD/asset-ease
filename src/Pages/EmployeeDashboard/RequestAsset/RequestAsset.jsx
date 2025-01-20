@@ -10,6 +10,7 @@ const RequestAsset = () => {
   const [status, setStatus] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [availabilityFilter, setAvailabilityFilter] = useState("all"); // Default to "all"
+  const [assetTypeFilter, setAssetTypeFilter] = useState("all"); // Default to "all"
   const [sortOption, setSortOption] = useState("asc"); // Default sort to ascending
   const [filteredAssets, setFilteredAssets] = useState([]);
 
@@ -25,16 +26,22 @@ const RequestAsset = () => {
   }, [user.email, axiosPublic]);
 
   useEffect(() => {
-    // Filter assets based on searchQuery and availabilityFilter
+    // Filter assets based on searchQuery, availabilityFilter, and assetTypeFilter
     let filtered = assets.filter((asset) =>
       asset.product_name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    // Apply availability filter (Available / Out of stock)
     if (availabilityFilter !== "all") {
       filtered = filtered.filter((asset) => {
         const isAvailable = asset.product_quantity > 0;
         return availabilityFilter === "Available" ? isAvailable : !isAvailable;
       });
+    }
+
+    // Apply asset type filter (All / Returnable / Non-Returnable)
+    if (assetTypeFilter !== "all") {
+      filtered = filtered.filter((asset) => asset.product_type === assetTypeFilter);
     }
 
     // Apply sorting by product_quantity (ascending or descending)
@@ -45,7 +52,7 @@ const RequestAsset = () => {
     }
 
     setFilteredAssets(filtered);
-  }, [assets, searchQuery, availabilityFilter, sortOption]);
+  }, [assets, searchQuery, availabilityFilter, assetTypeFilter, sortOption]);
 
   const handleRequest = (asset) => {
     setSelectedAsset(asset);
@@ -118,6 +125,16 @@ const RequestAsset = () => {
             <option value="all">All Availability</option>
             <option value="Available">Available</option>
             <option value="Out of stock">Out of stock</option>
+          </select>
+
+          {/* Asset Type Filter Dropdown */}
+          <select
+            className="border border-[#1753c2] p-2 rounded focus:outline-none focus:ring-2 focus:ring-[#1753c2]"
+            onChange={(e) => setAssetTypeFilter(e.target.value)}
+          >
+            <option value="all">All Asset Types</option>
+            <option value="Returnable">Returnable</option>
+            <option value="Non-Returnable">Non-Returnable</option>
           </select>
         </div>
 
