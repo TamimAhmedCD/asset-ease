@@ -15,6 +15,7 @@ import AddEmployee from "../Pages/HRDashboard/AddEmployee/AddEmployee";
 import MyTeam from "../Pages/EmployeeDashboard/MyTeam/MyTeam";
 import RequestAsset from "../Pages/EmployeeDashboard/RequestAsset/RequestAsset";
 import MyRequestedAssets from "../Pages/EmployeeDashboard/MyRequestedAssets/MyRequestedAssets";
+import UpdateAsset from "../Pages/HRDashboard/UpdateAsset/UpdateAsset";
 
 export const router = createBrowserRouter([
   {
@@ -71,6 +72,11 @@ export const router = createBrowserRouter([
       {
         path: "add-an-employee",
         element: <AddEmployee></AddEmployee>,
+      },
+      {
+        path: "update-asset/:id",
+        element: <UpdateAsset></UpdateAsset>,
+        loader: ({params}) => fetch(`http://localhost:5000/assets/${params.id}`)
       },
 
       // Employee Routes

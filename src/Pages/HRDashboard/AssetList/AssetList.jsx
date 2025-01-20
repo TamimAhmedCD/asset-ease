@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import useAxiosPublic from "./../../../Hooks/useAxiosPublic";
+import { Link } from "react-router-dom";
 
 const AssetList = () => {
   const [assets, setAssets] = useState([]);
@@ -31,11 +32,16 @@ const AssetList = () => {
               <tr key={asset._id} className="hover:bg-gray-100">
                 <td className="px-4 py-2">{asset.product_name}</td>
                 <td className="px-4 py-2">{asset.product_type}</td>
-                <td className="px-4 py-2 text-center">{asset.product_quantity}</td>
                 <td className="px-4 py-2 text-center">
-                  <button className="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-                    Edit
-                  </button>
+                  {asset.product_quantity}
+                </td>
+                <td className="px-4 py-2 text-center">
+                  <Link to={`/dashboard/update-asset/${asset._id}`}>
+                    {" "}
+                    <button className="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                      Edit
+                    </button>
+                  </Link>
                   <button className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600">
                     Delete
                   </button>
