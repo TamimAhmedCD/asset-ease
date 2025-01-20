@@ -1,18 +1,12 @@
-import { useEffect, useState } from "react";
 import useAxiosPublic from "./../../../Hooks/useAxiosPublic";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import useAsset from "../../../Hooks/useAsset";
 
 const AssetList = () => {
-  const [assets, setAssets] = useState([]);
   const axiosPublic = useAxiosPublic();
 
-  useEffect(() => {
-    axiosPublic.get("/assets").then((res) => {
-      const assets = res.data;
-      setAssets(assets);
-    });
-  }, [axiosPublic]);
+  const [assets, refetch] = useAsset()
 
   const handleDelete = (id) => {
     axiosPublic
@@ -24,6 +18,7 @@ const AssetList = () => {
           text: "Asset Delete Success",
           icon: "success",
         });
+        refetch()
       } else {
         Swal.fire({
           title: "Error",
