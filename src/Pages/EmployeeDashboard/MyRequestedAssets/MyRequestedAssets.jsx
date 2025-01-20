@@ -54,15 +54,16 @@ const MyRequestedAssets = () => {
   };
 
   // Handle canceling a request
-  const cancelRequest = async (id) => {
-    try {
-      await axiosPublic.delete(`/requested-asset/${id}`);
-      console.log(`Cancelled request for asset ID: ${id}`);
-      refetch(); // Refetch data after canceling
-    } catch (error) {
-      console.error("Error canceling asset request:", error);
-      alert("Failed to cancel asset request.");
-    }
+  const cancelRequest = (id) => {
+    const updateStatus = {
+      status: "Canceled",
+    };
+    axiosPublic
+      .patch(`/requested-asset/${id}`, updateStatus)
+      .then((res) => {
+        console.log(res.data);
+        refetch();
+      });
   };
 
   // Handle printing asset details

@@ -94,34 +94,43 @@ const AllRequest = () => {
                           ? "bg-yellow-500"
                           : request.status === "Approved"
                           ? "bg-green-600"
-                          : "bg-red-500"
+                          : request.status === "Rejected"
+                          ? "bg-red-500"
+                          : request.status === "Canceled"
+                          ? "bg-gray-400"
+                          : ""
                       } text-white rounded-lg`}
                     >
                       {request.status}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-center space-x-2">
-                    {/* Approve Button */}
-                    {request.status !== "Approved" && (
-                      <button
-                        onClick={() => approveRequest(request)}
-                        className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none transition disabled:bg-green-300"
-                        disabled={request.status === "Rejected"}
-                        title="Approve the request"
-                      >
-                        Approve
-                      </button>
-                    )}
-                    {/* Reject Button */}
-                    {request.status !== "Rejected" && (
-                      <button
-                        onClick={() => rejectRequest(request)}
-                        className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 focus:outline-none transition disabled:bg-red-300"
-                        disabled={request.status === "Approved"}
-                        title="Reject the request"
-                      >
-                        Reject
-                      </button>
+                    {/* Hide Approve/Reject Buttons if Status is Canceled */}
+                    {request.status !== "Canceled" && (
+                      <>
+                        {/* Approve Button */}
+                        {request.status !== "Approved" && (
+                          <button
+                            onClick={() => approveRequest(request)}
+                            className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none transition disabled:bg-green-300"
+                            disabled={request.status === "Rejected"}
+                            title="Approve the request"
+                          >
+                            Approve
+                          </button>
+                        )}
+                        {/* Reject Button */}
+                        {request.status !== "Rejected" && (
+                          <button
+                            onClick={() => rejectRequest(request)}
+                            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 focus:outline-none transition disabled:bg-red-300"
+                            disabled={request.status === "Approved"}
+                            title="Reject the request"
+                          >
+                            Reject
+                          </button>
+                        )}
+                      </>
                     )}
                   </td>
                 </tr>
