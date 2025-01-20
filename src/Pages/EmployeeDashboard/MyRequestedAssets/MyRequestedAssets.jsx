@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
-import { FaSearch, FaTrash, FaPrint, FaArrowAltCircleLeft } from "react-icons/fa";
+import {
+  FaSearch,
+  FaTrash,
+  FaPrint,
+  FaArrowAltCircleLeft,
+} from "react-icons/fa";
 import { AiOutlineReload } from "react-icons/ai";
 import useAuth from "./../../../Hooks/useAuth";
 import useAxiosPublic from "./../../../Hooks/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
 
 const MyRequestedAssets = () => {
-  // Helper function to format date
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
     const options = {
@@ -19,15 +23,14 @@ const MyRequestedAssets = () => {
     return date.toLocaleDateString("en-US", options);
   };
 
-  // Get logged user
   const { user } = useAuth();
   const axiosPublic = useAxiosPublic();
 
-  const [search, setSearch] = useState(""); // Search state for asset name
-  const [filterStatus, setFilterStatus] = useState(""); // Filter by status
+  const [search, setSearch] = useState("");
+  const [filterStatus, setFilterStatus] = useState("");
+  const [filterType, setFilterType] = useState(""); // New state for asset type filter
   const [status, setStatus] = useState(false);
 
-  // Fetch employee status
   useEffect(() => {
     axiosPublic.get(`/employee-account/${user.email}`).then((res) => {
       const employeeStatus = res.data.employee_status;
@@ -35,50 +38,35 @@ const MyRequestedAssets = () => {
     });
   }, [user.email, axiosPublic]);
 
-  // Fetching requested assets using React Query with filters
   const { data: requestedAssets = [], refetch } = useQuery({
-    queryKey: ["requestedAssets", user.email, search, filterStatus], // Adding filterStatus to the queryKey
+    queryKey: ["requestedAssets", user.email, search, filterStatus, filterType], // Add filterType to queryKey
     queryFn: async () => {
       const res = await axiosPublic.get(
-        `/requested-asset?email=${user.email}&search=${search}&status=${filterStatus}`
+        `/requested-asset?email=${user.email}&search=${search}&status=${filterStatus}&asset_type=${filterType}`
       );
       return res.data;
     },
   });
 
-  // Handle canceling a request
   const cancelRequest = (id) => {
-    const updateStatus = {
-      status: "Canceled",
-    };
+    const updateStatus = { status: "Canceled" };
     axiosPublic
       .patch(`/requested-asset/${id}`, updateStatus)
-      .then((res) => {
-        console.log(res.data);
-        refetch();
-      });
+      .then(() => refetch());
   };
 
-  // Handle printing asset details
   const printAssetDetails = (asset) => {
     console.log(`Printing details for asset: ${asset.name}`);
-    // Placeholder for React-PDF implementation
   };
 
-  // Handle returning an asset
   const returnAsset = (id) => {
-    const updateStatus = {
-      status: "Returned",
-    };
+    const updateStatus = { status: "Returned" };
     axiosPublic
       .patch(`/requested-asset/${id}`, updateStatus)
-      .then((res) => {
-        console.log(res.data);
-        refetch();
-      });
+      .then(() => refetch());
   };
 
-  if (status === true) {
+  if (status) {
     return (
       <div className="p-6 bg-gray-100 min-h-screen">
         {/* Search and Filter Section */}
@@ -90,7 +78,7 @@ const MyRequestedAssets = () => {
               placeholder="Search by Asset Name..."
               className="flex-grow p-2 border-0 focus:ring-0 focus:outline-none"
               value={search}
-              onChange={(e) => setSearch(e.target.value)} // Update search query
+              onChange={(e) => setSearch(e.target.value)}
             />
           </div>
 
@@ -99,7 +87,7 @@ const MyRequestedAssets = () => {
             value={filterStatus}
             onChange={(e) => {
               setFilterStatus(e.target.value);
-              refetch(); // Refetch data when status filter changes
+              refetch();
             }}
           >
             <option value="">Filter by Status</option>
@@ -110,12 +98,26 @@ const MyRequestedAssets = () => {
             <option value="Canceled">Canceled</option>
           </select>
 
+          <select
+            className="border p-2 rounded-lg shadow-sm focus:ring-indigo-500"
+            value={filterType}
+            onChange={(e) => {
+              setFilterType(e.target.value);
+              refetch();
+            }}
+          >
+            <option value="">Filter by Type</option>
+            <option value="Returnable">Returnable</option>
+            <option value="Non-Returnable">Non-Returnable</option>
+          </select>
+
           <button
             className="bg-gray-300 px-4 py-2 rounded-lg hover:bg-gray-400 shadow-sm flex items-center"
             onClick={() => {
               setSearch("");
               setFilterStatus("");
-              refetch(); // Reset filters and refetch data
+              setFilterType(""); // Reset asset type filter
+              refetch();
             }}
           >
             <AiOutlineReload className="mr-2" /> Reset Filters
@@ -127,11 +129,21 @@ const MyRequestedAssets = () => {
           <table className="w-full border-collapse">
             <thead>
               <tr className="bg-indigo-600 text-white">
-                <th className="p-3 text-left text-sm font-semibold">Asset Name</th>
-                <th className="p-3 text-left text-sm font-semibold">Asset Type</th>
-                <th className="p-3 text-left text-sm font-semibold">Request Date</th>
-                <th className="p-3 text-left text-sm font-semibold">Approval Date</th>
-                <th className="p-3 text-left text-sm font-semibold">Request Status</th>
+                <th className="p-3 text-left text-sm font-semibold">
+                  Asset Name
+                </th>
+                <th className="p-3 text-left text-sm font-semibold">
+                  Asset Type
+                </th>
+                <th className="p-3 text-left text-sm font-semibold">
+                  Request Date
+                </th>
+                <th className="p-3 text-left text-sm font-semibold">
+                  Approval Date
+                </th>
+                <th className="p-3 text-left text-sm font-semibold">
+                  Request Status
+                </th>
                 <th className="p-3 text-left text-sm font-semibold">Actions</th>
               </tr>
             </thead>
@@ -158,10 +170,10 @@ const MyRequestedAssets = () => {
                           asset.status === "Pending"
                             ? "bg-yellow-500"
                             : asset.status === "Approved"
-                            ? "bg-green-500"
-                            : asset.status === "Returned"
-                            ? "bg-blue-500"
-                            : "bg-gray-500"
+                              ? "bg-green-500"
+                              : asset.status === "Returned"
+                                ? "bg-blue-500"
+                                : "bg-gray-500"
                         }`}
                       >
                         {asset.status}
@@ -188,7 +200,6 @@ const MyRequestedAssets = () => {
                             <button
                               className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 flex items-center"
                               onClick={() => returnAsset(asset._id)}
-                              disabled={asset.status === "Returned"}
                             >
                               <FaArrowAltCircleLeft className="mr-1" /> Return
                             </button>
@@ -212,10 +223,7 @@ const MyRequestedAssets = () => {
     );
   } else {
     return (
-      <div
-        id="affiliation-message"
-        className="bg-yellow-100 text-yellow-800 p-4 rounded-lg mb-6"
-      >
+      <div className="bg-yellow-100 text-yellow-800 p-4 rounded-lg mb-6">
         <p className="text-lg">
           ⚠ You are not affiliated with any company. Please contact your HR to
           complete the affiliation process.
