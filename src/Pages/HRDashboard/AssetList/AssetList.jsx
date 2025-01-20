@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import useAxiosPublic from "./../../../Hooks/useAxiosPublic";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const AssetList = () => {
   const [assets, setAssets] = useState([]);
@@ -12,6 +13,29 @@ const AssetList = () => {
       setAssets(assets);
     });
   }, [axiosPublic]);
+
+  const handleDelete = (id) => {
+    axiosPublic
+    .delete(`/assets/${id}`)
+    .then((res) => {
+      if (res.data.deletedCount > 0) {
+        Swal.fire({
+          title: "Good job!",
+          text: "Asset Delete Success",
+          icon: "success",
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: "Asset Delete Unsuccess",
+          icon: "error",
+        });
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
 
   return (
     <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6 mt-8">
@@ -42,7 +66,7 @@ const AssetList = () => {
                       Edit
                     </button>
                   </Link>
-                  <button className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600">
+                  <button onClick={() => handleDelete(asset._id)} className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600">
                     Delete
                   </button>
                 </td>
