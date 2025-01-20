@@ -1,4 +1,4 @@
-import { useState, } from "react";
+import { useState } from "react";
 import useAllRequest from "../../../Hooks/useAllRequest";
 import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 
@@ -63,7 +63,7 @@ const AllRequest = () => {
           <p className="text-center text-gray-500">No results found</p>
         )}
         {requests.length > 0 && (
-          <table className="w-full border-collapse">
+          <table className="w-full table-auto border-collapse">
             <thead>
               <tr className="bg-[#1753c2] text-white">
                 <th className="px-4 py-2 text-left">Asset Name</th>
@@ -78,16 +78,16 @@ const AllRequest = () => {
             </thead>
             <tbody className="divide-y divide-gray-200">
               {requests.map((request) => (
-                <tr key={request._id} className="hover:bg-gray-100">
-                  <td className="px-4 py-2">{request.asset_name}</td>
-                  <td className="px-4 py-2">{request.asset_type}</td>
-                  <td className="px-4 py-2">{request.requester_email}</td>
-                  <td className="px-4 py-2">{request.requester_name}</td>
-                  <td className="px-4 py-2">{formatDate(request.request_date)}</td>
-                  <td className="px-4 py-2">
+                <tr key={request._id} className="hover:bg-gray-50 transition">
+                  <td className="px-4 py-3">{request.asset_name}</td>
+                  <td className="px-4 py-3">{request.asset_type}</td>
+                  <td className="px-4 py-3">{request.requester_email}</td>
+                  <td className="px-4 py-3">{request.requester_name}</td>
+                  <td className="px-4 py-3">{formatDate(request.request_date)}</td>
+                  <td className="px-4 py-3">
                     {request.additional_notes === "" ? "N/A" : request.additional_notes}
                   </td>
-                  <td className="px-4 py-2 text-center">
+                  <td className="px-4 py-3 text-center">
                     <span
                       className={`px-3 py-1 ${
                         request.status === "Pending"
@@ -100,13 +100,14 @@ const AllRequest = () => {
                       {request.status}
                     </span>
                   </td>
-                  <td className="px-4 py-2 text-center">
+                  <td className="px-4 py-3 text-center space-x-2">
                     {/* Approve Button */}
                     {request.status !== "Approved" && (
                       <button
                         onClick={() => approveRequest(request)}
-                        className="px-3 py-1 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                        className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none transition disabled:bg-green-300"
                         disabled={request.status === "Rejected"}
+                        title="Approve the request"
                       >
                         Approve
                       </button>
@@ -115,8 +116,9 @@ const AllRequest = () => {
                     {request.status !== "Rejected" && (
                       <button
                         onClick={() => rejectRequest(request)}
-                        className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                        className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 focus:outline-none transition disabled:bg-red-300"
                         disabled={request.status === "Approved"}
+                        title="Reject the request"
                       >
                         Reject
                       </button>
