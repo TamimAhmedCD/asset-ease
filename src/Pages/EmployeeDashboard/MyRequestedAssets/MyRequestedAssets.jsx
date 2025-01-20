@@ -69,16 +69,27 @@ const MyRequestedAssets = () => {
   };
 
   // Handle returning an asset
-  const returnAsset = async (id) => {
-    try {
-      await axiosPublic.post(`/return-asset`, { id });
-      console.log(`Returned asset ID: ${id}`);
-      refetch(); // Refetch data after returning the asset
-    } catch (error) {
-      console.error("Error returning asset:", error);
-      alert("Failed to return asset.");
-    }
+  const returnAsset = (id) => {
+    const updateStatus = {
+      status: "Returned",
+    };
+    axiosPublic
+      .patch(`/requested-asset/${id}`, updateStatus)
+      .then((res) => {
+        console.log(res.data);
+        refetch();
+      });
   };
+  // const returnAsset = async (id) => {
+  //   try {
+  //     await axiosPublic.patch(`/return-asset`, { id });
+  //     console.log(`Returned asset ID: ${id}`);
+  //     refetch(); // Refetch data after returning the asset
+  //   } catch (error) {
+  //     console.error("Error returning asset:", error);
+  //     alert("Failed to return asset.");
+  //   }
+  // };
 
   if (status === true) {
     return (
@@ -196,7 +207,7 @@ const MyRequestedAssets = () => {
                           {asset.asset_type === "Returnable" && (
                             <button
                               className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 flex items-center"
-                              onClick={() => returnAsset(asset.id)}
+                              onClick={() => returnAsset(asset._id)}
                               disabled={asset.status === "Returned"}
                             >
                               <FaArrowAltCircleLeft className="mr-1" /> Return

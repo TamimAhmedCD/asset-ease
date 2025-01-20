@@ -98,6 +98,8 @@ const AllRequest = () => {
                           ? "bg-red-500"
                           : request.status === "Canceled"
                           ? "bg-gray-400"
+                          : request.status === "Returned"
+                          ? "bg-blue-600"
                           : ""
                       } text-white rounded-lg`}
                     >
@@ -105,8 +107,8 @@ const AllRequest = () => {
                     </span>
                   </td>
                   <td className="px-4 py-3 text-center space-x-2">
-                    {/* Hide Approve/Reject Buttons if Status is Canceled */}
-                    {request.status !== "Canceled" && (
+                    {/* Hide Action Buttons if Status is Returned */}
+                    {request.status !== "Returned" && request.status !== "Canceled" && (
                       <>
                         {/* Approve Button */}
                         {request.status !== "Approved" && (
