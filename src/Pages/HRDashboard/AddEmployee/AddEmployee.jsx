@@ -8,8 +8,25 @@ const AddEmployee = () => {
   const [employee, refetch] = useEmployee();
   const [employeeList, ,] = useEmployeeList();
 
+  const [employeeLimit, setEmployeeLimit] = useState(0)
+
   const { user } = useAuth();
   const axiosPublic = useAxiosPublic();
+
+  axiosPublic.get(`/hr-account/${user.email}`)
+  .then(res => {
+    const data = (res.data);
+    console.log(data);
+    if(data.package == "premium") {
+      setEmployeeLimit(20)
+    }
+    if(data.package == "standard") {
+      setEmployeeLimit(10)
+    }
+    if(data.package == "basic") {
+      setEmployeeLimit(5)
+    }
+  })
 
   // Track selected members' IDs
   const [selectedMembers, setSelectedMembers] = useState([]);
@@ -62,7 +79,7 @@ const AddEmployee = () => {
         <div className="bg-white shadow-lg rounded-lg p-6">
           <div className="flex justify-between items-center">
             <div className="text-lg font-semibold">
-              Employee Count: {employeeList.length}
+              Employee Count: {employeeList.length} / {employeeLimit}
             </div>
             <button
               onClick={() => console.log("Redirect to package selection")}
