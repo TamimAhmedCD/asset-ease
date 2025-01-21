@@ -3,7 +3,7 @@ import useEmployeeList from "../../../Hooks/useEmployeeList";
 
 const MyEmployeeList = () => {
 
-  const [employeeList, refetch] = useEmployeeList()
+  const [employeeList, ,] = useEmployeeList()
 
   return (
     <div className="p-8">

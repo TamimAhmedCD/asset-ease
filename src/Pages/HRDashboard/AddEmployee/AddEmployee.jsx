@@ -2,9 +2,12 @@ import { useState } from "react";
 import useAxiosPublic from "./../../../Hooks/useAxiosPublic";
 import useAuth from "../../../Hooks/useAuth";
 import useEmployee from "../../../Hooks/useEmployee";
+import useEmployeeList from "../../../Hooks/useEmployeeList";
 
 const AddEmployee = () => {
   const [employee, refetch] = useEmployee();
+  const [employeeList, ,] = useEmployeeList();
+
   const { user } = useAuth();
   const axiosPublic = useAxiosPublic();
 
@@ -12,22 +15,25 @@ const AddEmployee = () => {
   const [selectedMembers, setSelectedMembers] = useState([]);
 
   const handleCheckboxChange = (id) => {
-    setSelectedMembers((prevSelected) =>
-      prevSelected.includes(id)
-        ? prevSelected.filter((memberId) => memberId !== id) // Remove if already selected
-        : [...prevSelected, id] // Add if not selected
+    setSelectedMembers(
+      (prevSelected) =>
+        prevSelected.includes(id)
+          ? prevSelected.filter((memberId) => memberId !== id) // Remove if already selected
+          : [...prevSelected, id] // Add if not selected
     );
   };
 
   const handleAddMember = (data) => {
     const updateData = {
-      employee_status: data.employee_status = true,
+      employee_status: (data.employee_status = true),
       hr_email: user.email,
     };
-    axiosPublic.patch(`/employee-account/${data._id}`, updateData).then((res) => {
-      console.log(res.data);
-      refetch()
-    });
+    axiosPublic
+      .patch(`/employee-account/${data._id}`, updateData)
+      .then((res) => {
+        console.log(res.data);
+        refetch();
+      });
     console.log("Adding members:", data._id);
   };
 
@@ -55,7 +61,9 @@ const AddEmployee = () => {
         {/* Package Section */}
         <div className="bg-white shadow-lg rounded-lg p-6">
           <div className="flex justify-between items-center">
-            <div className="text-lg font-semibold">Employee Count:</div>
+            <div className="text-lg font-semibold">
+              Employee Count: {employeeList.length}
+            </div>
             <button
               onClick={() => console.log("Redirect to package selection")}
               className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
@@ -106,7 +114,9 @@ const AddEmployee = () => {
           <button
             onClick={handleAddSelectedMembers}
             className={`px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition ${
-              selectedMembers.length === 0 ? "opacity-50 cursor-not-allowed" : ""
+              selectedMembers.length === 0
+                ? "opacity-50 cursor-not-allowed"
+                : ""
             }`}
             disabled={selectedMembers.length === 0}
           >
