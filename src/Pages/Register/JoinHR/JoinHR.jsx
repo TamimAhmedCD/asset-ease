@@ -60,7 +60,7 @@ const JoinHR = () => {
       dob: data.dob,
       password: data.password,
       paymentStatus: paymentStatus,
-      role: 'HR'
+      role: "HR",
     };
 
     // post user info
@@ -91,13 +91,12 @@ const JoinHR = () => {
         });
 
         // navigate the user
-        navigate("/");
-      }
-      else {
+        navigate("/dashboard/dashboard");
+      } else {
         Swal.fire({
           title: "Already Exist",
           text: "Email Already Exist",
-          icon: "error"
+          icon: "error",
         });
       }
     });

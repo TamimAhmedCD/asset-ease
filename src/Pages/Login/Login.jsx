@@ -1,4 +1,4 @@
-import {useState } from "react";
+import { useState } from "react";
 import Lottie from "lottie-react";
 import { Link, useNavigate } from "react-router-dom";
 import animation from "./Register.json";
@@ -40,14 +40,12 @@ const Login = () => {
         icon: "success",
         timer: 1500,
       });
+      // navigate the user
+      navigate("/dashboard/dashboard");
     });
 
     // after success fully submit form then reset the form
     reset();
-
-    // navigate the user
-      navigate("/dashboard/dashboard");
-
   };
 
   return (

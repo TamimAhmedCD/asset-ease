@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 import useAuth from "./../../../Hooks/useAuth";
 import Swal from "sweetalert2";
+import SocialLogin from "../../Login/SocialLogin";
 
 const JoinEmployee = () => {
   // Host image
@@ -216,7 +217,7 @@ const JoinEmployee = () => {
           </button>
         </form>
 
-        <p className="text-sm text-gray-600 mt-4">
+        <p className="text-sm text-gray-600 my-4">
           Already have an account?{" "}
           <Link
             to="/login"
@@ -225,6 +226,7 @@ const JoinEmployee = () => {
             Log in
           </Link>
         </p>
+      <SocialLogin></SocialLogin>
       </div>
     </div>
   );
