@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useLoaderData } from "react-router-dom";
 import useAxiosPublic from "./../../../Hooks/useAxiosPublic";
 import useAuth from "./../../../Hooks/useAuth";
+import Swal from "sweetalert2";
 
 const RequestAsset = () => {
   const { user } = useAuth();
@@ -13,6 +14,7 @@ const RequestAsset = () => {
   const [assetTypeFilter, setAssetTypeFilter] = useState("all"); // Default to "all"
   const [sortOption, setSortOption] = useState("asc"); // Default sort to ascending
   const [filteredAssets, setFilteredAssets] = useState([]);
+  const [hr, setHr] = useState();
 
   const axiosPublic = useAxiosPublic();
   const assets = useLoaderData(); // Assumed that the assets are loaded here
@@ -23,7 +25,12 @@ const RequestAsset = () => {
       const employeeStatus = res.data.employee_status;
       setStatus(employeeStatus);
     });
-  }, [user.email, axiosPublic]);
+
+    axiosPublic.get(`/employee-account/${user.email}`).then((res) => {
+      const findHR = res.data.hr_email;
+      setHr(findHR);
+    });
+  }, [user.email, axiosPublic, hr]);
 
   useEffect(() => {
     // Filter assets based on searchQuery, availabilityFilter, and assetTypeFilter
@@ -41,39 +48,52 @@ const RequestAsset = () => {
 
     // Apply asset type filter (All / Returnable / Non-Returnable)
     if (assetTypeFilter !== "all") {
-      filtered = filtered.filter((asset) => asset.product_type === assetTypeFilter);
+      filtered = filtered.filter(
+        (asset) => asset.product_type === assetTypeFilter
+      );
     }
 
     // Apply sorting by product_quantity (ascending or descending)
     if (sortOption === "asc") {
-      filtered = filtered.sort((a, b) => a.product_quantity - b.product_quantity);
+      filtered = filtered.sort(
+        (a, b) => a.product_quantity - b.product_quantity
+      );
     } else if (sortOption === "desc") {
-      filtered = filtered.sort((a, b) => b.product_quantity - a.product_quantity);
+      filtered = filtered.sort(
+        (a, b) => b.product_quantity - a.product_quantity
+      );
     }
 
     setFilteredAssets(filtered);
   }, [assets, searchQuery, availabilityFilter, assetTypeFilter, sortOption]);
 
+  // modal open func
   const handleRequest = (asset) => {
     setSelectedAsset(asset);
     setIsModalOpen(true);
   };
 
+  // modal close func
   const handleModalClose = () => {
     setIsModalOpen(false);
     setSelectedAsset(null);
   };
 
+  // handle sending asset request
   const handleRequestSubmit = async (e) => {
     e.preventDefault();
+
+    // get additional note data
     const form = e.target;
     const additional_notes = form.additional_notes.value;
 
+    // destructure posted info
     const requester_name = user.displayName;
     const requester_email = user.email;
     const request_date = new Date().toISOString();
     const asset_id = selectedAsset._id;
 
+    // posted info
     const requestedAsset = {
       asset_id,
       requester_name,
@@ -81,16 +101,28 @@ const RequestAsset = () => {
       status: "Pending",
       request_date,
       additional_notes,
+      hr_email: hr,
     };
 
-    try {
-      const response = await axiosPublic.post("/requested-asset", requestedAsset);
-      console.log("Request submitted:", response.data);
-      alert("Asset request submitted successfully!");
-      handleModalClose();
-    } catch (error) {
-      console.error("Error submitting asset request:", error);
-      alert("Failed to submit asset request. Please try again.");
+    // post request api
+    const response = await axiosPublic.post("/requested-asset", requestedAsset);
+    // after send request then close modal
+    handleModalClose();
+    // after successfully send request then open this modal
+    if (response.data.insertedId) {
+      Swal.fire({
+        title: "Request",
+        text: "Asset request submitted successfully!",
+        icon: "success",
+      });
+    }
+    // when failed request then open then modal
+    else {
+      Swal.fire({
+        title: "Failed",
+        text: "Failed to submit asset request. Please try again.",
+        icon: "error",
+      });
     }
   };
 
