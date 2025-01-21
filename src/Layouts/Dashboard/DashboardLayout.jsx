@@ -125,7 +125,7 @@ const DashboardLayout = () => {
               <img
                 src={company_logo}
                 alt={company_name}
-                className="w-[150px] lg:w-[180px]"
+                className="w-[130px] lg:w-[160px]"
               />
             ) : (
               <div className="flex gap-2 items-center">
@@ -199,9 +199,15 @@ const DashboardLayout = () => {
         {/* Sidebar */}
         <Drawer open={open} onClose={closeDrawer}>
           <div className="mb-2 flex items-center justify-between p-4">
-            <Typography variant="h5" color="blue-gray">
-              {hrCompanyName}
-            </Typography>
+            {role === "HR" ? (
+              <Typography variant="h5" color="blue-gray">
+                {hrCompanyName}
+              </Typography>
+            ) : (
+              <Typography variant="h5" color="blue-gray">
+                {company_name}
+              </Typography>
+            )}
             <IconButton variant="text" color="blue-gray" onClick={closeDrawer}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
