@@ -206,6 +206,14 @@ const MyRequestedAssets = () => {
                           )}
                         </>
                       )}
+                      {asset.status === "Returned" && (
+                        <button
+                          className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 flex items-center"
+                          onClick={() => printAssetDetails(asset)}
+                        >
+                          <FaPrint className="mr-1" /> Print
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))

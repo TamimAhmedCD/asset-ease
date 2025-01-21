@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useAxiosPublic from "./../../../Hooks/useAxiosPublic";
 import useAuth from "../../../Hooks/useAuth";
 import useEmployee from "../../../Hooks/useEmployee";
@@ -7,6 +7,8 @@ import useEmployeeList from "../../../Hooks/useEmployeeList";
 const AddEmployee = () => {
   const [employee, refetch] = useEmployee();
   const [employeeList, setEmployeeList] = useEmployeeList();
+  const [admin, setAdmin] = useState({})
+  console.log(admin);
 
   const [employeeLimit, setEmployeeLimit] = useState(0);
 
@@ -14,9 +16,12 @@ const AddEmployee = () => {
   const axiosPublic = useAxiosPublic();
 
   // Fetch package details and set employee limit
-  axiosPublic.get(`/hr-account/${user.email}`)
-    .then(res => {
+  useEffect(() => {
+    axiosPublic
+    .get(`/hr-account/${user.email}`)
+    .then((res) => {
       const data = res.data;
+      setAdmin(data)
       if (data.package === "premium") {
         setEmployeeLimit(20);
       } else if (data.package === "standard") {
@@ -25,7 +30,7 @@ const AddEmployee = () => {
         setEmployeeLimit(5);
       }
     })
-    .catch(err => console.error("Error fetching package details:", err));
+  }, [axiosPublic, user.email])
 
   // Track selected members' IDs
   const [selectedMembers, setSelectedMembers] = useState([]);
@@ -41,13 +46,17 @@ const AddEmployee = () => {
 
   const handleAddMember = (data) => {
     if (employeeList.length >= employeeLimit) {
-      alert("You have reached the employee limit for your package. Upgrade to add more employees.");
+      alert(
+        "You have reached the employee limit for your package. Upgrade to add more employees."
+      );
       return;
     }
 
     const updateData = {
       employee_status: true,
       hr_email: user.email,
+      company_name: admin.company_name,
+      company_logo: admin.company_logo,
     };
 
     axiosPublic
@@ -56,16 +65,21 @@ const AddEmployee = () => {
         console.log(res.data);
 
         // Update employee list locally and re-render
-        const updatedEmployeeList = [...employeeList, { ...data, employee_status: true }];
+        const updatedEmployeeList = [
+          ...employeeList,
+          { ...data, employee_status: true },
+        ];
         setEmployeeList(updatedEmployeeList);
-        refetch()
+        refetch();
       })
-      .catch(err => console.error("Error adding member:", err));
+      .catch((err) => console.error("Error adding member:", err));
   };
 
   const handleAddSelectedMembers = () => {
     if (employeeList.length + selectedMembers.length > employeeLimit) {
-      alert("Adding these employees exceeds your package limit. Upgrade to add more employees.");
+      alert(
+        "Adding these employees exceeds your package limit. Upgrade to add more employees."
+      );
       return;
     }
 
@@ -76,12 +90,17 @@ const AddEmployee = () => {
         hr_email: user.email,
       };
 
-      return axiosPublic.patch(`/employee-account/${id}`, updateData).then(() => {
-        const updatedMember = employee.find((member) => member._id === id);
-        if (updatedMember) {
-          setEmployeeList((prevList) => [...prevList, { ...updatedMember, employee_status: true }]);
-        }
-      });
+      return axiosPublic
+        .patch(`/employee-account/${id}`, updateData)
+        .then(() => {
+          const updatedMember = employee.find((member) => member._id === id);
+          if (updatedMember) {
+            setEmployeeList((prevList) => [
+              ...prevList,
+              { ...updatedMember, employee_status: true },
+            ]);
+          }
+        });
     });
 
     // Wait for all updates to complete
@@ -90,7 +109,7 @@ const AddEmployee = () => {
         console.log("All selected members added successfully.");
         setSelectedMembers([]); // Clear selected members
       })
-      .catch(err => console.error("Error adding selected members:", err));
+      .catch((err) => console.error("Error adding selected members:", err));
   };
 
   return (

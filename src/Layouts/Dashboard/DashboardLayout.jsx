@@ -44,6 +44,8 @@ const DashboardLayout = () => {
   const [employeeData, setEmployeeData] = useState([]);
 
   const { company_name: hrCompanyName, company_logo: hrCompanyLogo } = hrData;
+  const { company_name, company_logo } = employeeData;
+  console.log(company_name, company_logo);
 
   const { user, logOut } = useAuth();
 
@@ -117,6 +119,12 @@ const DashboardLayout = () => {
               <img
                 src={hrCompanyLogo}
                 alt={hrCompanyName}
+                className="w-[150px] lg:w-[180px]"
+              />
+            ) : employeeData?.company_logo ? (
+              <img
+                src={company_logo}
+                alt={company_name}
                 className="w-[150px] lg:w-[180px]"
               />
             ) : (
