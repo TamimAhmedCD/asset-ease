@@ -1,9 +1,25 @@
 // import { useState } from "react";
+import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 import useEmployeeList from "../../../Hooks/useEmployeeList";
 
 const MyEmployeeList = () => {
+  const [employeeList, refetch] = useEmployeeList();
+  const axiosPublic = useAxiosPublic();
 
-  const [employeeList, ,] = useEmployeeList()
+  const handleRemoveMember = (data) => {
+    const updateData = {
+      employee_status: false,
+      hr_email: null
+    };
+
+    axiosPublic
+      .patch(`/employee-account/${data._id}`, updateData)
+      .then((res) => {
+        console.log(res.data);
+        refetch();
+      });
+    console.log("Removing member:", data._id);
+  };
 
   return (
     <div className="p-8">
@@ -12,10 +28,18 @@ const MyEmployeeList = () => {
         <table className="min-w-full bg-white">
           <thead>
             <tr className="bg-gray-100 border-b">
-              <th className="text-left py-3 px-4 text-gray-600 font-medium">Image</th>
-              <th className="text-left py-3 px-4 text-gray-600 font-medium">Name</th>
-              <th className="text-left py-3 px-4 text-gray-600 font-medium">Type</th>
-              <th className="text-left py-3 px-4 text-gray-600 font-medium">Actions</th>
+              <th className="text-left py-3 px-4 text-gray-600 font-medium">
+                Image
+              </th>
+              <th className="text-left py-3 px-4 text-gray-600 font-medium">
+                Name
+              </th>
+              <th className="text-left py-3 px-4 text-gray-600 font-medium">
+                Type
+              </th>
+              <th className="text-left py-3 px-4 text-gray-600 font-medium">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -38,7 +62,7 @@ const MyEmployeeList = () => {
                 </td>
                 <td className="py-3 px-4">
                   <button
-    
+                    onClick={() => handleRemoveMember(employee)}
                     className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
                   >
                     Remove From Team
@@ -50,7 +74,8 @@ const MyEmployeeList = () => {
         </table>
       </div>
       <div className="mt-4 text-gray-600">
-        Total Team Members: <span className="font-medium">{employeeList.length}</span>
+        Total Team Members:{" "}
+        <span className="font-medium">{employeeList.length}</span>
       </div>
     </div>
   );

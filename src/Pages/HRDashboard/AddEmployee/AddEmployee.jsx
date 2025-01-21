@@ -6,27 +6,26 @@ import useEmployeeList from "../../../Hooks/useEmployeeList";
 
 const AddEmployee = () => {
   const [employee, refetch] = useEmployee();
-  const [employeeList, ,] = useEmployeeList();
+  const [employeeList, setEmployeeList] = useEmployeeList();
 
-  const [employeeLimit, setEmployeeLimit] = useState(0)
+  const [employeeLimit, setEmployeeLimit] = useState(0);
 
   const { user } = useAuth();
   const axiosPublic = useAxiosPublic();
 
+  // Fetch package details and set employee limit
   axiosPublic.get(`/hr-account/${user.email}`)
-  .then(res => {
-    const data = (res.data);
-    console.log(data);
-    if(data.package == "premium") {
-      setEmployeeLimit(20)
-    }
-    if(data.package == "standard") {
-      setEmployeeLimit(10)
-    }
-    if(data.package == "basic") {
-      setEmployeeLimit(5)
-    }
-  })
+    .then(res => {
+      const data = res.data;
+      if (data.package === "premium") {
+        setEmployeeLimit(20);
+      } else if (data.package === "standard") {
+        setEmployeeLimit(10);
+      } else if (data.package === "basic") {
+        setEmployeeLimit(5);
+      }
+    })
+    .catch(err => console.error("Error fetching package details:", err));
 
   // Track selected members' IDs
   const [selectedMembers, setSelectedMembers] = useState([]);
@@ -45,17 +44,23 @@ const AddEmployee = () => {
       alert("You have reached the employee limit for your package. Upgrade to add more employees.");
       return;
     }
+
     const updateData = {
-      employee_status: (data.employee_status = true),
+      employee_status: true,
       hr_email: user.email,
     };
+
     axiosPublic
       .patch(`/employee-account/${data._id}`, updateData)
       .then((res) => {
         console.log(res.data);
-        refetch();
-      });
-    console.log("Adding members:", data._id);
+
+        // Update employee list locally and re-render
+        const updatedEmployeeList = [...employeeList, { ...data, employee_status: true }];
+        setEmployeeList(updatedEmployeeList);
+        refetch()
+      })
+      .catch(err => console.error("Error adding member:", err));
   };
 
   const handleAddSelectedMembers = () => {
@@ -63,21 +68,29 @@ const AddEmployee = () => {
       alert("Adding these employees exceeds your package limit. Upgrade to add more employees.");
       return;
     }
+
     // Update the status of all selected members
-    selectedMembers.forEach((id) => {
+    const updatePromises = selectedMembers.map((id) => {
       const updateData = {
         employee_status: true,
         hr_email: user.email,
       };
 
-      axiosPublic.patch(`/employee-account/${id}`, updateData).then((res) => {
-        console.log(`Updated member ${id}:`, res.data);
-        refetch(); // Refetch the employee list after update
+      return axiosPublic.patch(`/employee-account/${id}`, updateData).then(() => {
+        const updatedMember = employee.find((member) => member._id === id);
+        if (updatedMember) {
+          setEmployeeList((prevList) => [...prevList, { ...updatedMember, employee_status: true }]);
+        }
       });
     });
 
-    // Clear the selected members
-    setSelectedMembers([]);
+    // Wait for all updates to complete
+    Promise.all(updatePromises)
+      .then(() => {
+        console.log("All selected members added successfully.");
+        setSelectedMembers([]); // Clear selected members
+      })
+      .catch(err => console.error("Error adding selected members:", err));
   };
 
   return (
