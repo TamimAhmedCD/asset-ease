@@ -46,7 +46,9 @@ const AllRequest = () => {
     <div className="max-w-7xl mx-auto bg-white shadow-lg rounded-lg p-6 mt-8">
       {/* Search Section */}
       <div className="mb-6">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-4">Search Requests</h2>
+        <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+          Search Requests
+        </h2>
         <input
           type="text"
           placeholder="Search by name or email..."
@@ -57,12 +59,14 @@ const AllRequest = () => {
       </div>
 
       {/* Request List Section */}
-      <h2 className="text-2xl font-semibold text-gray-800 mb-4">Request List</h2>
+      <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+        Request List
+      </h2>
       <div className="overflow-x-auto">
         {requests.length === 0 && searchQuery && (
           <p className="text-center text-gray-500">No results found</p>
         )}
-        {requests.length > 0 && (
+        {requests.length > 0 ? (
           <table className="w-full table-auto border-collapse">
             <thead>
               <tr className="bg-[#1753c2] text-white">
@@ -83,9 +87,13 @@ const AllRequest = () => {
                   <td className="px-4 py-3">{request.asset_type}</td>
                   <td className="px-4 py-3">{request.requester_email}</td>
                   <td className="px-4 py-3">{request.requester_name}</td>
-                  <td className="px-4 py-3">{formatDate(request.request_date)}</td>
                   <td className="px-4 py-3">
-                    {request.additional_notes === "" ? "N/A" : request.additional_notes}
+                    {formatDate(request.request_date)}
+                  </td>
+                  <td className="px-4 py-3">
+                    {request.additional_notes === ""
+                      ? "N/A"
+                      : request.additional_notes}
                   </td>
                   <td className="px-4 py-3 text-center">
                     <span
@@ -93,52 +101,54 @@ const AllRequest = () => {
                         request.status === "Pending"
                           ? "bg-yellow-500"
                           : request.status === "Approved"
-                          ? "bg-green-600"
-                          : request.status === "Rejected"
-                          ? "bg-red-500"
-                          : request.status === "Canceled"
-                          ? "bg-gray-400"
-                          : request.status === "Returned"
-                          ? "bg-blue-600"
-                          : ""
+                            ? "bg-green-600"
+                            : request.status === "Rejected"
+                              ? "bg-red-500"
+                              : request.status === "Canceled"
+                                ? "bg-gray-400"
+                                : request.status === "Returned"
+                                  ? "bg-blue-600"
+                                  : ""
                       } text-white rounded-lg`}
                     >
                       {request.status}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-center space-x-2">
-                    {/* Hide Action Buttons if Status is Returned */}
-                    {request.status !== "Returned" && request.status !== "Canceled" && (
-                      <>
-                        {/* Approve Button */}
-                        {request.status !== "Approved" && (
-                          <button
-                            onClick={() => approveRequest(request)}
-                            className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none transition disabled:bg-green-300"
-                            disabled={request.status === "Rejected"}
-                            title="Approve the request"
-                          >
-                            Approve
-                          </button>
-                        )}
-                        {/* Reject Button */}
-                        {request.status !== "Rejected" && (
-                          <button
-                            onClick={() => rejectRequest(request)}
-                            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 focus:outline-none transition disabled:bg-red-300"
-                            disabled={request.status === "Approved"}
-                            title="Reject the request"
-                          >
-                            Reject
-                          </button>
-                        )}
-                      </>
-                    )}
+                    {request.status !== "Returned" &&
+                      request.status !== "Canceled" && (
+                        <>
+                          {request.status !== "Approved" && (
+                            <button
+                              onClick={() => approveRequest(request)}
+                              className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none transition disabled:bg-green-300"
+                              disabled={request.status === "Rejected"}
+                              title="Approve the request"
+                            >
+                              Approve
+                            </button>
+                          )}
+                          {request.status !== "Rejected" && (
+                            <button
+                              onClick={() => rejectRequest(request)}
+                              className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 focus:outline-none transition disabled:bg-red-300"
+                              disabled={request.status === "Approved"}
+                              title="Reject the request"
+                            >
+                              Reject
+                            </button>
+                          )}
+                        </>
+                      )}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+        ) : (
+          <p className="text-center text-gray-500 mt-4">
+            No asset requests found. Try searching or check back later.
+          </p>
         )}
       </div>
     </div>
