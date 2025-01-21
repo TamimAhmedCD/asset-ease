@@ -41,6 +41,10 @@ const AddEmployee = () => {
   };
 
   const handleAddMember = (data) => {
+    if (employeeList.length >= employeeLimit) {
+      alert("You have reached the employee limit for your package. Upgrade to add more employees.");
+      return;
+    }
     const updateData = {
       employee_status: (data.employee_status = true),
       hr_email: user.email,
@@ -55,6 +59,10 @@ const AddEmployee = () => {
   };
 
   const handleAddSelectedMembers = () => {
+    if (employeeList.length + selectedMembers.length > employeeLimit) {
+      alert("Adding these employees exceeds your package limit. Upgrade to add more employees.");
+      return;
+    }
     // Update the status of all selected members
     selectedMembers.forEach((id) => {
       const updateData = {
