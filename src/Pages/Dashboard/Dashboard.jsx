@@ -29,21 +29,6 @@ const Dashboard = () => {
   if (role == "HR") {
     return (
       <div className="min-h-screen bg-gray-100">
-        {/* <!-- Header --> */}
-        <header className="bg-white shadow">
-          <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-            <h1 className="text-2xl font-semibold text-gray-800">
-              AssetEase HR
-            </h1>
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-600">Welcome, HR Manager</span>
-              <button className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">
-                Logout
-              </button>
-            </div>
-          </div>
-        </header>
-
         {/* <!-- Main Content --> */}
         <main className="container mx-auto px-6 py-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -143,21 +128,6 @@ const Dashboard = () => {
   if (role == "employee" && status == true) {
     return (
       <div className="min-h-screen bg-gray-100">
-        {/* <!-- Header --> */}
-        <header className="bg-white shadow">
-          <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-            <h1 className="text-2xl font-semibold text-gray-800">
-              AssetEase Employee
-            </h1>
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-600">Welcome, [Employee Name]</span>
-              <button className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">
-                Logout
-              </button>
-            </div>
-          </div>
-        </header>
-
         {/* <!-- Main Content --> */}
         <main className="container mx-auto px-6 py-8">
           {/* <!-- Employee Sections --> */}
