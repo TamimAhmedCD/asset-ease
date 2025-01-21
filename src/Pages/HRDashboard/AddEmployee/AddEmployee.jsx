@@ -4,29 +4,19 @@ import useAuth from "../../../Hooks/useAuth";
 import useEmployee from "../../../Hooks/useEmployee";
 
 const AddEmployee = () => {
-  const [employee, refetch] = useEmployee()
-  const [selectedMembers, setSelectedMembers] = useState([]);
-  // const [members, setMembers] = useState([]);
+  const [employee, refetch] = useEmployee();
   const { user } = useAuth();
-
   const axiosPublic = useAxiosPublic();
 
-  // useEffect(() => {
-  //   axiosPublic.get("/employee-account").then((res) => {
-  //     setMembers(res.data);
-  //   });
-  // }, [axiosPublic]);
+  // Track selected members' IDs
+  const [selectedMembers, setSelectedMembers] = useState([]);
 
-  const [employeeCount, setEmployeeCount] = useState(8); // Current employee count
-  const [packageLimit, setPackageLimit] = useState(10); // Current package limit
-
-  const handleSelectMember = (id) => {
+  const handleCheckboxChange = (id) => {
     setSelectedMembers((prevSelected) =>
       prevSelected.includes(id)
-        ? prevSelected.filter((memberId) => memberId !== id)
-        : [...prevSelected, id]
+        ? prevSelected.filter((memberId) => memberId !== id) // Remove if already selected
+        : [...prevSelected, id] // Add if not selected
     );
-    console.log("Adding members:", id);
   };
 
   const handleAddMember = (data) => {
@@ -41,15 +31,22 @@ const AddEmployee = () => {
     console.log("Adding members:", data._id);
   };
 
-  const handleAddSelectedMembers = (id) => {
-    // Call API to add selected members to the team (this is just a simulation)
-    console.log("Adding members:", id);
-    setEmployeeCount(employeeCount + selectedMembers.length);
-  };
+  const handleAddSelectedMembers = () => {
+    // Update the status of all selected members
+    selectedMembers.forEach((id) => {
+      const updateData = {
+        employee_status: true,
+        hr_email: user.email,
+      };
 
-  const handleUpgradePackage = () => {
-    // Redirect to the package selection page (for simplicity, just log here)
-    console.log("Redirect to package selection");
+      axiosPublic.patch(`/employee-account/${id}`, updateData).then((res) => {
+        console.log(`Updated member ${id}:`, res.data);
+        refetch(); // Refetch the employee list after update
+      });
+    });
+
+    // Clear the selected members
+    setSelectedMembers([]);
   };
 
   return (
@@ -58,11 +55,9 @@ const AddEmployee = () => {
         {/* Package Section */}
         <div className="bg-white shadow-lg rounded-lg p-6">
           <div className="flex justify-between items-center">
-            <div className="text-lg font-semibold">
-              Employee Count: {employeeCount} / {packageLimit}
-            </div>
+            <div className="text-lg font-semibold">Employee Count:</div>
             <button
-              onClick={handleUpgradePackage}
+              onClick={() => console.log("Redirect to package selection")}
               className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
             >
               Upgrade Package
@@ -82,7 +77,7 @@ const AddEmployee = () => {
                 <input
                   type="checkbox"
                   checked={selectedMembers.includes(member._id)}
-                  onChange={() => handleSelectMember(member._id)}
+                  onChange={() => handleCheckboxChange(member._id)}
                   className="form-checkbox text-indigo-600"
                 />
                 <img
@@ -110,12 +105,10 @@ const AddEmployee = () => {
         <div className="flex justify-between items-center mt-6">
           <button
             onClick={handleAddSelectedMembers}
-            disabled={selectedMembers.length === 0}
             className={`px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition ${
-              selectedMembers.length === 0
-                ? "opacity-50 cursor-not-allowed"
-                : ""
+              selectedMembers.length === 0 ? "opacity-50 cursor-not-allowed" : ""
             }`}
+            disabled={selectedMembers.length === 0}
           >
             Add Selected Members to the Team
           </button>
