@@ -6,6 +6,7 @@ import { IoEye, IoEyeOff } from "react-icons/io5";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import useAuth from "./../../Hooks/useAuth";
+import SocialLogin from "./SocialLogin";
 
 const Login = () => {
   // navigate user
@@ -128,7 +129,7 @@ const Login = () => {
           </button>
         </form>
 
-        <p className="text-sm text-gray-600 mt-4">
+        <p className="text-sm text-gray-600 my-4">
           Have already account?
           <Link
             to="/employee-register"
@@ -137,6 +138,7 @@ const Login = () => {
             Register
           </Link>
         </p>
+        <SocialLogin></SocialLogin>
       </div>
     </div>
   );

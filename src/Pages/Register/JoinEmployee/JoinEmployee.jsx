@@ -54,7 +54,7 @@ const JoinEmployee = () => {
       email: data.email,
       profile: profile,
       password: data.password,
-      role: 'employee',
+      role: "employee",
       employee_status: false,
     };
 
@@ -87,12 +87,11 @@ const JoinEmployee = () => {
 
         // navigate the user
         navigate("/dashboard/dashboard");
-      }
-      else {
+      } else {
         Swal.fire({
           title: "Already Exist",
           text: "Email Already Exist",
-          icon: "error"
+          icon: "error",
         });
       }
     });
@@ -226,7 +225,7 @@ const JoinEmployee = () => {
             Log in
           </Link>
         </p>
-      <SocialLogin></SocialLogin>
+        <SocialLogin></SocialLogin>
       </div>
     </div>
   );
