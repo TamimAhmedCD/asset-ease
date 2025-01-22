@@ -5,6 +5,7 @@ import useAuth from "../../Hooks/useAuth";
 const Dashboard = () => {
   const [role, setRole] = useState("");
   const [status, setStatus] = useState(false);
+  const [pendingAssets, setPendingAssets] = useState();
 
   const { user } = useAuth();
 
@@ -14,11 +15,21 @@ const Dashboard = () => {
       // Fetch user role
       axiosPublic.get(`/user/${user.email}`).then((res) => {
         const role = res.data.role;
-        console.log(role);
         setRole(role);
       });
     }
-  }, [user?.email, axiosPublic]);
+
+    // get pending data
+    if (role === "employee" && status === true) {
+      axiosPublic
+        .get(
+          `http://localhost:5000/requested-asset/pending/?email=${user.email}`
+        )
+        .then((res) => {
+          setPendingAssets(res.data);
+        });
+    }
+  }, [user.email, axiosPublic, role, status]);
 
   // Find the employee status and then render the data
   axiosPublic.get(`/employee-account/${user.email}`).then((res) => {
@@ -137,14 +148,13 @@ const Dashboard = () => {
               <h2 className="text-lg font-semibold text-gray-800 mb-4">
                 My Pending Requests
               </h2>
+
               <ul className="space-y-3">
-                <li className="p-3 bg-gray-100 rounded-lg">
-                  Request for Laptop
-                </li>
-                <li className="p-3 bg-gray-100 rounded-lg">Request for Desk</li>
-                <li className="p-3 bg-gray-100 rounded-lg">
-                  Request for Chair
-                </li>
+                {pendingAssets?.map((assets) => (
+                  <li key={assets._id} className="p-3 bg-gray-100 rounded-lg">
+                    Request for {assets.asset_name}
+                  </li>
+                ))}
               </ul>
             </div>
 
