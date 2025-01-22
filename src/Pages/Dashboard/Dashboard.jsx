@@ -5,7 +5,8 @@ import useAuth from "../../Hooks/useAuth";
 const Dashboard = () => {
   const [role, setRole] = useState("");
   const [status, setStatus] = useState(false);
-  const [pendingAssets, setPendingAssets] = useState();
+  const [pendingAssets, setPendingAssets] = useState([]);
+  const [monthRequest, setMonthlyRequest] = useState([])
 
   const { user } = useAuth();
 
@@ -20,6 +21,17 @@ const Dashboard = () => {
     }
 
     // get pending data
+    if (role === "employee" && status === true) {
+      axiosPublic
+        .get(
+          `http://localhost:5000/requested-asset/pending/?email=${user.email}`
+        )
+        .then((res) => {
+          setPendingAssets(res.data);
+        });
+    }
+
+    // Get requests made this month
     if (role === "employee" && status === true) {
       axiosPublic
         .get(
