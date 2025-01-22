@@ -45,7 +45,6 @@ const DashboardLayout = () => {
 
   const { company_name: hrCompanyName, company_logo: hrCompanyLogo } = hrData;
   const { company_name, company_logo } = employeeData;
-  console.log(company_name, company_logo);
 
   const { user, logOut } = useAuth();
 
@@ -55,7 +54,6 @@ const DashboardLayout = () => {
       // Fetch user role
       axiosPublic.get(`/user/${user.email}`).then((res) => {
         const role = res.data.role;
-        console.log(role);
         setRole(role);
 
         // Fetch additional data based on role

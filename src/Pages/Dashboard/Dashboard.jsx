@@ -6,7 +6,7 @@ const Dashboard = () => {
   const [role, setRole] = useState("");
   const [status, setStatus] = useState(false);
   const [pendingAssets, setPendingAssets] = useState([]);
-  const [monthRequest, setMonthlyRequest] = useState([])
+  const [monthlyRequest, setMonthlyRequest] = useState();
 
   const { user } = useAuth();
 
@@ -23,9 +23,7 @@ const Dashboard = () => {
     // get pending data
     if (role === "employee" && status === true) {
       axiosPublic
-        .get(
-          `http://localhost:5000/requested-asset/pending/?email=${user.email}`
-        )
+        .get(`/requested-asset/pending/?email=${user.email}`)
         .then((res) => {
           setPendingAssets(res.data);
         });
@@ -34,11 +32,9 @@ const Dashboard = () => {
     // Get requests made this month
     if (role === "employee" && status === true) {
       axiosPublic
-        .get(
-          `http://localhost:5000/requested-asset/pending/?email=${user.email}`
-        )
+        .get(`/requested-asset/monthly/?email=${user.email}`)
         .then((res) => {
-          setPendingAssets(res.data);
+          setMonthlyRequest(res.data);
         });
     }
   }, [user.email, axiosPublic, role, status]);
@@ -48,6 +44,17 @@ const Dashboard = () => {
     const employeeStatus = res.data.employee_status;
     setStatus(employeeStatus);
   });
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    };
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", options);
+  };
 
   if (role == "HR") {
     return (
@@ -175,16 +182,13 @@ const Dashboard = () => {
               <h2 className="text-lg font-semibold text-gray-800 mb-4">
                 My Monthly Requests
               </h2>
+
               <ul className="space-y-3">
-                <li className="p-3 bg-gray-100 rounded-lg">
-                  Request for Headphones - Jan 12, 2025
-                </li>
-                <li className="p-3 bg-gray-100 rounded-lg">
-                  Request for Monitor - Jan 10, 2025
-                </li>
-                <li className="p-3 bg-gray-100 rounded-lg">
-                  Request for Laptop - Jan 5, 2025
-                </li>
+                {monthlyRequest?.map((asset) => (
+                  <li key={asset._id} className="p-3 bg-gray-100 rounded-lg">
+                    Request for {asset.asset_name} - {formatDate(asset.request_date)}
+                  </li>
+                ))}
               </ul>
             </div>
 
