@@ -77,7 +77,7 @@ const AssetList = () => {
                 onChange={(e) => setSort(e.target.value)}
                 className="w-full pl-10 pr-8 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-50 appearance-none"
               >
-                <option value="all-quantity">All Quantity</option>
+                <option value="">All Quantity</option>
                 <option value="asc">Sort by Quantity (Asc)</option>
                 <option value="desc">Sort by Quantity (Desc)</option>
               </select>
