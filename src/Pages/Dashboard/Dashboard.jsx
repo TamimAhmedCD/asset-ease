@@ -6,7 +6,10 @@ const Dashboard = () => {
   const [role, setRole] = useState("");
   const [status, setStatus] = useState(false);
   const [pendingAssets, setPendingAssets] = useState([]);
+  const [hrPendingAssets, setHrPendingAssets] = useState([]);
   const [monthlyRequest, setMonthlyRequest] = useState();
+
+  console.log(hrPendingAssets);
 
   const { user } = useAuth();
 
@@ -35,6 +38,17 @@ const Dashboard = () => {
         .get(`/requested-asset/monthly/?email=${user.email}`)
         .then((res) => {
           setMonthlyRequest(res.data);
+        });
+    }
+
+    // Get HR Pending Request asset
+    if (role === "HR") {
+      axiosPublic
+        .get(
+          `http://localhost:5000/requested-assets/pending?email=${user.email}`
+        )
+        .then((res) => {
+          setHrPendingAssets(res.data);
         });
     }
   }, [user.email, axiosPublic, role, status]);
@@ -68,11 +82,11 @@ const Dashboard = () => {
                 Pending Requests
               </h2>
               <ul className="space-y-3">
-                <li className="p-3 bg-gray-100 rounded-lg">Request 1</li>
-                <li className="p-3 bg-gray-100 rounded-lg">Request 2</li>
-                <li className="p-3 bg-gray-100 rounded-lg">Request 3</li>
-                <li className="p-3 bg-gray-100 rounded-lg">Request 4</li>
-                <li className="p-3 bg-gray-100 rounded-lg">Request 5</li>
+                {hrPendingAssets.map((asset) => (
+                  <li key={asset._id} className="p-3 bg-gray-100 rounded-lg">
+                    Request For {asset.asset_name}
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -186,7 +200,8 @@ const Dashboard = () => {
               <ul className="space-y-3">
                 {monthlyRequest?.map((asset) => (
                   <li key={asset._id} className="p-3 bg-gray-100 rounded-lg">
-                    Request for {asset.asset_name} - {formatDate(asset.request_date)}
+                    Request for {asset.asset_name} -{" "}
+                    {formatDate(asset.request_date)}
                   </li>
                 ))}
               </ul>
