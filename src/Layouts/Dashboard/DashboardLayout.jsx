@@ -99,7 +99,7 @@ const DashboardLayout = () => {
   );
 
   return (
-    <div className="px-10 py-6">
+    <div className="px-5 md:px-10 py-6">
       {/* Sidebar and Navbar */}
       <React.Fragment>
         {/* Navbar */}

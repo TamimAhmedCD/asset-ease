@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import useAuth from "../../Hooks/useAuth";
+import { Activity, Box, Users, AlertTriangle, Clock, TrendingUp } from 'lucide-react';
 
 const Dashboard = () => {
   const [role, setRole] = useState("");
@@ -83,98 +84,186 @@ const Dashboard = () => {
 
   if (role == "HR") {
     return (
-      <div className="min-h-screen bg-gray-100">
-        {/* <!-- Main Content --> */}
-        <main className="container mx-auto px-6 py-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* <!-- Pending Requests --> */}
-            <div className="bg-white rounded-lg shadow-md p-4">
-              <h2 className="text-lg font-semibold text-gray-800 mb-4">
-                Pending Requests
-              </h2>
-              <ul className="space-y-3">
-                {hrPendingAssets.map((asset) => (
-                  <li key={asset._id} className="p-3 bg-gray-100 rounded-lg">
-                    Request For {asset.asset_name}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* <!-- Top Most Requested Items --> */}
-            <div className="bg-white rounded-lg shadow-md p-4">
-              <h2 className="text-lg font-semibold text-gray-800 mb-4">
-                Top Most Requested Items
-              </h2>
-              <ul className="space-y-3">
-                {mostRequestedAssets.map(asset => <li key={asset._id} className="p-3 bg-gray-100 rounded-lg">{asset.product_name}</li>)}
-              </ul>
-            </div>
-
-            {/* <!-- Limited Stock Items --> */}
-            <div className="bg-white rounded-lg shadow-md p-4">
-              <h2 className="text-lg font-semibold text-gray-800 mb-4">
-                Limited Stock Items
-              </h2>
-              <ul className="space-y-3">
-                <li className="p-3 bg-gray-100 rounded-lg">Item A (Qty: 5)</li>
-                <li className="p-3 bg-gray-100 rounded-lg">Item B (Qty: 8)</li>
-                <li className="p-3 bg-gray-100 rounded-lg">Item C (Qty: 2)</li>
-              </ul>
-            </div>
-          </div>
-
-          {/* <!-- Pie Chart Section --> */}
-          <div className="mt-8 bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">
-              Item Distribution
-            </h2>
-            <div className="flex justify-center">
-              {/* <!-- Placeholder for Pie Chart --> */}
-              <div
-                id="pie-chart"
-                className="h-64 w-64 bg-gray-200 rounded-full"
-              ></div>
-            </div>
-          </div>
-
-          {/* <!-- Extra Section: Recent Activities --> */}
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white rounded-lg shadow-md p-4">
-              <h2 className="text-lg font-semibold text-gray-800 mb-4">
-                Recent Activities
-              </h2>
-              <ul className="space-y-3">
-                <li className="p-3 bg-gray-100 rounded-lg">
-                  Approved Request for Laptop
-                </li>
-                <li className="p-3 bg-gray-100 rounded-lg">
-                  Rejected Request for Phone
-                </li>
-                <li className="p-3 bg-gray-100 rounded-lg">
-                  Updated Stock for Headphones
-                </li>
-              </ul>
-            </div>
-
-            {/* <!-- Extra Section: Employee Insights --> */}
-            <div className="bg-white rounded-lg shadow-md p-4">
-              <h2 className="text-lg font-semibold text-gray-800 mb-4">
-                Employee Insights
-              </h2>
-              <div className="text-gray-600">
-                <p>
-                  Total Employees Requesting:{" "}
-                  <span className="font-bold">20</span>
+      <div className="min-h-screen">
+      <div className="">
+        {/* Stats Overview */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white rounded-xl shadow-sm p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-500">Pending Requests</p>
+                <p className="text-2xl font-bold text-gray-900 mt-1">
+                  {hrPendingAssets.length}
                 </p>
-                <p>
-                  Active Requesters: <span className="font-bold">60%</span>
-                </p>
+              </div>
+              <div className="bg-blue-50 p-3 rounded-lg">
+                <Box className="w-6 h-6 text-blue-600" />
+              </div>
+            </div>
+            <div className="mt-4">
+              <div className="flex items-center text-sm text-green-600">
+                <TrendingUp className="w-4 h-4 mr-1" />
+                <span>12% increase</span>
               </div>
             </div>
           </div>
-        </main>
+
+          <div className="bg-white rounded-xl shadow-sm p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-500">Active Users</p>
+                <p className="text-2xl font-bold text-gray-900 mt-1">20</p>
+              </div>
+              <div className="bg-green-50 p-3 rounded-lg">
+                <Users className="w-6 h-6 text-green-600" />
+              </div>
+            </div>
+            <div className="mt-4">
+              <div className="flex items-center text-sm text-green-600">
+                <span>60% engagement rate</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-500">Low Stock Items</p>
+                <p className="text-2xl font-bold text-gray-900 mt-1">8</p>
+              </div>
+              <div className="bg-red-50 p-3 rounded-lg">
+                <AlertTriangle className="w-6 h-6 text-red-600" />
+              </div>
+            </div>
+            <div className="mt-4">
+              <div className="flex items-center text-sm text-red-600">
+                <span>Requires attention</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-500">Total Assets</p>
+                <p className="text-2xl font-bold text-gray-900 mt-1">124</p>
+              </div>
+              <div className="bg-purple-50 p-3 rounded-lg">
+                <Activity className="w-6 h-6 text-purple-600" />
+              </div>
+            </div>
+            <div className="mt-4">
+              <div className="flex items-center text-sm text-purple-600">
+                <span>Updated recently</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Content Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Pending Requests */}
+          <div className="bg-white rounded-xl shadow-sm p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-semibold text-gray-900">Pending Requests</h2>
+              <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                {hrPendingAssets.length} New
+              </span>
+            </div>
+            <div className="space-y-4">
+              {hrPendingAssets.map((asset) => (
+                <div key={asset._id} className="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                  <Box className="w-5 h-5 text-gray-400 mr-3" />
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">
+                      Request for {asset.asset_name}
+                    </p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Requested 2 hours ago
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Most Requested Items */}
+          <div className="bg-white rounded-xl shadow-sm p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-semibold text-gray-900">Most Requested</h2>
+              <button className="text-sm text-blue-600 hover:text-blue-700">View all</button>
+            </div>
+            <div className="space-y-4">
+              {mostRequestedAssets.map((asset) => (
+                <div key={asset._id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div className="flex items-center">
+                    <div className="bg-blue-100 p-2 rounded-lg mr-3">
+                      <Box className="w-5 h-5 text-blue-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">{asset.product_name}</p>
+                      <p className="text-xs text-gray-500 mt-1">32 requests this month</p>
+                    </div>
+                  </div>
+                  <div className="text-sm font-medium text-gray-900">85%</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Recent Activities */}
+          <div className="bg-white rounded-xl shadow-sm p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-semibold text-gray-900">Recent Activities</h2>
+              <button className="text-sm text-blue-600 hover:text-blue-700">See all</button>
+            </div>
+            <div className="relative">
+              <div className="absolute top-0 left-4 h-full w-px bg-gray-200"></div>
+              <div className="space-y-6 relative">
+                <div className="flex gap-4">
+                  <div className="flex-none">
+                    <div className="h-8 w-8 bg-green-100 rounded-full flex items-center justify-center relative z-10">
+                      <Activity className="w-4 h-4 text-green-600" />
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">Asset Request Approved</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Laptop #LC234 approved for John Doe</p>
+                    <p className="text-xs text-gray-400 mt-1">2 minutes ago</p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <div className="flex-none">
+                    <div className="h-8 w-8 bg-red-100 rounded-full flex items-center justify-center relative z-10">
+                      <Clock className="w-4 h-4 text-red-600" />
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">Low Stock Alert</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Monitors running low on stock</p>
+                    <p className="text-xs text-gray-400 mt-1">1 hour ago</p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <div className="flex-none">
+                    <div className="h-8 w-8 bg-blue-100 rounded-full flex items-center justify-center relative z-10">
+                      <Users className="w-4 h-4 text-blue-600" />
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">New Employee Added</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Sarah Johnson joined the team</p>
+                    <p className="text-xs text-gray-400 mt-1">3 hours ago</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
     );
   }
   if (role == "employee" && status == true) {
