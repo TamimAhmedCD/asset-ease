@@ -2,6 +2,7 @@ import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
+import { FaBox, FaClipboardList, FaPlus } from "react-icons/fa"
 
 const AddAsset = () => {
   // post data using axios
@@ -45,84 +46,77 @@ const AddAsset = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto bg-white shadow-lg rounded-lg p-6 mt-8">
-      <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-        Add New Asset
-      </h2>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+<div className="max-w-md mx-auto bg-gradient-to-br from-blue-50 to-indigo-100 shadow-2xl rounded-lg p-8 mt-12">
+      <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">Add New Asset</h2>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Product Name */}
-        <div>
-          <label
-            htmlFor="productName"
-            className="block text-sm font-medium text-gray-600"
-          >
+        <div className="relative">
+          <label htmlFor="productName" className="block text-sm font-medium text-gray-700 mb-1">
             Product Name
           </label>
-          <input
-            type="text"
-            id="productName"
-            {...register("product_name", { required: true })}
-            required
-            placeholder="Enter product name"
-            className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
-          />
-          {errors.product_name && (
-            <p className="text-red-600">This field is required</p>
-          )}
+          <div className="relative">
+            <input
+              type="text"
+              id="productName"
+              {...register("product_name", { required: "Product name is required" })}
+              placeholder="Enter product name"
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1753c2] focus:border-transparent transition duration-300 ease-in-out"
+            />
+            <FaBox className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+          </div>
+          {errors.product_name && <p className="text-red-600 text-sm mt-1">{errors.product_name.message}</p>}
         </div>
 
         {/* Product Type */}
-        <div>
-          <label
-            htmlFor="productType"
-            className="block text-sm font-medium text-gray-600"
-          >
+        <div className="relative">
+          <label htmlFor="productType" className="block text-sm font-medium text-gray-700 mb-1">
             Product Type
           </label>
-          <select
-            id="productType"
-            {...register("product_type", { required: true })}
-            required
-            className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
-          >
-            <option value="" disabled>
-              Select product type
-            </option>
-            <option value="Returnable">Returnable</option>
-            <option value="Non-Returnable">Non-Returnable</option>
-          </select>
-          {errors.product_type && (
-            <p className="text-red-600">This field is required</p>
-          )}
+          <div className="relative">
+            <select
+              id="productType"
+              {...register("product_type", { required: "Product type is required" })}
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1753c2] focus:border-transparent transition duration-300 ease-in-out appearance-none"
+            >
+              <option value="" disabled selected>
+                Select product type
+              </option>
+              <option value="Returnable">Returnable</option>
+              <option value="Non-Returnable">Non-Returnable</option>
+            </select>
+            <FaClipboardList className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+          </div>
+          {errors.product_type && <p className="text-red-600 text-sm mt-1">{errors.product_type.message}</p>}
         </div>
 
         {/* Product Quantity */}
-        <div>
-          <label
-            htmlFor="productQuantity"
-            className="block text-sm font-medium text-gray-600"
-          >
+        <div className="relative">
+          <label htmlFor="productQuantity" className="block text-sm font-medium text-gray-700 mb-1">
             Product Quantity
           </label>
-          <input
-            type="number"
-            id="productQuantity"
-            required
-            {...register("product_quantity", { required: true })}
-            placeholder="Enter quantity"
-            className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
-          />
-          {errors.product_quantity && (
-            <p className="text-red-600">This field is required</p>
-          )}
+          <div className="relative">
+            <input
+              type="number"
+              id="productQuantity"
+              {...register("product_quantity", {
+                required: "Product quantity is required",
+                min: { value: 1, message: "Quantity must be at least 1" },
+              })}
+              placeholder="Enter quantity"
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1753c2] focus:border-transparent transition duration-300 ease-in-out"
+            />
+            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 font-semibold">#</span>
+          </div>
+          {errors.product_quantity && <p className="text-red-600 text-sm mt-1">{errors.product_quantity.message}</p>}
         </div>
 
         {/* Add Button */}
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+          className="w-full bg-[#1753c2] text-white py-3 rounded-lg hover:bg-[#1345a0] focus:ring-2 focus:ring-[#1753c2] focus:ring-opacity-50 transition duration-300 ease-in-out flex items-center justify-center"
         >
-          Add
+          <FaPlus className="mr-2" />
+          Add Asset
         </button>
       </form>
     </div>
