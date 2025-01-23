@@ -7,9 +7,10 @@ const Dashboard = () => {
   const [status, setStatus] = useState(false);
   const [pendingAssets, setPendingAssets] = useState([]);
   const [hrPendingAssets, setHrPendingAssets] = useState([]);
+  const [mostRequestedAssets, setMostRequestedAssets] = useState([])
   const [monthlyRequest, setMonthlyRequest] = useState();
 
-  console.log(hrPendingAssets);
+  console.log(mostRequestedAssets);
 
   const { user } = useAuth();
 
@@ -45,10 +46,20 @@ const Dashboard = () => {
     if (role === "HR") {
       axiosPublic
         .get(
-          `http://localhost:5000/requested-assets/pending?email=${user.email}`
+          `/requested-assets/pending?email=${user.email}`
         )
         .then((res) => {
           setHrPendingAssets(res.data);
+        });
+    }
+    // Get HR most Request asset
+    if (role === "HR") {
+      axiosPublic
+        .get(
+          '/assets/request-count'
+        )
+        .then((res) => {
+          setMostRequestedAssets(res.data);
         });
     }
   }, [user.email, axiosPublic, role, status]);
@@ -96,10 +107,7 @@ const Dashboard = () => {
                 Top Most Requested Items
               </h2>
               <ul className="space-y-3">
-                <li className="p-3 bg-gray-100 rounded-lg">Item 1</li>
-                <li className="p-3 bg-gray-100 rounded-lg">Item 2</li>
-                <li className="p-3 bg-gray-100 rounded-lg">Item 3</li>
-                <li className="p-3 bg-gray-100 rounded-lg">Item 4</li>
+                {mostRequestedAssets.map(asset => <li key={asset._id} className="p-3 bg-gray-100 rounded-lg">{asset.product_name}</li>)}
               </ul>
             </div>
 
