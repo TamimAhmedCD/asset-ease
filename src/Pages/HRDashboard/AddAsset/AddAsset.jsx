@@ -52,13 +52,13 @@ const AddAsset = () => {
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-lg mx-auto">
         {/* Form Card */}
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
           {/* Header */}
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-8 py-6">
-            <h2 className="text-2xl font-bold text-white text-center">
+          <div className="bg-blue-100 px-8 py-6">
+            <h2 className="text-2xl font-bold text-blue-800 text-center">
               Add New Asset
             </h2>
-            <p className="text-blue-100 text-center mt-1">
+            <p className="text-blue-600 text-center mt-1">
               Enter the details of your new asset
             </p>
           </div>
@@ -74,7 +74,7 @@ const AddAsset = () => {
                 >
                   Product Name
                 </label>
-                <div className="relative rounded-lg shadow-sm">
+                <div className="relative rounded-md shadow-sm">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <FaBox className="h-5 w-5 text-gray-400" />
                   </div>
@@ -85,7 +85,7 @@ const AddAsset = () => {
                       required: "Product name is required",
                     })}
                     placeholder="Enter product name"
-                    className="block w-full pl-10 pr-4 py-3 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                    className="block w-full pl-10 pr-4 py-3 border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
                   />
                 </div>
                 {errors.product_name && (
@@ -103,7 +103,7 @@ const AddAsset = () => {
                 >
                   Product Type
                 </label>
-                <div className="relative rounded-lg shadow-sm">
+                <div className="relative rounded-md shadow-sm">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <FaClipboardList className="h-5 w-5 text-gray-400" />
                   </div>
@@ -112,7 +112,7 @@ const AddAsset = () => {
                     {...register("product_type", {
                       required: "Product type is required",
                     })}
-                    className="block w-full pl-10 pr-10 py-3 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out appearance-none bg-none"
+                    className="block w-full pl-10 pr-10 py-3 border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out appearance-none"
                   >
                     <option value="" disabled selected>
                       Select product type
@@ -139,7 +139,7 @@ const AddAsset = () => {
                 >
                   Product Quantity
                 </label>
-                <div className="relative rounded-lg shadow-sm">
+                <div className="relative rounded-md shadow-sm">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <span className="text-gray-400 font-medium">#</span>
                   </div>
@@ -151,7 +151,7 @@ const AddAsset = () => {
                       min: { value: 1, message: "Quantity must be at least 1" },
                     })}
                     placeholder="Enter quantity"
-                    className="block w-full pl-10 pr-4 py-3 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                    className="block w-full pl-10 pr-4 py-3 border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
                   />
                 </div>
                 {errors.product_quantity && (
@@ -165,7 +165,7 @@ const AddAsset = () => {
               <div className="pt-4">
                 <button
                   type="submit"
-                  className="w-full flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transform transition-all duration-150 hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl"
+                  className="w-full flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-150 shadow-lg hover:shadow-xl"
                 >
                   <FaPlus className="mr-2 h-5 w-5" />
                   Add Asset
