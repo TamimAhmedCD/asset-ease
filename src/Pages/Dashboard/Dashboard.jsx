@@ -85,7 +85,7 @@ const Dashboard = () => {
   if (role == "HR") {
     return (
       <div className="min-h-screen">
-      <div className="">
+      <div className="lg:px-8 py-8">
         {/* Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div className="bg-white rounded-xl shadow-sm p-6">
