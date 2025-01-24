@@ -66,168 +66,155 @@ const MyRequestedAssets = () => {
       .then(() => refetch());
   };
 
-  if (status) {
+  if (status === true) {
     return (
-      <div className="p-6 bg-gray-100 min-h-screen">
-        {/* Search and Filter Section */}
-        <div className="bg-white p-4 rounded-md shadow-md mb-6 flex flex-wrap gap-4 items-center">
-          <div className="flex items-center w-full md:w-1/2 border rounded-lg shadow-sm">
-            <FaSearch className="text-gray-500 ml-3" />
-            <input
-              type="text"
-              placeholder="Search by Asset Name..."
-              className="flex-grow p-2 border-0 focus:ring-0 focus:outline-none"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </div>
+<div className="p-6 bg-gray-50 min-h-screen">
+  {/* Search and Filter Section */}
+  <div className="bg-white p-6 rounded-xl shadow-xl mb-8 flex flex-wrap gap-6 items-center justify-between">
+    <div className="flex items-center w-full md:w-1/3 border rounded-xl shadow-md">
+      <FaSearch className="text-gray-400 ml-4" />
+      <input
+        type="text"
+        placeholder="Search by Asset Name..."
+        className="flex-grow p-3 border-0 focus:ring-2 focus:ring-indigo-500 rounded-lg focus:outline-none text-lg"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+    </div>
 
-          <select
-            className="border p-2 rounded-lg shadow-sm focus:ring-indigo-500"
-            value={filterStatus}
-            onChange={(e) => {
-              setFilterStatus(e.target.value);
-              refetch();
-            }}
-          >
-            <option value="">Filter by Status</option>
-            <option value="Pending">Pending</option>
-            <option value="Approved">Approved</option>
-            <option value="Rejected">Rejected</option>
-            <option value="Returned">Returned</option>
-            <option value="Canceled">Canceled</option>
-          </select>
+    <select
+      className="border p-3 rounded-xl shadow-md focus:ring-indigo-500 focus:outline-none text-lg"
+      value={filterStatus}
+      onChange={(e) => {
+        setFilterStatus(e.target.value);
+        refetch();
+      }}
+    >
+      <option value="">Filter by Status</option>
+      <option value="Pending">Pending</option>
+      <option value="Approved">Approved</option>
+      <option value="Rejected">Rejected</option>
+      <option value="Returned">Returned</option>
+      <option value="Canceled">Canceled</option>
+    </select>
 
-          <select
-            className="border p-2 rounded-lg shadow-sm focus:ring-indigo-500"
-            value={filterType}
-            onChange={(e) => {
-              setFilterType(e.target.value);
-              refetch();
-            }}
-          >
-            <option value="">Filter by Type</option>
-            <option value="Returnable">Returnable</option>
-            <option value="Non-Returnable">Non-Returnable</option>
-          </select>
+    <select
+      className="border p-3 rounded-xl shadow-md focus:ring-indigo-500 focus:outline-none text-lg"
+      value={filterType}
+      onChange={(e) => {
+        setFilterType(e.target.value);
+        refetch();
+      }}
+    >
+      <option value="">Filter by Type</option>
+      <option value="Returnable">Returnable</option>
+      <option value="Non-Returnable">Non-Returnable</option>
+    </select>
 
-          <button
-            className="bg-gray-300 px-4 py-2 rounded-lg hover:bg-gray-400 shadow-sm flex items-center"
-            onClick={() => {
-              setSearch("");
-              setFilterStatus("");
-              setFilterType(""); // Reset asset type filter
-              refetch();
-            }}
-          >
-            <AiOutlineReload className="mr-2" /> Reset Filters
-          </button>
-        </div>
+    <button
+      className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition duration-300 shadow-md flex items-center"
+      onClick={() => {
+        setSearch("");
+        setFilterStatus("");
+        setFilterType(""); // Reset asset type filter
+        refetch();
+      }}
+    >
+      <AiOutlineReload className="mr-3" /> Reset Filters
+    </button>
+  </div>
 
-        {/* Asset List Section */}
-        <div className="bg-white p-4 rounded-md shadow-lg">
-          <table className="w-full border-collapse">
-            <thead>
-              <tr className="bg-indigo-600 text-white">
-                <th className="p-3 text-left text-sm font-semibold">
-                  Asset Name
-                </th>
-                <th className="p-3 text-left text-sm font-semibold">
-                  Asset Type
-                </th>
-                <th className="p-3 text-left text-sm font-semibold">
-                  Request Date
-                </th>
-                <th className="p-3 text-left text-sm font-semibold">
-                  Approval Date
-                </th>
-                <th className="p-3 text-left text-sm font-semibold">
-                  Request Status
-                </th>
-                <th className="p-3 text-left text-sm font-semibold">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {requestedAssets.length > 0 ? (
-                requestedAssets.map((asset, index) => (
-                  <tr
-                    key={asset._id}
-                    className={`${
-                      index % 2 === 0 ? "bg-gray-100" : "bg-white"
-                    } hover:bg-indigo-50`}
+  {/* Asset List Section */}
+  <div className="bg-white p-6 rounded-xl shadow-xl">
+    <table className="w-full border-collapse rounded-xl">
+      <thead>
+        <tr className="bg-indigo-600 text-white rounded-t-xl">
+          <th className="p-4 text-left text-lg font-semibold">Asset Name</th>
+          <th className="p-4 text-left text-lg font-semibold">Asset Type</th>
+          <th className="p-4 text-left text-lg font-semibold">Request Date</th>
+          <th className="p-4 text-left text-lg font-semibold">Approval Date</th>
+          <th className="p-4 text-left text-lg font-semibold">Request Status</th>
+          <th className="p-4 text-left text-lg font-semibold">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {requestedAssets.length > 0 ? (
+          requestedAssets.map((asset, index) => (
+            <tr
+              key={asset._id}
+              className={`${
+                index % 2 === 0 ? "bg-gray-50" : "bg-white"
+              } hover:bg-indigo-100 transition-all`}
+            >
+              <td className="p-4 text-sm">{asset.asset_name}</td>
+              <td className="p-4 text-sm">{asset.asset_type}</td>
+              <td className="p-4 text-sm">{formatDate(asset.request_date)}</td>
+              <td className="p-4 text-sm">{formatDate(asset.approved_date)}</td>
+              <td className="p-4 text-sm">
+                <span
+                  className={`px-4 py-2 rounded-full text-xs font-medium ${
+                    asset.status === "Pending"
+                      ? "bg-yellow-500 text-white"
+                      : asset.status === "Approved"
+                      ? "bg-green-500 text-white"
+                      : asset.status === "Returned"
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-500 text-white"
+                  }`}
+                >
+                  {asset.status}
+                </span>
+              </td>
+              <td className="p-4 text-sm">
+                {asset.status === "Pending" && (
+                  <button
+                    className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300 mr-2 flex items-center"
+                    onClick={() => cancelRequest(asset._id)}
                   >
-                    <td className="p-3 border text-sm">{asset.asset_name}</td>
-                    <td className="p-3 border text-sm">{asset.asset_type}</td>
-                    <td className="p-3 border text-sm">
-                      {formatDate(asset.request_date)}
-                    </td>
-                    <td className="p-3 border text-sm">
-                      {formatDate(asset.approved_date)}
-                    </td>
-                    <td className="p-3 border text-sm">
-                      <span
-                        className={`px-3 py-1 rounded text-white text-xs font-medium ${
-                          asset.status === "Pending"
-                            ? "bg-yellow-500"
-                            : asset.status === "Approved"
-                              ? "bg-green-500"
-                              : asset.status === "Returned"
-                                ? "bg-blue-500"
-                                : "bg-gray-500"
-                        }`}
+                    <FaTrash className="mr-2" /> Cancel
+                  </button>
+                )}
+                {asset.status === "Approved" && (
+                  <>
+                    <button
+                      className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-300 mr-2 flex items-center"
+                      onClick={() => printAssetDetails(asset)}
+                    >
+                      <FaPrint className="mr-2" /> Print
+                    </button>
+                    {asset.asset_type === "Returnable" && (
+                      <button
+                        className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300 flex items-center"
+                        onClick={() => returnAsset(asset._id)}
                       >
-                        {asset.status}
-                      </span>
-                    </td>
-                    <td className="p-3 border text-sm">
-                      {asset.status === "Pending" && (
-                        <button
-                          className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 mr-2 flex items-center"
-                          onClick={() => cancelRequest(asset._id)}
-                        >
-                          <FaTrash className="mr-1" /> Cancel
-                        </button>
-                      )}
-                      {asset.status === "Approved" && (
-                        <>
-                          <button
-                            className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 mr-2 flex items-center"
-                            onClick={() => printAssetDetails(asset)}
-                          >
-                            <FaPrint className="mr-1" /> Print
-                          </button>
-                          {asset.asset_type === "Returnable" && (
-                            <button
-                              className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 flex items-center"
-                              onClick={() => returnAsset(asset._id)}
-                            >
-                              <FaArrowAltCircleLeft className="mr-1" /> Return
-                            </button>
-                          )}
-                        </>
-                      )}
-                      {asset.status === "Returned" && (
-                        <button
-                          className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 flex items-center"
-                          onClick={() => printAssetDetails(asset)}
-                        >
-                          <FaPrint className="mr-1" /> Print
-                        </button>
-                      )}
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="6" className="p-3 text-center text-gray-500">
-                    No requested assets found.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
+                        <FaArrowAltCircleLeft className="mr-2" /> Return
+                      </button>
+                    )}
+                  </>
+                )}
+                {asset.status === "Returned" && (
+                  <button
+                    className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-300 flex items-center"
+                    onClick={() => printAssetDetails(asset)}
+                  >
+                    <FaPrint className="mr-2" /> Print
+                  </button>
+                )}
+              </td>
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td colSpan="6" className="p-4 text-center text-gray-500">
+              No requested assets found.
+            </td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  </div>
+</div>
+
     );
   } else {
     return (

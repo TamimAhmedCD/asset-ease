@@ -8,7 +8,6 @@ const AddEmployee = () => {
   const [employee, refetch] = useEmployee();
   const [employeeList, setEmployeeList] = useEmployeeList();
   const [admin, setAdmin] = useState({})
-  console.log(admin);
 
   const [employeeLimit, setEmployeeLimit] = useState(0);
 

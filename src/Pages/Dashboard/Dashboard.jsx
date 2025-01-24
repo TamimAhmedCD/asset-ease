@@ -18,8 +18,6 @@ const Dashboard = () => {
   const [mostRequestedAssets, setMostRequestedAssets] = useState([]);
   const [monthlyRequest, setMonthlyRequest] = useState();
 
-  console.log(mostRequestedAssets);
-
   const { user } = useAuth();
 
   const axiosPublic = useAxiosPublic();

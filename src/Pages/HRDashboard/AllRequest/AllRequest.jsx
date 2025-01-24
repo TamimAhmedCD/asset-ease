@@ -153,6 +153,7 @@ const AllRequest = () => {
                           onClick={() => approveRequest(request)}
                           className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition"
                           title="Approve"
+                          disabled={request.status === "Rejected"}
                         >
                           <FaCheck />
                         </button>
@@ -162,6 +163,7 @@ const AllRequest = () => {
                           onClick={() => rejectRequest(request)}
                           className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
                           title="Reject"
+                          disabled={request.status === "Approved"}
                         >
                           <FaTimes />
                         </button>
