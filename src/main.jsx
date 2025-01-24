@@ -14,11 +14,10 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AuthContext>
       <QueryClientProvider client={queryClient}>
-        <ToastContainer position="top-center">
-          <HelmetProvider>
-            <RouterProvider router={router} />
-          </HelmetProvider>
-        </ToastContainer>
+        <HelmetProvider>
+          <RouterProvider router={router} />
+          <ToastContainer position="top-center" />
+        </HelmetProvider>
       </QueryClientProvider>
     </AuthContext>
   </StrictMode>

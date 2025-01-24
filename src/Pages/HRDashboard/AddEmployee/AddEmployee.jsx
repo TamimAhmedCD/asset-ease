@@ -46,7 +46,7 @@ const AddEmployee = () => {
 
   const handleAddMember = (data) => {
     if (employeeList.length >= employeeLimit) {
-      toast(
+      toast.error(
         "You have reached the employee limit for your package. Upgrade to add more employees."
       );
       return;
@@ -77,7 +77,7 @@ const AddEmployee = () => {
 
   const handleAddSelectedMembers = () => {
     if (employeeList.length + selectedMembers.length > employeeLimit) {
-      toast(
+      toast.error(
         "Adding these employees exceeds your package limit. Upgrade to add more employees."
       );
       return;
