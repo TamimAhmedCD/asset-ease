@@ -1,18 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import useAuth from "./useAuth";
-import useAxiosPublic from "./useAxiosPublic";
+import useAxiosSecure from "./useAxiosSecure";
 
 const useEmployeeList = () => {
-  const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure();
   const { user } = useAuth(); //   useAuth hook
 
   // TanStack query
   const { refetch, data: employeeList = [] } = useQuery({
     queryKey: ["employeeList", user?.email],
     queryFn: async () => {
-      const res = await axiosPublic.get(`/employee-accounts/${user?.email}`, {headers: {
-        authorization: `Bearer ${localStorage.getItem('access-token')}`
-      }});
+      const res = await axiosSecure.get(`/employee-accounts/${user?.email}`);
       return res.data;
     },
   });

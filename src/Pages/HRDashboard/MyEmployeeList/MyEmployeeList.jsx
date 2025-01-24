@@ -1,10 +1,10 @@
-import useAxiosPublic from '../../../Hooks/useAxiosPublic';
+import useAxiosSecure from '../../../Hooks/useAxiosSecure';
 import useEmployeeList from '../../../Hooks/useEmployeeList';
 import { FaTrash } from 'react-icons/fa';
 
 const MyEmployeeList = () => {
   const [employeeList, refetch] = useEmployeeList();
-  const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure();
 
   const handleRemoveMember = (data) => {
     const updateData = {
@@ -12,7 +12,7 @@ const MyEmployeeList = () => {
       hr_email: null,
     };
 
-    axiosPublic
+    axiosSecure
       .patch(`/employee-account/${data._id}`, updateData)
       .then((res) => {
         console.log(res.data);
