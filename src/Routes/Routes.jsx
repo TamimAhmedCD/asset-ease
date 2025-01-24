@@ -81,7 +81,7 @@ export const router = createBrowserRouter([
       {
         path: "update-asset/:id",
         element: <UpdateAsset></UpdateAsset>,
-        loader: ({params}) => fetch(`http://localhost:5000/assets/${params.id}`)
+        loader: ({params}) => fetch(`https://asset-ease-seven.vercel.app/assets/${params.id}`)
       },
 
       // Employee Routes
@@ -96,7 +96,7 @@ export const router = createBrowserRouter([
       {
         path: "request-for-an-asset",
         element: <RequestAsset></RequestAsset>,
-        loader: () => fetch("http://localhost:5000/assets"),
+        loader: () => fetch("https://asset-ease-seven.vercel.app/assets"),
       },
     ],
   },

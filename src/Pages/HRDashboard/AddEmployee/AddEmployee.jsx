@@ -3,6 +3,7 @@ import useAuth from "../../../Hooks/useAuth";
 import useEmployee from "../../../Hooks/useEmployee";
 import useEmployeeList from "../../../Hooks/useEmployeeList";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import { toast } from "react-toastify";
 
 const AddEmployee = () => {
   const [employee, refetch] = useEmployee();
@@ -45,7 +46,7 @@ const AddEmployee = () => {
 
   const handleAddMember = (data) => {
     if (employeeList.length >= employeeLimit) {
-      alert(
+      toast(
         "You have reached the employee limit for your package. Upgrade to add more employees."
       );
       return;
@@ -76,7 +77,7 @@ const AddEmployee = () => {
 
   const handleAddSelectedMembers = () => {
     if (employeeList.length + selectedMembers.length > employeeLimit) {
-      alert(
+      toast(
         "Adding these employees exceeds your package limit. Upgrade to add more employees."
       );
       return;
