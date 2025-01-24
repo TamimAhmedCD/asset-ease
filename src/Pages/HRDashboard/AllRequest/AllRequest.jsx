@@ -1,13 +1,13 @@
 import { useState } from "react";
 import useAllRequest from "../../../Hooks/useAllRequest";
-import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 import { FaSearch, FaCheck, FaTimes } from "react-icons/fa";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const AllRequest = () => {
   const [searchQuery, setSearchQuery] = useState(""); // State to store search query
   const [requests, refetch] = useAllRequest(searchQuery); // Fetch requests based on search query
 
-  const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure();
   const approved_date = new Date().toISOString(); // Current date as default
 
   const formatDate = (dateString) => {
@@ -23,7 +23,7 @@ const AllRequest = () => {
       status: "Approved",
       approved_date,
     };
-    axiosPublic
+    axiosSecure
       .patch(`/requested-asset/${data._id}`, updateStatus)
       .then((res) => {
         console.log(res.data);
@@ -35,7 +35,7 @@ const AllRequest = () => {
     const updateStatus = {
       status: "Rejected",
     };
-    axiosPublic
+    axiosSecure
       .patch(`/requested-asset/${data._id}`, updateStatus)
       .then((res) => {
         console.log(res.data);

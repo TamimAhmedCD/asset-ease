@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
-import useAxiosPublic from "./../../../Hooks/useAxiosPublic";
 import useAsset from "../../../Hooks/useAsset";
 import { FaEdit, FaTrashAlt, FaSearch, FaSort, FaFilter } from "react-icons/fa";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const AssetList = () => {
-  const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure();
 
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("asc");
@@ -19,7 +19,7 @@ const AssetList = () => {
   });
 
   const handleDelete = (id) => {
-    axiosPublic
+    axiosSecure
       .delete(`/assets/${id}`)
       .then((res) => {
         if (res.data.deletedCount > 0) {

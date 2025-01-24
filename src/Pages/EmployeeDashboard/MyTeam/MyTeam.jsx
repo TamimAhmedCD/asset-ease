@@ -1,30 +1,30 @@
 import { useEffect, useState } from "react";
 import useAuth from "../../../Hooks/useAuth";
-import useAxiosPublic from "../../../Hooks/useAxiosPublic";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const MyTeam = () => {
-  const axiosPublic = useAxiosPublic()
+  const axiosSecure = useAxiosSecure()
   const [meyData, setMyData] = useState({})
   const [myTeam, setMyTeam] = useState([])
   const [admin, setAdmin] = useState({})
   const {user} = useAuth()
 
   useEffect(() => {
-    axiosPublic.get(`/employee-account/${user.email}`)
+    axiosSecure.get(`/employee-account/${user.email}`)
     .then(res => {
       setMyData(res.data);
     })
     
-    axiosPublic.get(`/hr-account/${meyData.hr_email}`)
+    axiosSecure.get(`/hr-account/${meyData.hr_email}`)
     .then(res => {
       setAdmin(res.data)
     })
 
-    axiosPublic.get(`/employee-accounts/${meyData.hr_email}`)
+    axiosSecure.get(`/employee-accounts/${meyData.hr_email}`)
     .then(res => {
       setMyTeam(res.data);
     })
-  },[axiosPublic, meyData.hr_email, user.email])
+  },[axiosSecure, meyData.hr_email, user.email])
 
   return (
     <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6 mt-8">

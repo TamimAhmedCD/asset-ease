@@ -1,12 +1,12 @@
-import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { FaBox, FaChevronDown, FaClipboardList, FaPlus } from "react-icons/fa";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const AddAsset = () => {
   // post data using axios
-  const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure();
 
   // react form to get data
   const {
@@ -30,7 +30,7 @@ const AddAsset = () => {
       product_quantity: Number(data.product_quantity),
       createdAt,
     };
-    axiosPublic
+    axiosSecure
       .post("/assets", assetInfo)
       .then((res) => {
         if (res.data.insertedId) {

@@ -17,7 +17,6 @@ import {
 import { IoMenu } from "react-icons/io5";
 import logo from "/Logo.svg";
 import useAuth from "../../Hooks/useAuth";
-import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import {
   FaCircleUser,
   FaClipboardList,
@@ -34,6 +33,8 @@ import { MdAssignmentAdd } from "react-icons/md";
 import { VscGitPullRequestNewChanges } from "react-icons/vsc";
 import { HiMiniUserGroup } from "react-icons/hi2";
 import { RiFileList3Fill } from "react-icons/ri";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import useAxiosPublic from "../../Hooks/useAxiosPublic";
 
 const DashboardLayout = () => {
   const [open, setOpen] = React.useState(false);
@@ -41,6 +42,7 @@ const DashboardLayout = () => {
   const closeDrawer = () => setOpen(false);
   const [role, setRole] = useState("");
   const [hrData, setHrData] = useState([]);
+  const axiosPublic = useAxiosPublic()
   const [employeeData, setEmployeeData] = useState([]);
 
   const { company_name: hrCompanyName, company_logo: hrCompanyLogo } = hrData;
@@ -48,7 +50,7 @@ const DashboardLayout = () => {
 
   const { user, logOut } = useAuth();
 
-  const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure();
   useEffect(() => {
     if (user?.email) {
       // Fetch user role
@@ -58,18 +60,18 @@ const DashboardLayout = () => {
 
         // Fetch additional data based on role
         if (role === "HR") {
-          axiosPublic.get(`/hr-account/${user.email}`).then((res) => {
+          axiosSecure.get(`/hr-account/${user.email}`).then((res) => {
             setHrData(res.data);
           });
         } else {
-          axiosPublic.get(`/employee-account/${user.email}`).then((res) => {
+          axiosSecure.get(`/employee-account/${user.email}`).then((res) => {
             const data = ("Employee data:", res.data);
             setEmployeeData(data);
           });
         }
       });
     }
-  }, [user?.email, axiosPublic]);
+  }, [user.email, axiosSecure, axiosPublic]);
 
   // Nav List
   const profile = (

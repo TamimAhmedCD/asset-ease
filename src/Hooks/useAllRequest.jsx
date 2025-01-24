@@ -1,9 +1,9 @@
-import useAxiosPublic from "./useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
 import useAuth from './useAuth';
+import useAxiosSecure from "./useAxiosSecure";
 
 const useAllRequest = (searchQuery = "") => {
-  const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure();
   const {user} = useAuth()
 
   const { data: requests = [], refetch, isFetching } = useQuery({
@@ -12,7 +12,7 @@ const useAllRequest = (searchQuery = "") => {
       try {
         if (searchQuery) {
           // Call the search API when searchQuery is provided
-          const res = await axiosPublic.get(`/requested-assets?email=${user.email}`, {
+          const res = await axiosSecure.get(`/requested-assets?email=${user.email}`, {
             params: {
               requester_email: searchQuery, 
               requester_name: searchQuery 
@@ -21,7 +21,7 @@ const useAllRequest = (searchQuery = "") => {
           return res.data;
         } else {
           // Call the all requests API when no searchQuery is provided
-          const res = await axiosPublic.get(`/requested-assets?email=${user.email}`);
+          const res = await axiosSecure.get(`/requested-assets?email=${user.email}`);
           return res.data;
         }
       } catch (error) {

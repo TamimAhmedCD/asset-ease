@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import useAuth from "../../Hooks/useAuth";
+import useAxiosSecure from './../../Hooks/useAxiosSecure';
 import {
   Activity,
   Box,
@@ -9,6 +9,7 @@ import {
   Clock,
   TrendingUp,
 } from "lucide-react";
+import useAxiosPublic from "../../Hooks/useAxiosPublic";
 
 const Dashboard = () => {
   const [role, setRole] = useState("");
@@ -20,11 +21,12 @@ const Dashboard = () => {
 
   const { user } = useAuth();
 
-  const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure();
+  const axiosPublic = useAxiosPublic()
   useEffect(() => {
     if (user?.email) {
       // Fetch user role
-      axiosPublic.get(`/user/${user.email}`).then((res) => {
+      axiosSecure.get(`/user/${user.email}`).then((res) => {
         const role = res.data.role;
         setRole(role);
       });
@@ -32,7 +34,7 @@ const Dashboard = () => {
 
     // get pending data
     if (role === "employee" && status === true) {
-      axiosPublic
+      axiosSecure
         .get(`/requested-asset/pending/?email=${user.email}`)
         .then((res) => {
           setPendingAssets(res.data);
@@ -41,7 +43,7 @@ const Dashboard = () => {
 
     // Get requests made this month
     if (role === "employee" && status === true) {
-      axiosPublic
+      axiosSecure
         .get(`/requested-asset/monthly/?email=${user.email}`)
         .then((res) => {
           setMonthlyRequest(res.data);
@@ -50,7 +52,7 @@ const Dashboard = () => {
 
     // Get HR Pending Request asset
     if (role === "HR") {
-      axiosPublic
+      axiosSecure
         .get(`/requested-assets/pending?email=${user.email}`)
         .then((res) => {
           setHrPendingAssets(res.data);
@@ -58,11 +60,11 @@ const Dashboard = () => {
     }
     // Get HR most Request asset
     if (role === "HR") {
-      axiosPublic.get("/assets/request-count").then((res) => {
+      axiosSecure.get("/assets/request-count").then((res) => {
         setMostRequestedAssets(res.data);
       });
     }
-  }, [user.email, axiosPublic, role, status]);
+  }, [user.email, axiosSecure, role, status]);
 
   // Find the employee status and then render the data
   axiosPublic.get(`/employee-account/${user.email}`).then((res) => {

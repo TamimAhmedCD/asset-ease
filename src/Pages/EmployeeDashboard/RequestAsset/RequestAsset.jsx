@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useLoaderData } from "react-router-dom";
-import useAxiosPublic from "./../../../Hooks/useAxiosPublic";
 import useAuth from "./../../../Hooks/useAuth";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const RequestAsset = () => {
   const { user } = useAuth();
@@ -16,21 +16,21 @@ const RequestAsset = () => {
   const [filteredAssets, setFilteredAssets] = useState([]);
   const [hr, setHr] = useState();
 
-  const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure();
   const assets = useLoaderData(); // Assumed that the assets are loaded here
 
   useEffect(() => {
     // Fetch employee status
-    axiosPublic.get(`/employee-account/${user.email}`).then((res) => {
+    axiosSecure.get(`/employee-account/${user.email}`).then((res) => {
       const employeeStatus = res.data.employee_status;
       setStatus(employeeStatus);
     });
 
-    axiosPublic.get(`/employee-account/${user.email}`).then((res) => {
+    axiosSecure.get(`/employee-account/${user.email}`).then((res) => {
       const findHR = res.data.hr_email;
       setHr(findHR);
     });
-  }, [user.email, axiosPublic, hr]);
+  }, [user.email, axiosSecure, hr]);
 
   useEffect(() => {
     // Filter assets based on searchQuery, availabilityFilter, and assetTypeFilter
@@ -105,7 +105,7 @@ const RequestAsset = () => {
     };
 
     // post request api
-    const response = await axiosPublic.post("/requested-asset", requestedAsset);
+    const response = await axiosSecure.post("/requested-asset", requestedAsset);
     // after send request then close modal
     handleModalClose();
     // after successfully send request then open this modal

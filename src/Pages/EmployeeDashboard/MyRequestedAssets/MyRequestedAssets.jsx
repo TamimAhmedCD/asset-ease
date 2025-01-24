@@ -7,8 +7,8 @@ import {
 } from "react-icons/fa";
 import { AiOutlineReload } from "react-icons/ai";
 import useAuth from "./../../../Hooks/useAuth";
-import useAxiosPublic from "./../../../Hooks/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const MyRequestedAssets = () => {
   const formatDate = (dateString) => {
@@ -24,7 +24,7 @@ const MyRequestedAssets = () => {
   };
 
   const { user } = useAuth();
-  const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure();
 
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
@@ -32,16 +32,16 @@ const MyRequestedAssets = () => {
   const [status, setStatus] = useState(false);
 
   useEffect(() => {
-    axiosPublic.get(`/employee-account/${user.email}`).then((res) => {
+    axiosSecure.get(`/employee-account/${user.email}`).then((res) => {
       const employeeStatus = res.data.employee_status;
       setStatus(employeeStatus);
     });
-  }, [user.email, axiosPublic]);
+  }, [user.email, axiosSecure]);
 
   const { data: requestedAssets = [], refetch } = useQuery({
     queryKey: ["requestedAssets", user.email, search, filterStatus, filterType], // Add filterType to queryKey
     queryFn: async () => {
-      const res = await axiosPublic.get(
+      const res = await axiosSecure.get(
         `/requested-asset?email=${user.email}&search=${search}&status=${filterStatus}&asset_type=${filterType}`
       );
       return res.data;
@@ -50,7 +50,7 @@ const MyRequestedAssets = () => {
 
   const cancelRequest = (id) => {
     const updateStatus = { status: "Canceled" };
-    axiosPublic
+    axiosSecure
       .patch(`/requested-asset/${id}`, updateStatus)
       .then(() => refetch());
   };
@@ -61,7 +61,7 @@ const MyRequestedAssets = () => {
 
   const returnAsset = (id) => {
     const updateStatus = { status: "Returned" };
-    axiosPublic
+    axiosSecure
       .patch(`/requested-asset/${id}`, updateStatus)
       .then(() => refetch());
   };

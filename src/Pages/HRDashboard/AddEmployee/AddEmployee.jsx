@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import useAxiosPublic from "./../../../Hooks/useAxiosPublic";
 import useAuth from "../../../Hooks/useAuth";
 import useEmployee from "../../../Hooks/useEmployee";
 import useEmployeeList from "../../../Hooks/useEmployeeList";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const AddEmployee = () => {
   const [employee, refetch] = useEmployee();
@@ -12,11 +12,11 @@ const AddEmployee = () => {
   const [employeeLimit, setEmployeeLimit] = useState(0);
 
   const { user } = useAuth();
-  const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure();
 
   // Fetch package details and set employee limit
   useEffect(() => {
-    axiosPublic
+    axiosSecure
     .get(`/hr-account/${user.email}`)
     .then((res) => {
       const data = res.data;
@@ -29,7 +29,7 @@ const AddEmployee = () => {
         setEmployeeLimit(5);
       }
     })
-  }, [axiosPublic, user.email])
+  }, [axiosSecure, user.email])
 
   // Track selected members' IDs
   const [selectedMembers, setSelectedMembers] = useState([]);
@@ -58,7 +58,7 @@ const AddEmployee = () => {
       company_logo: admin.company_logo,
     };
 
-    axiosPublic
+    axiosSecure
       .patch(`/employee-account/${data._id}`, updateData)
       .then((res) => {
         console.log(res.data);
@@ -89,7 +89,7 @@ const AddEmployee = () => {
         hr_email: user.email,
       };
 
-      return axiosPublic
+      return axiosSecure
         .patch(`/employee-account/${id}`, updateData)
         .then(() => {
           const updatedMember = employee.find((member) => member._id === id);
