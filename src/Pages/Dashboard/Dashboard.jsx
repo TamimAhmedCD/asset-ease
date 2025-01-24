@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import useAuth from "../../Hooks/useAuth";
-import useAxiosSecure from './../../Hooks/useAxiosSecure';
+import useAxiosSecure from "./../../Hooks/useAxiosSecure";
 import {
   Activity,
   Box,
@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const [role, setRole] = useState("");
-  const [paymentStatus, setPaymentStatus] = useState({})
+  const [paymentStatus, setPaymentStatus] = useState({});
   const [status, setStatus] = useState(false);
   const [pendingAssets, setPendingAssets] = useState([]);
   const [hrPendingAssets, setHrPendingAssets] = useState([]);
@@ -23,10 +23,10 @@ const Dashboard = () => {
   console.log(paymentStatus);
 
   const { user } = useAuth();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const axiosSecure = useAxiosSecure();
-  const axiosPublic = useAxiosPublic()
+  const axiosPublic = useAxiosPublic();
   useEffect(() => {
     if (user?.email) {
       // Fetch user role
@@ -319,7 +319,7 @@ const Dashboard = () => {
     );
   }
   if (role == "HR" && paymentStatus === false) {
-return navigate('/dashboard/payment')
+    return navigate("/dashboard/payment");
   }
   if (role == "employee" && status == true) {
     return (
