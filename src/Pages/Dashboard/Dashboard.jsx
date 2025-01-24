@@ -10,16 +10,20 @@ import {
   TrendingUp,
 } from "lucide-react";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const [role, setRole] = useState("");
+  const [paymentStatus, setPaymentStatus] = useState({})
   const [status, setStatus] = useState(false);
   const [pendingAssets, setPendingAssets] = useState([]);
   const [hrPendingAssets, setHrPendingAssets] = useState([]);
   const [mostRequestedAssets, setMostRequestedAssets] = useState([]);
   const [monthlyRequest, setMonthlyRequest] = useState();
+  console.log(paymentStatus);
 
   const { user } = useAuth();
+  const navigate = useNavigate()
 
   const axiosSecure = useAxiosSecure();
   const axiosPublic = useAxiosPublic()
@@ -64,6 +68,11 @@ const Dashboard = () => {
         setMostRequestedAssets(res.data);
       });
     }
+    if (role === "HR") {
+      axiosSecure.get(`/hr-account/${user.email}`).then((res) => {
+        setPaymentStatus(res.data.paymentStatus);
+      });
+    }
   }, [user.email, axiosSecure, role, status]);
 
   // Find the employee status and then render the data
@@ -83,7 +92,7 @@ const Dashboard = () => {
     return date.toLocaleDateString("en-US", options);
   };
 
-  if (role == "HR") {
+  if (role == "HR" && paymentStatus === true) {
     return (
       <div className="min-h-screen">
         <div className="lg:px-8 py-8">
@@ -308,6 +317,9 @@ const Dashboard = () => {
         </div>
       </div>
     );
+  }
+  if (role == "HR" && paymentStatus === false) {
+return navigate('/dashboard/payment')
   }
   if (role == "employee" && status == true) {
     return (
