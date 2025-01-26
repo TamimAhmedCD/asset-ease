@@ -4,6 +4,7 @@ import useEmployee from "../../../Hooks/useEmployee";
 import useEmployeeList from "../../../Hooks/useEmployeeList";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { toast } from "react-toastify";
+import { Helmet } from "react-helmet-async";
 
 const AddEmployee = () => {
   const [employee, refetch] = useEmployee();
@@ -112,6 +113,9 @@ const AddEmployee = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <Helmet>
+        <title>AssetEase | Add Employee</title>
+      </Helmet>
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Package Status Card */}
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
