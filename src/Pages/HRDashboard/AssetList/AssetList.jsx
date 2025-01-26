@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import useAsset from "../../../Hooks/useAsset";
 import { FaEdit, FaTrashAlt, FaSearch, FaSort, FaFilter } from "react-icons/fa";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import { Helmet } from "react-helmet-async";
 
 const AssetList = () => {
   const axiosSecure = useAxiosSecure();
@@ -44,6 +45,9 @@ const AssetList = () => {
 
   return (
     <div className="min-h-screen bg-white rounded-xl py-10 md:px-8 mt-5">
+      <Helmet>
+        <title>AssetEase | Asset List</title>
+      </Helmet>
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="mb-8">
