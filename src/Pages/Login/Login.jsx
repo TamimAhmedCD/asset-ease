@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import useAuth from "./../../Hooks/useAuth";
 import SocialLogin from "./SocialLogin";
+import { Helmet } from "react-helmet-async";
 
 const Login = () => {
   // navigate user
@@ -51,6 +52,9 @@ const Login = () => {
 
   return (
     <div className="flex min-h-screen">
+      <Helmet>
+        <title>AssetEase | Login</title>
+      </Helmet>
       {/* Left Animation Section */}
       <div className="hidden lg:flex w-1/2 items-center justify-center bg-gradient-to-r from-[#1753c2] to-[#1c76e6]">
         <Lottie animationData={animation} />
