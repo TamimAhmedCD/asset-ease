@@ -100,9 +100,9 @@ const JoinEmployee = () => {
 
   return (
     <div className="flex min-h-screen">
-              <Helmet>
-          <title>AssetEase | Register</title>
-        </Helmet>
+      <Helmet>
+        <title>AssetEase | Register</title>
+      </Helmet>
       {/* Left Animation Section */}
       <div className="hidden lg:flex w-1/2 items-center justify-center bg-gradient-to-r from-[#1753c2] to-[#1c76e6]">
         <Lottie animationData={animation} />
