@@ -1,6 +1,7 @@
-import useAxiosSecure from '../../../Hooks/useAxiosSecure';
-import useEmployeeList from '../../../Hooks/useEmployeeList';
-import { FaTrash } from 'react-icons/fa';
+import { Helmet } from "react-helmet-async";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import useEmployeeList from "../../../Hooks/useEmployeeList";
+import { FaTrash } from "react-icons/fa";
 
 const MyEmployeeList = () => {
   const [employeeList, refetch] = useEmployeeList();
@@ -23,6 +24,9 @@ const MyEmployeeList = () => {
 
   return (
     <div className="p-8 bg-white rounded-2xl shadow-lg">
+      <Helmet>
+        <title>AssetEase | My Employee</title>
+      </Helmet>
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Employee List</h1>
@@ -34,7 +38,7 @@ const MyEmployeeList = () => {
           </span>
         </div>
       </div>
-      
+
       <div className="overflow-x-auto rounded-xl border border-gray-200">
         <table className="min-w-full divide-y divide-gray-200">
           <thead>
@@ -52,7 +56,10 @@ const MyEmployeeList = () => {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {employeeList.map((employee) => (
-              <tr key={employee.id} className="hover:bg-gray-50 transition-colors">
+              <tr
+                key={employee.id}
+                className="hover:bg-gray-50 transition-colors"
+              >
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center space-x-4">
                     <img
@@ -92,7 +99,7 @@ const MyEmployeeList = () => {
           </tbody>
         </table>
       </div>
-      
+
       {employeeList.length === 0 && (
         <div className="text-center py-12">
           <p className="text-gray-500">No employees found</p>
