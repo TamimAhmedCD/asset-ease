@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { FaBox, FaChevronDown, FaClipboardList, FaPlus } from "react-icons/fa";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import { Helmet } from "react-helmet-async";
 
 const AddAsset = () => {
   // post data using axios
@@ -50,6 +51,9 @@ const AddAsset = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <Helmet>
+        <title>AssetEase | Dashboard</title>
+      </Helmet>
       <div className="max-w-lg mx-auto">
         {/* Form Card */}
         <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
