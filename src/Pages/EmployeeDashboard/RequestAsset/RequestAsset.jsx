@@ -3,6 +3,7 @@ import { useLoaderData } from "react-router-dom";
 import useAuth from "./../../../Hooks/useAuth";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import { Helmet } from "react-helmet-async";
 
 const RequestAsset = () => {
   const { user } = useAuth();
@@ -129,6 +130,9 @@ const RequestAsset = () => {
   if (status === true) {
     return (
       <div className="max-w-6xl mx-auto p-6">
+        <Helmet>
+          <title>AssetEase | Asset Request</title>
+        </Helmet>
         {/* Filters Section */}
         <div className="flex flex-wrap items-center gap-4 mb-6">
           <input
@@ -169,7 +173,6 @@ const RequestAsset = () => {
             <option value="Non-Returnable">Non-Returnable</option>
           </select>
         </div>
-
         {/* Assets Table */}
         <div className="bg-white shadow-md rounded overflow-hidden">
           <table className="table-auto w-full">
@@ -225,7 +228,6 @@ const RequestAsset = () => {
             </tbody>
           </table>
         </div>
-
         {/* Modal Section */}
         {isModalOpen && selectedAsset && (
           <form onSubmit={handleRequestSubmit}>
