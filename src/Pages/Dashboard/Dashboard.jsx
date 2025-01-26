@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 const Dashboard = () => {
   const [role, setRole] = useState("");
@@ -95,6 +96,9 @@ const Dashboard = () => {
   if (role == "HR" && paymentStatus === true) {
     return (
       <div className="min-h-screen">
+        <Helmet>
+          <title>AssetEase | Dashboard</title>
+        </Helmet>
         <div className="lg:px-8 py-8">
           {/* Stats Overview */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -324,6 +328,9 @@ const Dashboard = () => {
   if (role == "employee" && status == true) {
     return (
       <div className="min-h-screen">
+        <Helmet>
+          <title>AssetEase | Dashboard</title>
+        </Helmet>
         {/* <!-- Main Content --> */}
         <main className="lg:px-8 py-8">
           {/* <!-- Employee Sections --> */}
@@ -450,6 +457,9 @@ const Dashboard = () => {
         id="affiliation-message"
         className="bg-yellow-100 text-yellow-800 p-4 rounded-lg mb-6"
       >
+        <Helmet>
+          <title>AssetEase | Dashboard</title>
+        </Helmet>
         <p className="text-lg">
           ⚠ You are not affiliated with any company. Please contact your HR to
           complete the affiliation process.
