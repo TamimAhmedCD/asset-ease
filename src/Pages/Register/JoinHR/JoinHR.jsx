@@ -41,7 +41,7 @@ const JoinHR = () => {
     setPasswordVisible(!passwordVisible);
   };
 
-  //   submit form
+  // submit form
   const onSubmit = async (data) => {
     const imageFile = { image: data.company_logo[0] };
     // host image
