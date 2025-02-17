@@ -6,6 +6,7 @@ import Packages from "../../Components/Packages/Packages";
 import Footer from "../../Components/Footer/Footer";
 import Testimonials from "../../Components/Testimonials/Testimonials";
 import Features from "../../Components/Features/Features";
+import HowItWorks from "../../Components/HowItWorks/HowItWorks";
 
 const Home = () => {
   return (
@@ -19,6 +20,7 @@ const Home = () => {
       <Packages />
       <Testimonials />
       <Features />
+      <HowItWorks />
       <Footer />
     </div>
   );
