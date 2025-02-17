@@ -4,7 +4,8 @@ import Hero from "../../Components/Hero/Hero";
 import About from "../../Components/About/About";
 import Packages from "../../Components/Packages/Packages";
 import Footer from "../../Components/Footer/Footer";
-import Testimonials from "../../Components/Footer/Testimonials/Testimonials";
+import Testimonials from "../../Components/Testimonials/Testimonials";
+import Features from "../../Components/Features/Features";
 
 const Home = () => {
   return (
@@ -17,6 +18,7 @@ const Home = () => {
       <About />
       <Packages />
       <Testimonials />
+      <Features />
       <Footer />
     </div>
   );

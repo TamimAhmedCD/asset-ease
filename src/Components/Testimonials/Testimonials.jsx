@@ -28,7 +28,7 @@ const Testimonials = () => {
     },
   ];
   return (
-    <section className="w-11/12 md:w-10/12 mx-auto text-center py-28">
+    <section className="w-11/12 md:w-10/12 mx-auto text-center pt-28">
       <div>
         <h2 className="text-4xl font-bold mb-8 text-[#1753c2]">
           What Our Clients Say
