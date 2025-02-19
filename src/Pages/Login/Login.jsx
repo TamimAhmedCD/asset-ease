@@ -10,44 +10,45 @@ import SocialLogin from "./SocialLogin";
 import { Helmet } from "react-helmet-async";
 
 const Login = () => {
-  // navigate user
   const navigate = useNavigate();
-
-  // user auth
   const { loginUser } = useAuth();
 
-  // react form to get data
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm();
 
-  // password toggle
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [userRole, setUserRole] = useState("employee");
+
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
 
-  //   submit form
-  
+  const handleRoleChange = (role) => {
+    setUserRole(role);
+    if (role === "employee") {
+      setValue("email", "employee@example.com");
+      setValue("password", "Employee@123");
+    } else {
+      setValue("email", "hr@example.com");
+      setValue("password", "Hr@12345");
+    }
+  };
+
   const onSubmit = async (data) => {
-    // create user
     loginUser(data.email, data.password).then((result) => {
-      const loggedUser = result.user;
-      console.log(loggedUser);
       Swal.fire({
         title: "Login Success!",
-        text: "Successfully Register",
+        text: "Successfully Logged In",
         icon: "success",
         timer: 1500,
       });
-      // navigate the user
       navigate("/dashboard/dashboard");
     });
-
-    // after success fully submit form then reset the form
     reset();
   };
 
@@ -56,29 +57,34 @@ const Login = () => {
       <Helmet>
         <title>AssetEase | Login</title>
       </Helmet>
-      {/* Left Animation Section */}
       <div className="hidden lg:flex w-1/2 items-center justify-center bg-gradient-to-r from-[#1753c2] to-[#1c76e6]">
         <Lottie animationData={animation} />
       </div>
-
-      {/* Right Form Section */}
       <div className="flex flex-col w-full lg:w-1/2 items-center justify-center px-8 lg:px-16 bg-white my-12">
-        <h1 className="text-4xl font-bold text-gray-800 mb-4 text-center">
-          Welcome Back!
-        </h1>
+        <h1 className="text-4xl font-bold text-gray-800 mb-4 text-center">Welcome Back!</h1>
         <p className="text-gray-600 mb-8 text-center">
-          Welcome to{" "}
-          <span className="text-[#1753c2] font-semibold">AssetEase</span>.
+          Welcome to <span className="text-[#1753c2] font-semibold">AssetEase</span>.
           Manage your company assets with ease!
         </p>
 
+        <div className="flex gap-4 mb-6">
+          <button
+            className={`px-4 py-2 border rounded-lg ${userRole === "employee" ? "bg-[#1753c2] text-white" : "bg-gray-200 text-gray-800"}`}
+            onClick={() => handleRoleChange("employee")}
+          >
+            Employee
+          </button>
+          <button
+            className={`px-4 py-2 border rounded-lg ${userRole === "hr" ? "bg-[#1753c2] text-white" : "bg-gray-200 text-gray-800"}`}
+            onClick={() => handleRoleChange("hr")}
+          >
+            HR
+          </button>
+        </div>
+
         <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md">
-          {/* Email */}
           <div className="mb-4">
-            <label
-              className="block text-sm font-medium text-gray-700 mb-2"
-              htmlFor="email"
-            >
+            <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="email">
               Email
             </label>
             <input
@@ -88,17 +94,11 @@ const Login = () => {
               placeholder="Enter your email address"
               {...register("email", { required: true })}
             />
-            {errors.email && (
-              <p className="text-red-600">This field is required</p>
-            )}
+            {errors.email && <p className="text-red-600">This field is required</p>}
           </div>
 
-          {/* Password */}
           <div className="mb-4 relative">
-            <label
-              className="block text-sm font-medium text-gray-700 mb-2"
-              htmlFor="password"
-            >
+            <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="password">
               Password
             </label>
             <input
@@ -106,16 +106,8 @@ const Login = () => {
               id="password"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-[#1753c2] focus:border-[#1753c2]"
               placeholder="Enter your password"
-              {...register("password", {
-                required: true,
-                minLength: 6,
-                maxLength: 16,
-                pattern: /(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z])/,
-              })}
+              {...register("password", { required: true })}
             />
-            {errors.password && (
-              <p className="text-red-600">This field is required</p>
-            )}
             <button
               type="button"
               onClick={togglePasswordVisibility}
@@ -125,7 +117,6 @@ const Login = () => {
             </button>
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             className="w-full bg-[#1753c2] text-white py-2 px-4 rounded-lg hover:bg-[#1753c2ce] focus:outline-none focus:ring-2 focus:ring-[#1753c2] focus:ring-offset-2"
@@ -135,15 +126,12 @@ const Login = () => {
         </form>
 
         <p className="text-sm text-gray-600 my-4">
-          Have already account?
-          <Link
-            to="/employee-register"
-            className="text-[#1753c2] font-medium hover:underline"
-          >
+          Have an account?
+          <Link to="/employee-register" className="text-[#1753c2] font-medium hover:underline">
             Register
           </Link>
         </p>
-        <SocialLogin></SocialLogin>
+        <SocialLogin />
       </div>
     </div>
   );
