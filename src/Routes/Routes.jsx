@@ -17,6 +17,7 @@ import RequestAsset from "../Pages/EmployeeDashboard/RequestAsset/RequestAsset";
 import MyRequestedAssets from "../Pages/EmployeeDashboard/MyRequestedAssets/MyRequestedAssets";
 import UpdateAsset from "../Pages/HRDashboard/UpdateAsset/UpdateAsset";
 import Payment from "../Pages/HRDashboard/Payment/Payment";
+import MyProfile from "../Pages/Profile/Profile";
 
 export const router = createBrowserRouter([
   {
@@ -97,6 +98,10 @@ export const router = createBrowserRouter([
         path: "request-for-an-asset",
         element: <RequestAsset></RequestAsset>,
         loader: () => fetch("https://asset-ease-seven.vercel.app/assets"),
+      },
+      {
+        path: "profile",
+        element: <MyProfile></MyProfile>,
       },
     ],
   },

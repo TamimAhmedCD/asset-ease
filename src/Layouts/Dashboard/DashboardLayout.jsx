@@ -27,7 +27,7 @@ import { Link, NavLink, Outlet } from "react-router-dom";
 import { IoIosHelpBuoy, IoMdSettings } from "react-icons/io";
 import { HiInboxArrowDown } from "react-icons/hi2";
 import { IoIosPower } from "react-icons/io";
-import { MdSpaceDashboard } from "react-icons/md";
+import { MdAccountCircle, MdSpaceDashboard } from "react-icons/md";
 import "./style.css";
 import { MdAssignmentAdd } from "react-icons/md";
 import { VscGitPullRequestNewChanges } from "react-icons/vsc";
@@ -42,7 +42,7 @@ const DashboardLayout = () => {
   const closeDrawer = () => setOpen(false);
   const [role, setRole] = useState("");
   const [hrData, setHrData] = useState([]);
-  const axiosPublic = useAxiosPublic()
+  const axiosPublic = useAxiosPublic();
   const [employeeData, setEmployeeData] = useState([]);
 
   const { company_name: hrCompanyName, company_logo: hrCompanyLogo } = hrData;
@@ -286,6 +286,14 @@ const DashboardLayout = () => {
                   Add Employee
                 </ListItem>
               </NavLink>
+              <NavLink to="profile">
+                <ListItem>
+                  <ListItemPrefix>
+                    <MdAccountCircle className="text-xl" />
+                  </ListItemPrefix>
+                  My Profile
+                </ListItem>
+              </NavLink>
             </List>
           ) : (
             // Employee Nav
@@ -337,6 +345,14 @@ const DashboardLayout = () => {
                     <VscGitPullRequestNewChanges className="text-xl" />
                   </ListItemPrefix>
                   Request for an Asset
+                </ListItem>
+              </NavLink>
+              <NavLink to="profile">
+                <ListItem>
+                  <ListItemPrefix>
+                    <MdAccountCircle className="text-xl" />
+                  </ListItemPrefix>
+                  My Profile
                 </ListItem>
               </NavLink>
             </List>
