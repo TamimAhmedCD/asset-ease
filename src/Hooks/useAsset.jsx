@@ -3,7 +3,6 @@ import useAxiosSecure from './useAxiosSecure';
 
 const useAsset = (queryParams = {}) => {
     const axiosSecure = useAxiosSecure();
-
     const { search = '', sort = '', product_type = 'all' } = queryParams; // Destructure query parameters with defaults
 
     const { data: assets = [], refetch } = useQuery({
