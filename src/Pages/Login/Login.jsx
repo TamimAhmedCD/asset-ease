@@ -40,7 +40,7 @@ const Login = () => {
   };
 
   const onSubmit = async (data) => {
-    loginUser(data.email, data.password).then(() => {
+    loginUser(data.email, data.password).then((result) => {
       Swal.fire({
         title: "Login Success!",
         text: "Successfully Logged In",
