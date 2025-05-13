@@ -13,17 +13,7 @@ const SocialLogin = () => {
   const handleGoogleLoginN = () => {
     signInWithGoogle().then((result) => {
       const user = result.user;
-      navigate("/dashboard/dashboard");
-      const userInfo = {
-        name: user.displayName,
-        email: user.email,
-        profile: user.photoURL,
-        role: 'employee',
-        employee_status: false
-      }
-      axiosPublic.post('/employee-account', userInfo).then(res => {
-        res.data
-      })
+      navigate("/dashboard");
     });
   };
 

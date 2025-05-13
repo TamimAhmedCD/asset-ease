@@ -73,6 +73,7 @@ const AuthContext = ({ children }) => {
   }, [axiosPublic]);
 
   const authInfo = {
+    
     user,
     loading,
     createUser,
